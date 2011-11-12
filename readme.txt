@@ -4,7 +4,7 @@ Donate link: http://
 Tags: shopping cart, e-commerce, buy now, google checkout, encrypted carts,checkout, products, selling, sell, paypal, jquery, shopping cart widget, ajax, shortcode, widget
 Requires at least: 3.2
 Tested up to: 3.2
-Stable tag: 0.1
+Stable tag: 1.1.0
 
 Simple shopping cart system provides buy now buttons
 to purchase items via Paypal or Google Checkout. Base on Wordpress Checkout
