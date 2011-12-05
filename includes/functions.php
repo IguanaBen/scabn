@@ -229,7 +229,7 @@ class scabnWidget extends WP_Widget {
     /** constructor */
     function scabnWidget() {
 		$widget_ops = array('classname' => 'wpchkt_w', 'description' => __( 'Allows to display the shopping cart'));
-		$this->WP_Widget('wpchkt_w', __('Wordpress Checkout'), $widget_ops);
+		$this->WP_Widget('wpchkt_w', __('SCABN Checkout Cart'), $widget_ops);
 	}
 	
     /** @see WP_Widget::widget */
