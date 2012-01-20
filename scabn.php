@@ -3,7 +3,7 @@
 Plugin Name: Simple Cart & Buy Now
 Plugin URI: http://web-argument.com/wordpress-checkout/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 1.0.1
+Version: 1.1.0
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
@@ -63,8 +63,10 @@ if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/c
 	require_once SCABN_PLUGIN_DIR. '/templates/default/customize.php';	
 }
 
-
-wp_enqueue_script('jquery');
+//Apparently we don't need this 
+//as I removed it and nothing 
+//seems to have broken. 
+//wp_enqueue_script('jquery');
 
 add_action('init','scabn_ini');
 add_action('wp_head', 'scabn_head');

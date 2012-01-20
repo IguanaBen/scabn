@@ -17,7 +17,7 @@ var WPCheckoutDialog = {
 					
 					jQuery('.prod').attr('disabled', 'disabled');
 					jQuery('.gray').css('color','gray');
-                        jQuery('#shortcode').val('[wp_checkout]');
+                        jQuery('#shortcode').val('[scabn]');
 					}
 				
 				});				
@@ -67,7 +67,7 @@ var WPCheckoutDialog = {
 		
 		
 		function update_sc() {
-			 shortcode = 'wp_checkout';
+			 shortcode = 'scabn';
 			 
 				 if ((jQuery('#name').val() !=0)&(jQuery('#name').val()) !=null){
 					 shortcode = shortcode + '  name="'+jQuery('#name').val()+'"';

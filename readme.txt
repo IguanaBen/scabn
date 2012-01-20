@@ -1,9 +1,9 @@
 === Simple Cart & Buy Now ===
 Contributors: bluey80
 Donate link: http://
-Tags: shopping cart, e-commerce, buy now, google checkout, encrypted carts,checkout, products, selling, sell, paypal, jquery, shopping cart widget, ajax, shortcode, widget
+Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, paypal, jquery, shopping cart widget, ajax, widget
 Requires at least: 3.2
-Tested up to: 3.2
+Tested up to: 3.3.1
 Stable tag: 1.1.0
 
 Simple shopping cart system provides buy now buttons
@@ -39,3 +39,7 @@ Coming soon.
    
 = 0.0.1 =  
  * Initial Upload
+
+= 1.1.0 =
+ * I've been using it enough to think it generally working.
+ * Fixed javascript problem when using gui to add [scabn] text to page -- used to be [wp-checkout] from original.
