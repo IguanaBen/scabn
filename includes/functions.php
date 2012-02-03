@@ -474,11 +474,11 @@ function scabn_make_paypal_button($options,$items) {
 			}			
 		$openssl_cmd = "($OPENSSL smime -sign -signer $MY_CERT_FILE -inkey $MY_KEY_FILE " .
 						"-outform der -nodetach -binary <<_EOF_\n$ppencrypt\n_EOF_\n) | " .
-						"$OPENSSL smime -encrypt -des3 -binary -outform pem $PAYPAL_CERT_FILE";
+						"$OPENSSL smime -encrypt -des3 -binary -outform pem $PAYPAL_CERT_FILE 2>&1";
 		exec($openssl_cmd, $output, $error);
 		#echo "<BR>DATA:<BR>".$ppencrypt. "<BR>END DATA<BR>";
 		if ($error) {
-			echo "ERROR: encryption failed: $error";		
+			echo "ERROR: encryption failed: $error<BR>" . implode($output) ;		
  		} else {
 		
 		$ppo .= "<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">\n";
