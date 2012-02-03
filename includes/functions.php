@@ -537,7 +537,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 		$gc .= "\n\t\t<item>";
 		$gc .= "\n\t\t\t<item-name>".$item['name']."</item-name>";
 		$gc .= "\n\t\t\t<item-description>".$item['name']."</item-description>";
-		$gc .= "\n\t\t\t<unit-price currency=\"USD\">".$item['price']."</unit-price>";
+		$gc .= "\n\t\t\t<unit-price currency=\"".$options['currency']."\">".$item['price']."</unit-price>";
 		$gc .= "\n\t\t\t<quantity>".$item['qty']."</quantity>";
 		$gc .= "\n\t\t</item>";
 		}
@@ -549,7 +549,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 
 	foreach($shipoptions as $soption) {
 		$gc .= "\n\t<flat-rate-shipping name=\"". $soption['name'] . "\">";
-		$gc .= "\n\t<price currency=\"USD\">".$soption['price']. "</price>";
+		$gc .= "\n\t<price currency=\"".$options['currency']."\">".$soption['price']. "</price>";
 		$gc .= "\n\t<shipping-restrictions>";
 		$gc .= "\n\t\t<allowed-areas>";
 		if ($soption['region'] == "USA" ) {

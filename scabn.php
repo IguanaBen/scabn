@@ -3,7 +3,7 @@
 Plugin Name: Simple Cart & Buy Now
 Plugin URI: http://web-argument.com/wordpress-checkout/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 1.1.0
+Version: 1.1.1
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
