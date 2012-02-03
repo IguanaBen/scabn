@@ -32,8 +32,8 @@ You will find 'SCABN Settings' menu in your WordPress admin panel and the icon i
 
 == Screenshots ==
 
-Coming soon.
-
+1. Wordpress site using "Add to Cart" plugin on main page and a plugin on right sidebar showing current contents of the shopping cart.
+2. Wordpress site of the final checkout page.
 
 == Changelog ==  
    
