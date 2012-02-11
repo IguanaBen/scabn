@@ -22,7 +22,22 @@ var WPCheckoutDialog = {
 				
 				});				
 
-			
+				jQuery('.custom_cart_page').click(function(){
+				//custom cart page selected
+					var dis = jQuery('.prod').attr('disabled');
+					
+					if (dis) {					
+					jQuery('.prod').attr('disabled', ''); 
+					jQuery('.gray').css('color','black');					
+						update_sc();	
+					} else {					
+					
+					jQuery('.prod').attr('disabled', 'disabled');
+					jQuery('.gray').css('color','gray');
+                        jQuery('#shortcode').val('[scabn_customcart]');
+					}
+				
+				});				
 				
 				jQuery('.qty_field').click(function(){
 					 update_sc();

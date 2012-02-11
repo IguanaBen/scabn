@@ -39,6 +39,10 @@ require_once("../../../../../../wp-config.php");
     <input name="checkout_page" type="checkbox" value="1" class="checkout_page"/>
     Make this page my <b>Checkout Page</b>
     </p>
+    <p>
+    <input name="custom_cart_page" type="checkbox" value="1" class="custom_cart_page"/>
+    Make this page my <b>Custom Cart Page</b>
+    </p>
   <h2 class="gray">Product Specification</h2></td>
   </tr>
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -60,8 +64,8 @@ require_once("../../../../../../wp-config.php");
     <td class="gray"><input id="p_options_name" name="p_options_name" type="text" class="prod" size="20" /></td>
   </tr>    
     <tr>
-    <td align="right" class="gray dwl_gray"><strong>Product Options</strong><br /> separated by comma<br />(large,medium,small...)</td>
-    <td class="gray"><textarea name="p_options" id ="p_options" cols="30" rows="2" class="prod dwl"></textarea></td>
+    <td align="right" class="gray dwl_gray"><strong>Product Options</strong><br /> separated by comma<br />(large,medium,small...)<br />optional: put price after ":"<br /> (large:40,medium:30,small:20)</td>
+    <td class="gray"><textarea name="p_options" id ="p_options" cols="30" rows="3" class="prod dwl"></textarea></td>
   </tr>
   <tr>
     <td align="right" class="gray"><strong>Button Text</strong></td>

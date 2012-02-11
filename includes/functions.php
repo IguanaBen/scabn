@@ -4,32 +4,31 @@
 function scabn_ini(){
 
 	session_start();      // start the session
-	
-	$cart =& $_SESSION['wfcart'];  
+
+	$cart =& $_SESSION['wfcart'];
 	if(!is_object($cart)) $cart = new wfCart();
-	
-	global $scabn_options;	    
-	$options = $scabn_options;	
-	
+
+	global $scabn_options;
+	$options = $scabn_options;
 	$cart->c_info($options['cart_type'], $options['cart_title'], $options['cart_url'], $options['currency'], $options['cart_theme']);
 
 	scabn_request();
-	
+
 	//scabn_w_register();
 
 }
 
 /**
  * Inserting files on the header
- */ 
+ */
 function scabn_head() {
 
-	global $scabn_options;	    
+	global $scabn_options;
 	$options = $scabn_options;
-    
-	$scabn_header =  "\n<!-- Simple Cart and Buy Now -->\n";		
+
+	$scabn_header =  "\n<!-- Simple Cart and Buy Now -->\n";
 	$scabn_header .= "<script type=\"text/javascript\">scabn_c_url =\"".SCABN_PLUGIN_URL."/includes/scabn_ajax.php\";</script>\n";
-	if (file_exists(SCABN_PLUGIN_DIR . "/templates/" . $options['cart_theme'] . "/scabn.js ")) {   
+	if (file_exists(SCABN_PLUGIN_DIR . "/templates/" . $options['cart_theme'] . "/scabn.js ")) {
 		$scabn_header .= "<script type=\"text/javascript\" src=\"".SCABN_PLUGIN_URL."/templates/".$options['cart_theme']."/scabn.js\"></script>\n";	
 	} else {
 	$scabn_header .= "<script type=\"text/javascript\" src=\"".SCABN_PLUGIN_URL."/templates/default/scabn.js\"></script>\n";
@@ -39,7 +38,7 @@ function scabn_head() {
 	} else {
 		$scabn_header .= "<link href=\"".SCABN_PLUGIN_URL."/templates/default/style.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
 	}
-	$scabn_header .=  "\n<!-- Simple Cart and Buy Now End-->\n";		
+	$scabn_header .=  "\n<!-- Simple Cart and Buy Now End-->\n";
             
 	print($scabn_header);
 	
@@ -74,18 +73,18 @@ function get_scabn_options(){
 
 }
 
-function scabn_customcart() {		
-	if ( isset($_GET['ccuuid'])) {		
+function scabn_customcart() {
+	if ( isset($_GET['ccuuid'])) {
 		$uuid=$_GET['ccuuid'];
 	} else if ( isset($_POST['ccuuid'])) {
 		$uuid=$_POST['ccuuid'];
 	}
-	
-	
+
+
 	if ( isset($uuid)) {
-		echo displayCustomCart($uuid); 
-		
-		
+		echo displayCustomCart($uuid);
+
+
 	} else {
 		?><BR>Please enter the custom cart id here:
 		<form name="input" action="custom-cart" method="GET">
@@ -108,9 +107,9 @@ function scabn_sc($atts) {
 	global $post;
 
 	//session_start();
-	
+
 	$cart = $_SESSION['wfcart'];
-		
+
 	extract(shortcode_atts(array(
 			'name' => $post->post_title,
            //'url' => $post->guid,
@@ -118,37 +117,37 @@ function scabn_sc($atts) {
 			'fshipping' => '',
 			'weight' => '',
 			'options_name' => '',
-			'options' => '',		
+			'options' => '',
 			'b_title' => '',
 			'qty_field' => '',
-			'no_cart' => FALSE						
+			'no_cart' => FALSE
 			), $atts));
-		
+
 	if (!empty ($atts)){
-	
+
 		global $post;
-		   
+		 
 		$id = $post->ID;
 		$url =  $post->guid;
 		
-	    global $scabn_options;	    
+	   global $scabn_options;	    
 
-        $currency = scabn_curr_symbol($scabn_options['currency']);
+      $currency = scabn_curr_symbol($scabn_options['currency']);
 	
 		if ($no_cart) {
 			$action_url = SCABN_PLUGIN_URL."/includes/scabn_ajax.php";
-			$add_class = '';			
+			$add_class = '';
 		} else {
 			$action_url = add_query_arg( array() );
 			$add_class = 'class="add"';
 		}
 
 		$item_id = sanitize_title($name);
-		
+
 		//."-".$id;
-		
+
 		$output = "<div class='addtocart'>\n";
-		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";		
+		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
 		$output .= "<input type='hidden' class='item_url' value='".$url."' name='item_url'/>\n";
 		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
@@ -159,52 +158,55 @@ function scabn_sc($atts) {
 		//$output .= "<table border='0' cellspacing='0' cellpadding='5'>\n";
 		//$output .= "<p id='cartname'>".$name . " (".$currency.number_format($price,2)." each)</p>";
 		$output .= "<p id='cartname'>".$name . "</p>";
-		$output .= "<p id='cartcontent'>Unit Price: ".$currency.number_format($price,2)." each<br/>";
+		$output .= "<p id='cartcontent'>";
+		//$output .= "Unit Price: ".$currency.number_format($price,2)." each<br/>";
 		//$output .= "<tr><td align='right'>Price:</td><td align='left'>".$currency." ".number_format($price,2)."</td></tr>\n";
 		  
 		 
-			if (!empty ($options)){
-			//$output .= "<tr>\n";
-			$output .= $options_name."\n";
-			$output .= "<input type='hidden' value='".$options_name."' name='item_options_name' class ='item_options_name' />\n";
-			
+		if (!empty ($options)){			
+			$output .= $options_name.": \n";
+			$output .= "<input type='hidden' value='".$options_name."' name='item_options_name' class ='item_options_name' />\n";			
 			$options = explode(',',$options);      
-			if (count($options) == 1) {
-								
-					$output .= "$options[0]\n";
-								
+
+			if (count($options) == 1) {								
+				$info = explode(':',$options[0]);
+				if (count($info) == 1) {
+					$output .= $info[0] . " (" . $currency.number_format($price,2) . ")\n";
+				} else {
+					$output .= $info[0] . " (" . $currency.number_format($info[1],2) . ")\n";
+				}							
+			} else {				
+				$output .= "<select name='item_options' class = 'item_options' >\n";									
+				foreach ($options as $option){ 						
+					$info = explode(':',$option);
+					if (count($info) == 1) {
+						$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($price,2) . ")</option>\n";
 					} else {
-				
-						$output .= "<select name='item_options' class = 'item_options' >\n";
-									
-						foreach ($options as $option){ 
-						
-							$output .= "<option value='".$option."'>".$option."</option>\n";
-						
-						}
-						$output .= "</select>\n";
-					
+						$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($info[1],2) . ")</option>\n";
 					}
-                        $output .= "<br/>\n";
-
+												
+				}
+				$output .= "</select>\n";
+				
 			}
+         $output .= "<br/>\n";
 
-			if($qty_field) {
+		} else {
+			$output .= "Unit Price: ".$currency.number_format($price,2)." each<br/>";
+		}
+
+		if($qty_field) {
 			$output .= "Qty: <input type='text' class='item_qty' value='1' size='2' name='item_qty'/>\n";
-			} else {
+		} else {
 			$output .= "<input type='hidden' class='item_qty' value='1' size='2' name='item_qty'/>\n";           
-			}  
+		}  
 
 						
-			//$output .= "</td></tr>\n";	
-
-			//$output .= "<tr><td colspan='2' align='center'>\n";
-			if ($no_cart) {
-				$output .= "<input type='hidden' value='true' name='no_cart'/>\n";			
-			}	
-		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$b_title."'/>\n";
-		//$output .= "</td></tr>\n";
-		//$output .= "</table>\n";
+		
+		if ($no_cart) {
+			$output .= "<input type='hidden' value='true' name='no_cart'/>\n";			
+		}	
+		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$b_title."'/>\n";		
 		$output .= "</form>\n";
 		$output .= "</p>\n";
 		$output .= "</div>\n";
