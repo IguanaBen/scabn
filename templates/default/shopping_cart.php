@@ -6,7 +6,7 @@
 		<tr class="thead">
 			<th scope="col">Qty</th>
 			<th scope="col">Items</th>
-			<th scope="col" align="right">Price</th>
+			<th scope="col" align="right">Unit Price</th>
 		</tr>
 		</thead>	
 <?php
@@ -47,7 +47,8 @@
 
 ?>				
 				<tr class='ck_content'>
-				<td align='right' colspan='2'>Sub-total</td>
+				<td><input type='submit' name='update' value='Update' class ='update_cart' /></td>				
+				<td align='right' colspan='1'>Sub-total</td>
 				<td align='right'><?php echo $currency ?> <?php echo number_format($cart->total,2) ?></td>
 				</tr>		
 				
@@ -62,15 +63,17 @@
 				</tr>
 				<tr class='ck_content update_cart'>
 				<td colspan='3' align='left' class='buttons'>            
-				<input type='submit' name='update' value='Update' class ='update_cart' />
+				
 				
 				</td>
 				</tr>
                 <tr><td class='ck_content go_to_checkout' colspan="3">
                <?php   if (empty($cart_url)) { ?>
 				 <span class='val_error'><strong>ERROR:</strong> Include the Checkout/Process Page Url on the Plugin Settings</span>
-				<?php  } else {	 ?>					
-				 <span class='go_to_checkout'><a href='<?php echo $cart_url ?>'><strong>Go to Checkout</strong></a> </span> 
+				<?php  } else {	 ?>					 								
+				 <div style="text-align: right"><span class='go_to_checkout'><a href='<?php echo $cart_url ?>'><strong>Go to Checkout</strong></a> </span></div> 
+				
+				
 				<?php } ?>
                 </td></tr>
                 					   

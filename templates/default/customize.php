@@ -52,7 +52,7 @@ function getItemWeight($itemname,$qty,$inputweight) {
 
 function getCustomCart($uuid) {
 	//Return a list of items for custom cart based on the uuid of the cart
-	//Return nothing is no cart found.
+	//Return nothing if no cart found.
 
 	//Sample db query to get custom cart:
 	//global $wpdb;	

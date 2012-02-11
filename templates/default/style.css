@@ -2,7 +2,7 @@
 display:none;
 }
 
-#wpchkt_widget .total, #wpchkt_widget .shipping, #wpchkt_checkout .go_to_checkout, #wpchkt_widget .update_cart{
+#wpchkt_widget .total, #wpchkt_widget .shipping, #wpchkt_checkout .go_to_checkout {
 display:none;
 }
 
