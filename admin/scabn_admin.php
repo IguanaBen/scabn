@@ -74,7 +74,7 @@ function scabn_settings() {
 	$validator = new FormValidator();
 	$validator->addValidation("cart_url","req","Checkout/Process Url");
 	$validator->addValidation("paypal_url","req","Paypal Url");
-	$validator->addValidation("paypal_return_url","req","Paypal Return IPN Url");
+	//$validator->addValidation("paypal_return_url","req","Paypal Return IPN Url");
 	$validator->addValidation("paypal_email","req","Paypal E-mail");
 	$validator->addValidation("paypal_email","email","The input for Email should be a valid email value");	
 	
@@ -95,8 +95,8 @@ function scabn_settings() {
 		$newoptions['paypal_key_file'] = $_POST['paypal_key_file'];
 		$newoptions['paypal_paypal_cert_file'] = $_POST['paypal_paypal_cert_file'];
 		$newoptions['paypal_cert_id'] = $_POST['paypal_cert_id'];
-
-		$newoptions['paypal_return_url'] = $_POST['paypal_return_url'];
+		$newoptions['paypal_pdt_token'] = $_POST['paypal_pdt_token'];
+		
 		$newoptions['paypal_cancel_url'] = $_POST['paypal_cancel_url'];
 				
 		$newoptions['google_url'] = $_POST['google_url'];
@@ -150,11 +150,10 @@ function scabn_settings() {
 		$openssl_command=$options['openssl_command'];
 		$paypal_my_cert_file=$options['paypal_my_cert_file'];
 		$paypal_key_file=$options['paypal_key_file'];
-		$paypal_paypal_cert_file = $options['paypal_paypal_cert_file'];
-		$paypal_return_url = $options['paypal_return_url'];
+		$paypal_paypal_cert_file = $options['paypal_paypal_cert_file'];		
 		$paypal_cancel_url = $options['paypal_cancel_url'];
 		$paypal_cert_id = $options['paypal_cert_id'];
-
+		$paypal_pdt_token = $options['paypal_pdt_token'];
 
 		
 		?>	 	         
@@ -170,13 +169,13 @@ function scabn_settings() {
 <table width="100%" cellpadding="10" class="form-table">
 
   <tr valign="top">
-    <td align="right" width="200" scope="row">Checkout/Process Page Url</td>
+    <td align="right" width="300" scope="row">Checkout/Process Page Url</td>
   	<td align="left">
   	  <input name="cart_url" type="text" value="<?php echo $cart_url ?>" size="100"/>
   	</td>  	
   </tr>
   <tr valign="top">
-    <td align="right" width="200" scope="row">Currency</td>
+    <td align="right" width="300" scope="row">Currency</td>
   	<td align="left">
       <select name="currency">   
          
@@ -208,14 +207,14 @@ function scabn_settings() {
 <table width="100%" cellpadding="10" class="form-table">
 
   <tr valign="top">
-    <td align="right" scope="row" width="200" ><p>Paypal Url</p></td>
+    <td align="right" scope="row" width="300" ><p>Paypal Url</p></td>
   	<td align="left">
       <p><input name="paypal_url" type="radio" value="live" <?php if ($paypal_url == "live" ) echo "checked" ?>  /> <strong>Live</strong> (https://www.paypal.com/cgi-bin/webscr)</p>    
       <p><input name="paypal_url" type="radio" value="sandbox" <?php if ($paypal_url == "sandbox" ) echo "checked" ?> /> <strong>Sandbox</strong> (https://www.sandbox.paypal.com/cgi-bin/webscr)</p>
   	</td>  	
   </tr>
   <tr valign="top">
-    <td align="right" scope="row" width="200" >Paypal E-mail</td>
+    <td align="right" scope="row" width="300" >Paypal E-mail</td>
   	<td align="left">
   	  <input name="paypal_email" type="text" value="<?php echo $paypal_email ?>" size="50" />
   	</td>  	
@@ -223,52 +222,50 @@ function scabn_settings() {
   </table><table width="100%" cellpadding="10" class="form-table">
 <h4>Optional Settings for PayPal</h4>  
   <tr valign="top">
-    <td align="right" scope="row" width="200" >Paypal Return URL after order completed</td>
+    <td align="right" scope="row" width="300" >Paypal Payment Data Transfer (PDT) Identity Token<br/> (Necessary to use Paypal's Auto Return and have a receipt confirmation after an order is placed.) </td>
   	<td align="left">
-  	  <input name="paypal_return_url" type="text" value="<?php echo $paypal_return_url ?>" size="50" />
+  	  <input name="paypal_pdt_token" type="text" value="<?php echo $paypal_pdt_token ?>" size="50" />
   	</td>  	
   </tr>
-<tr valign="top">
+    <tr valign="top">
     <td align="right" scope="row" width="200" >Paypal Return URL after order cancelled</td>
   	<td align="left">
   	  <input name="paypal_cancel_url" type="text" value="<?php echo $paypal_cancel_url ?>" size="50" />
-  	</td>  	
-      
-  
+  	</td> 
+  </tr>
   </table>
   <table width="100%" cellpadding="10" class="form-table">
-
   
 <H4>Optional Settings for Encrypted Buttons with Paypal</H4>
 <tr valign="top">
-    <td align="right" scope="row" width="200" >Full filesystem path for openssl command (typical: /usr/bin/openssl)</td>
+    <td align="right" scope="row" width="300" >Full filesystem path for openssl command (typical: /usr/bin/openssl)</td>
   	<td align="left">
   	  <input name="openssl_command" type="text" value="<?php echo $openssl_command ?>" size="50" />
   	</td>  	
   </tr>
 <tr valign="top">
-    <td align="right" scope="row" width="200" >Full filesystem path for your (Paypal) Certificate File</td>
+    <td align="right" scope="row" width="300" >Full filesystem path for your (Paypal) Certificate File</td>
   	<td align="left">
   	  <input name="paypal_my_cert_file" type="text" value="<?php echo $paypal_my_cert_file ?>" size="50" />
   	</td>  	
   </tr>
 
 <tr valign="top">
-    <td align="right" scope="row" width="200" >Full filesystem path for your (Paypal) Key File</td>
+    <td align="right" scope="row" width="300" >Full filesystem path for your (Paypal) Key File</td>
   	<td align="left">
   	  <input name="paypal_key_file" type="text" value="<?php echo $paypal_key_file ?>" size="50" />
   	</td>  	
   </tr>
 
 <tr valign="top">
-    <td align="right" scope="row" width="200" >Full filesystem path for Paypal's Certificate File</td>
+    <td align="right" scope="row" width="300" >Full filesystem path for Paypal's Certificate File</td>
   	<td align="left">
   	  <input name="paypal_paypal_cert_file" type="text" value="<?php echo $paypal_paypal_cert_file ?>" size="50" />
   	</td>  	
   </tr>
 
 <tr valign="top">
-    <td align="right" scope="row" width="200" >Certificate ID (see paypal website)</td>
+    <td align="right" scope="row" width="300" >Certificate ID (see paypal website)</td>
   	<td align="left">
   	  <input name="paypal_cert_id" type="text" value="<?php echo $paypal_cert_id ?>" size="50" />
   	</td>  	
@@ -288,7 +285,7 @@ function scabn_settings() {
 
   </tr>
   <tr valign="top">
-    <td align="right" scope="row" width="200" >Merchant ID</td>
+    <td align="right" scope="row" width="300" >Merchant ID</td>
   	<td align="left">
   	  <input name="gc_merchantid" type="text" value="<?php echo $gc_merchantid ?>" size="50" />
   	</td>  	
@@ -296,7 +293,7 @@ function scabn_settings() {
 </table><table width="100%" cellpadding="10" class="form-table">
 <H4>Optional Settings for Encrypted Cart for Google Checkout</H4>	
 	<tr valign="top">
-   	 <td align="right" scope="row" width="200" >Merchant Key</td>
+   	 <td align="right" scope="row" width="300" >Merchant Key</td>
   		<td align="left">
   	  	<input name="gc_merchantkey" type="text" value="<?php echo $gc_merchantkey ?>" size="50" />
   		</td>  	

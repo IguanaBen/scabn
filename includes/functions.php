@@ -143,9 +143,7 @@ function scabn_sc($atts) {
 		}
 
 		$item_id = sanitize_title($name);
-
-		//."-".$id;
-
+		
 		$output = "<div class='addtocart'>\n";
 		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
@@ -215,10 +213,83 @@ function scabn_sc($atts) {
 		
 	} else {
 	
-	
-		return scabn_process();
+		$tx_token = $_GET['tx'];
+		
+		if ($tx_token) {	
+			return scabn_paypal_receipt($tx_token);
+		} else {			
+			return scabn_process();
+		}
 
 	}
+}
+
+
+function scabn_paypal_receipt($tx_token) {
+	global $scabn_options;
+	//This request came from paypal as their receipt page
+	//We must send confirmation to them to get info:				
+		   	       	
+	// read the post from PayPal system and add 'cmd'
+	$req = 'cmd=_notify-synch';	
+	$auth_token = $scabn_options['paypal_pdt_token'];
+	//$auth_token='asdf';	
+	$req .= "&tx=$tx_token&at=$auth_token";
+
+	// post back to PayPal system to validate
+	$header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
+	$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+	$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+	$fp = fsockopen ('www.paypal.com', 80, $errno, $errstr, 30);
+	// If possible, securely post back to paypal using HTTPS
+	// Your PHP server will need to be SSL enabled
+	// $fp = fsockopen ('ssl://www.paypal.com', 443, $errno, $errstr, 30);
+
+	if (!$fp) {
+		echo "Error Sending data to Paypal -- (order probably completed)<br/>";
+		echo $errno."<br/><br/>" . $errstr."<br/>";				
+		return False;
+	} else {
+		fputs ($fp, $header . $req);
+		// read the body data 
+		$res = '';
+		$headerdone = false;
+		while (!feof($fp)) {
+			$line = fgets ($fp, 1024);
+			if (strcmp($line, "\r\n") == 0) {
+				// read the header
+				$headerdone = true;
+			}
+			else if ($headerdone)
+			{
+				// header has been read. now read the contents
+				$res .= $line;
+			}
+		}
+
+		// parse the data
+		$lines = explode("\n", $res);
+		$keyarray = array();
+		if (strcmp ($lines[0], "SUCCESS") == 0) {
+			for ($i=1; $i<count($lines);$i++){
+				list($key,$val) = explode("=", $lines[$i]);
+				$keyarray[urldecode($key)] = urldecode($val);
+			}
+						
+			display_paypal_receipt($keyarray);
+			
+		}	
+		else if (strcmp ($lines[0], "FAIL") == 0) {
+			echo "Error parsing Paypal's response. (order probably completed)<br/>";
+			display_paypal_receipt($keyarray);
+		} else {
+			echo "Unknown error from Paypal's response. (order probably completed)";
+		}	
+	}
+
+	fclose ($fp);
+		
+		
 }
 
 
@@ -406,14 +477,14 @@ function scabn_process() {
 		if (isset($error_hash)){
 			
 			echo "<div class='val_error'>";
-			echo "<p><strong>Please fill out the requiered fields</strong></p>";
+			echo "<p><strong>Please fill out the required fields</strong></p>";
 			foreach($error_hash as $inpname => $inp_err)
 			{
 			  echo "<p>$inp_err</p>\n";
 			}
 			echo "</div>";		 
 		}		
-	   echo "<h3>".$options['cart_title']."</h3>";
+	   //echo "<h3>".$options['cart_title']."</h3>";
 		echo "<div id='wpchkt_checkout'>";
 		scabn_cart('full', TRUE);
 		echo "</div>";
@@ -431,9 +502,10 @@ function scabn_process() {
 
 function scabn_make_paypal_button($options,$items) {
 	$currency = $options['currency'];
+	$cart_url = $options['cart_url'];
 	$paypal_email = $options['paypal_email'];	
 	$paypal_url = $options['paypal_url'];
-	$paypal_return_url=$options['paypal_return_url'];
+	$paypal_pdt_token=$options['paypal_pdt_token'];
 	$paypal_cancel_url=$options['paypal_cancel_url'];
 	$paypal_cert_id = $options['paypal_cert_id'];
 	$OPENSSL=$options['openssl_command'];
@@ -454,7 +526,7 @@ function scabn_make_paypal_button($options,$items) {
 	$ppoptions[]=array("lc","US");
 	$ppoptions[]=array("bn","PP-BuyNowBF");
 	$ppoptions[]=array("upload","1");
-	if ( $paypal_return_url != "" ) $ppoptions[]=array("return",$paypal_return_url);
+	if ( $paypal_pdt_token != "" ) $ppoptions[]=array("return",$cart_url);
 	if ( $paypal_cancel_url != "" ) $ppoptions[]=array("cancel_return",$paypal_cancel_url);
 	$ppoptions[]=array("weight_unit","lbs");	
 		
@@ -467,7 +539,7 @@ function scabn_make_paypal_button($options,$items) {
 		$ppoptions[]=array("weight_". (string)$count, $item['weight']);		
       }
       	
-	if ( ( $options['paypal_paypal_cert_file'] != "" ) & ( $options['paypal_key_file'] != "" ) & ( $options['paypal_my_cert_file'] !=  "" ) & ( $options['openssl_command'] != "" ) & (  $options['paypal_cert_id'] !="" ) ) {						
+	if (  ( $options['paypal_paypal_cert_file'] != "" ) & ( $options['paypal_key_file'] != "" ) & ( $options['paypal_my_cert_file'] !=  "" ) & ( $options['openssl_command'] != "" ) & (  $options['paypal_cert_id'] !="" ) ) {						
 		$ppoptions[]=array("cert_id",$paypal_cert_id); 			
 		
 		$ppencrypt="";						
