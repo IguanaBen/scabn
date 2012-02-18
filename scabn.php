@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Simple Cart & Buy Now
-Plugin URI: http://web-argument.com/wordpress-checkout/
+Plugin URI: http://wordpress.org/extend/plugins/simple-cart-buy-now/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 1.2.0
+Version: 1.2.1
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
