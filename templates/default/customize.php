@@ -40,11 +40,12 @@ function getItemWeight($itemname,$qty,$inputweight) {
 	//for all items in your cart. If you want to use
 	//the weight that is input by the user then just return
 	//the $inputweight. This lets you set pricing in the simple
-	//wordpress syntax of [scabn name="ItemName" weight="1.00"]
+	//wordpress syntax of [scabn name="ItemName" weight="1.00"]				
+	if ($inputweight <= 0.01) {
+		$inputweight = 0.01;
+	}
+	return $inputweight;
 	
-	//NOTE: needs testing on weight per unit, vs total weight for this time	
-	
-	return $qty*$inputweight;
  
 	} 
  
