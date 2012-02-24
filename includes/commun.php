@@ -67,14 +67,36 @@ function scabn_request(){
 function scabn_item_options ($options_arr){
 
 	foreach($options_arr as $key=>$value){
-	
+
 	   $options_pair = $key."-".$value."<br />";
-	
+
 	}
-	
+
 	return $options_pair;
 
 }
+
+/* Simple options in - format */
+function scabn_item_options_noformat ($options_arr){
+	$begin=TRUE;
+	foreach($options_arr as $key=>$value){
+
+	   $options_pair = $key."-".$value;
+	   if ($begin == FALSE) {
+		$options_pair .="-";
+	   } else {
+		$begin=FALSE;
+	   }
+
+
+	}
+
+	return $options_pair;
+
+}
+
+
+
 
 /**
  *  Currency code & symbol

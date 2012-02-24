@@ -534,7 +534,7 @@ function scabn_make_paypal_button($options,$items) {
 	foreach($items as $item) {					
 		$count++;			
 		$ppoptions[]=array("quantity_". (string)$count, $item['qty']);
-		$ppoptions[]=array("item_name_". (string)$count,$item['name']);
+		$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".scabn_item_options_noformat($item['options']).")");
 		$ppoptions[]=array("amount_". (string)$count, $item['price']);
 		$ppoptions[]=array("weight_". (string)$count, $item['weight']);		
       }
@@ -609,7 +609,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 
 	foreach($items as $item) {		
 		$gc .= "\n\t\t<item>";
-		$gc .= "\n\t\t\t<item-name>".$item['name']."</item-name>";
+		$gc .= "\n\t\t\t<item-name>".$item['name']." (".scabn_item_options_noformat($item['options']).")</item-name>";
 		$gc .= "\n\t\t\t<item-description>".$item['name']."</item-description>";
 		$gc .= "\n\t\t\t<unit-price currency=\"".$options['currency']."\">".$item['price']."</unit-price>";
 		$gc .= "\n\t\t\t<quantity>".$item['qty']."</quantity>";
@@ -644,7 +644,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 	$gc .= "\n</shipping-methods></merchant-checkout-flow-support></checkout-flow-support>\n";
 	//End Google Cart
 	$gc .= "\n</checkout-shopping-cart>";
-
+	
 	$b64=base64_encode($gc);
 	if ( $gc_merchantkey != "" ) $gcsig=base64_encode(CalcHmacSha1($gc,"$gc_merchantkey"));	
 	
