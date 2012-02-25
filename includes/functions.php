@@ -534,7 +534,11 @@ function scabn_make_paypal_button($options,$items) {
 	foreach($items as $item) {					
 		$count++;			
 		$ppoptions[]=array("quantity_". (string)$count, $item['qty']);
-		$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".scabn_item_options_noformat($item['options']).")");
+		if ( $item['options'] ) {
+			$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".scabn_item_options($item['options'],'--').")");
+		} else {
+			$ppoptions[]=array("item_name_". (string)$count,$item['name']);
+		}
 		$ppoptions[]=array("amount_". (string)$count, $item['price']);
 		$ppoptions[]=array("weight_". (string)$count, $item['weight']);		
       }
@@ -609,7 +613,11 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 
 	foreach($items as $item) {		
 		$gc .= "\n\t\t<item>";
-		$gc .= "\n\t\t\t<item-name>".$item['name']." (".scabn_item_options_noformat($item['options']).")</item-name>";
+		if ( $item['options']  ) {
+			$gc .= "\n\t\t\t<item-name>".$item['name']." (".scabn_item_options($item['options'],'--').")</item-name>";
+		} else {
+			$gc .= "\n\t\t\t<item-name>".$item['name']."</item-name>";
+		}
 		$gc .= "\n\t\t\t<item-description>".$item['name']."</item-description>";
 		$gc .= "\n\t\t\t<unit-price currency=\"".$options['currency']."\">".$item['price']."</unit-price>";
 		$gc .= "\n\t\t\t<quantity>".$item['qty']."</quantity>";
