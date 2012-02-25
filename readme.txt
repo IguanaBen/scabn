@@ -4,7 +4,7 @@ Donate link: http://
 Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, paypal, jquery, shopping cart widget, ajax, widget
 Requires at least: 3.2
 Tested up to: 3.3.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 Simple shopping cart system provides buy now buttons
 to purchase items via Paypal or Google Checkout. Base on Wordpress Checkout
@@ -59,3 +59,7 @@ You will find 'SCABN Settings' menu in your WordPress admin panel and the icon i
 
 = 1.2.1 = 
   * Fixed bad url for plugin page url
+
+= 1.2.2 =
+  * Shopping cart sent to google or paypal did not include item's options. Now adds items' options information to the cart.
+  * Cleaned up some css on placement of add to cart button. 
