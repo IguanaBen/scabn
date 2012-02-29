@@ -1,5 +1,13 @@
 <?php
 
+function ShopingCartInfo($items) {
+	//Use this function to return a message at the bottom of the checkout page.
+	//Maybe a note about shipping options. Maybe a warning that you bought
+	//a combination of items that doesn't make sense.
+	return "";;
+}
+
+
 
 function getItemPricing($itemname,$qty,$inputprice) {
 	//This is the function that sets the pricing
