@@ -51,7 +51,7 @@ pricing, shipping, weight information, bulk discounts, etc
 if ( ! defined( 'SCABN_PLUGIN_DIR' ) ) 	define( 'SCABN_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . plugin_basename( dirname( __FILE__ ) ) );
 if ( ! defined( 'SCABN_PLUGIN_URL' ) )  define( 'SCABN_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) );
 
-require_once SCABN_PLUGIN_DIR. '/includes/cart.php';	
+require_once SCABN_PLUGIN_DIR. '/includes/cart.php';
 require_once SCABN_PLUGIN_DIR. '/includes/functions.php';
 require_once SCABN_PLUGIN_DIR. '/includes/commun.php';
 require_once SCABN_PLUGIN_DIR. '/includes/scabn_codes.php';
@@ -59,18 +59,22 @@ require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 
 $scabn_options = get_scabn_options();
 
-if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php') ) { 
-	require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php';	
-} else {	 	
-	require_once SCABN_PLUGIN_DIR. '/templates/default/customize.php';	
+if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php') ) {
+	require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php';
+} else {
+	require_once SCABN_PLUGIN_DIR. '/templates/default/customize.php';
 }
 
-//Apparently we don't need this 
-//as I removed it and nothing 
-//seems to have broken. 
+//Apparently we don't need this
+//as I removed it and nothing
+//seems to have broken.
 //wp_enqueue_script('jquery');
 
 add_action('init','scabn_ini');
+if ( $scabn_options['analytics_id'] != '' ) {
+	add_action('wp_head', 'scabn_googleanalytics');
+}
+
 add_action('wp_head', 'scabn_head');
 add_action('admin_init','scabn_addbuttons');
 
@@ -79,5 +83,7 @@ add_shortcode('scabn_customcart', 'scabn_customcart');
 
 add_action('admin_menu', 'scabn_add_pages');
 add_action('admin_head', 'scabn_admin_register_head');
+
+
 
 ?>

@@ -151,23 +151,23 @@ function display_paypal_receipt($keyarray) {
 		//When an order has been placed via paypal
 		//and after the order is placed Paypal redirects
 		//the shopper back here via PDT and auto return.
-		//See Auto Return under paypal's Website 
+		//See Auto Return under paypal's Website
 		//Payments section for more details.
 		$firstname = $keyarray['first_name'];
 		$lastname = $keyarray['last_name'];
-		
+
 		$amount = $keyarray['payment_gross'];
-	
+
 		echo "<p><h3>Checkout Complete -- Thank you for your purchase!</h3></p>";
 		echo "<h4>Payment Details</h4><ul>\n";
-		echo "<li>Name: $firstname $lastname</li>\n";		
+		echo "<li>Name: $firstname $lastname</li>\n";
 		echo "<li>Total Amount: $amount</li>\n";
 		echo "</ul>";
 		echo "You will receive a confirmation e-mail when payment for the order clears and a second email when your order ships. "; 
 		echo "You may log into your paypal account at <a href=\"https://www.paypal.com/us\">paypal</a> to view details of this transaction.";
 
 }
-	
+
 
 
 ?>

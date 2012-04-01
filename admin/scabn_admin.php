@@ -3,9 +3,9 @@
  * Adding Menu
  */
 function scabn_add_pages() {
-	add_submenu_page('plugins.php', 'SCABN Settings', 'SCABN Settings', 'administrator', 'scabn_settings', 'scabn_settings');		   
+	add_submenu_page('plugins.php', 'SCABN Settings', 'SCABN Settings', 'administrator', 'scabn_settings', 'scabn_settings');
 	}
-	
+
 
 function scabn_admin_register_head() {
     $url_style = SCABN_PLUGIN_URL . '/admin/scabn_admin.css';
@@ -20,19 +20,19 @@ function scabn_addbuttons() {
    // Don't bother doing this stuff if the current user lacks permissions
    if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') )
      return;
- 
+
    // Add only in Rich Editor mode
    if ( get_user_option('rich_editing') == 'true') {
      add_filter("mce_external_plugins", "add_scabn_tinymce_plugin");
      add_filter('mce_buttons', 'register_scabn_button');
    }
 }
- 
+
 function register_scabn_button($buttons) {
    array_push($buttons, "separator", "scabn");
    return $buttons;
 }
- 
+
 // Load the TinyMCE plugin : editor_plugin.js (wp2.5)
 function add_scabn_tinymce_plugin($plugin_array) {
    $plugin_array['scabn'] = SCABN_PLUGIN_URL.'/includes/js/tinymce/editor_plugin.js';
@@ -53,7 +53,7 @@ function scabn_get_templates() {
 	while (false !== ($filename = readdir($dh))) {
 
                 if (!(($filename == '.')||($filename == '..')))    $templates[] = $filename;
-    }        
+    }
 		return $templates;
 
 }
@@ -68,22 +68,22 @@ function scabn_settings() {
 
 	global $scabn_options;
 	global $scabn_currency_codes;
-	
-	require_once SCABN_PLUGIN_DIR. '/includes/formvalidator.php';	
-	
+
+	require_once SCABN_PLUGIN_DIR. '/includes/formvalidator.php';
+
 	$validator = new FormValidator();
 	$validator->addValidation("cart_url","req","Checkout/Process Url");
 	$validator->addValidation("paypal_url","req","Paypal Url");
 	//$validator->addValidation("paypal_return_url","req","Paypal Return IPN Url");
 	$validator->addValidation("paypal_email","req","Paypal E-mail");
-	$validator->addValidation("paypal_email","email","The input for Email should be a valid email value");	
-	
-			
+	$validator->addValidation("paypal_email","email","The input for Email should be a valid email value");
+
+
 	$options = $scabn_options;
-	
-	
-	if( isset($_POST['Submit'])) {		
-		
+
+
+	if( isset($_POST['Submit'])) {
+
 		$newoptions['cart_url'] = $_POST['cart_url'];
 		$newoptions['cart_theme'] = $_POST['cart_theme'];
 		$newoptions['currency'] = $_POST['currency'];
@@ -96,34 +96,35 @@ function scabn_settings() {
 		$newoptions['paypal_paypal_cert_file'] = $_POST['paypal_paypal_cert_file'];
 		$newoptions['paypal_cert_id'] = $_POST['paypal_cert_id'];
 		$newoptions['paypal_pdt_token'] = $_POST['paypal_pdt_token'];
-		
+
 		$newoptions['paypal_cancel_url'] = $_POST['paypal_cancel_url'];
-				
+
 		$newoptions['google_url'] = $_POST['google_url'];
-		$newoptions['gc_merchantid'] = $_POST['gc_merchantid'];		
-		$newoptions['gc_merchantkey'] = $_POST['gc_merchantkey'];		
-		
-		
-		
+		$newoptions['gc_merchantid'] = $_POST['gc_merchantid'];
+		$newoptions['gc_merchantkey'] = $_POST['gc_merchantkey'];
+		$newoptions['analytics_id'] = $_POST['analytics_id'];
+
+
+
 		$newoptions['cart_type'] = $options['cart_type'];
-		$newoptions['cart_title'] = $options['cart_title'];	
-		$newoptions['version'] = $options['version'];	
-		
-	 
+		$newoptions['cart_title'] = $options['cart_title'];
+		$newoptions['version'] = $options['version'];
+
+
 		if ( $options != $newoptions ) {
-			$scabn_options = $options = $newoptions;							
-			update_option('scabn_options', $options);				 		
-		}	
-		
-		if($validator->ValidateForm()) {	
-			
+			$scabn_options = $options = $newoptions;
+			update_option('scabn_options', $options);
+		}
+
+		if($validator->ValidateForm()) {
+
 			?>
 			<div class="updated"><p><strong><?php _e('Options saved.', 'mt_trans_domain' ); ?></strong></p></div>
-			 
+
 		<?php  } else {  $options = $newoptions; ?>
 
 			<div class="error">
-			
+
 				<p><strong>Please fill out the required fields</strong></p>
 				<?php
 					foreach($validator->GetErrors() as $inpname => $inp_err)
@@ -131,34 +132,35 @@ function scabn_settings() {
 					  echo "<p>$inp_err</p>\n";
 					}
 				?>
-			</div>	
+			</div>
 
         <?php  }
-		
+
 		}
-		
+
 		$cart_url = $options['cart_url'];
 		$cart_theme = $options['cart_theme'];
 		$currency = $options['currency'];
 		$paypal_url = $options['paypal_url'];
-		$paypal_email = $options['paypal_email'];	
+		$paypal_email = $options['paypal_email'];
 		$google_url = $options['google_url'];
-		$gc_merchantid = $options['gc_merchantid'];	
-		$gc_merchantkey = $options['gc_merchantkey'];	
+		$gc_merchantid = $options['gc_merchantid'];
+		$gc_merchantkey = $options['gc_merchantkey'];
+		$analytics_id = $options['analytics_id'];
 
 
 		$openssl_command=$options['openssl_command'];
 		$paypal_my_cert_file=$options['paypal_my_cert_file'];
 		$paypal_key_file=$options['paypal_key_file'];
-		$paypal_paypal_cert_file = $options['paypal_paypal_cert_file'];		
+		$paypal_paypal_cert_file = $options['paypal_paypal_cert_file'];
 		$paypal_cancel_url = $options['paypal_cancel_url'];
 		$paypal_cert_id = $options['paypal_cert_id'];
 		$paypal_pdt_token = $options['paypal_pdt_token'];
 
-		
-		?>	 	         
 
-<div class="wrap wpckt">   
+		?>
+
+<div class="wrap wpckt">
 
 <form method="post" name="options" target="_self">
 
@@ -172,32 +174,32 @@ function scabn_settings() {
     <td align="right" width="300" scope="row">Checkout/Process Page Url</td>
   	<td align="left">
   	  <input name="cart_url" type="text" value="<?php echo $cart_url ?>" size="100"/>
-  	</td>  	
+  	</td>
   </tr>
   <tr valign="top">
     <td align="right" width="300" scope="row">Currency</td>
   	<td align="left">
-      <select name="currency">   
-         
+      <select name="currency">
+
       <?php foreach ($scabn_currency_codes as $curr=>$code){ ?>
-      	<option value="<?php echo $curr ?>" <?php if ($curr == $currency ) echo "selected" ?> ><?php echo $code[1] ?></option>  
+      	<option value="<?php echo $curr ?>" <?php if ($curr == $currency ) echo "selected" ?> ><?php echo $code[1] ?></option>
 	  <?php } ?>
-	  
-      </select>      
-  	</td>  	
+
+      </select>
+  	</td>
   </tr>
   <tr valign="top">
     <td align="right" width="200" scope="row">Template</td>
   	<td align="left">
-      <select name="cart_theme">   
-         
+      <select name="cart_theme">
+
       <?php foreach (scabn_get_templates() as $theme){ ?>
-      	<option value="<?php echo $theme ?>" <?php if ($theme == $cart_theme ) echo "selected" ?> ><?php echo $theme ?></option>  
+      	<option value="<?php echo $theme ?>" <?php if ($theme == $cart_theme ) echo "selected" ?> ><?php echo $theme ?></option>
 	  <?php } ?>
-	  
+
       </select>
-  	</td>  	
-  </tr>  
+  	</td>
+  </tr>
 
 </table>
 
@@ -298,15 +300,24 @@ function scabn_settings() {
   	  	<input name="gc_merchantkey" type="text" value="<?php echo $gc_merchantkey ?>" size="50" />
   		</td>  	
   </tr>
-
-
-
 </table>
+
+<h3 class="title">Google Analytics (Optional)</h3>
+<table width="100%" cellpadding="10" class="form-table">
+	<tr valign="top">
+   	 <td align="right" scope="row" width="300" >Google Analytics ID (UA-XXXXX-X)</td>
+  		<td align="left">
+  	  	<input name="analytics_id" type="text" value="<?php echo $analytics_id ?>" size="50" />
+  		</td>
+
+</tr>
+</table>
+
 
 <br />
 
 
-<p><a href="" target="_blank"> Not ready: Visit the plugin page for more information.</a></p>
+<p><a href="http://wordpress.org/extend/plugins/simple-cart-buy-now/" target="_blank">Visit the plugin page for more information.</a></p>
 
 <p class="submit">
 <input type="submit" name="Submit" value="Update" />
@@ -321,5 +332,5 @@ function scabn_settings() {
 }
 
 
-	
+
 ?>

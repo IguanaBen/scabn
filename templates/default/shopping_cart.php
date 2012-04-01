@@ -55,26 +55,19 @@
 				<tr class='ck_content shipping'>
 				<td align='right' colspan='2'>Shipping</td>
 				<td align='right'>TBD</td>
-				</tr>			  
-				
+				</tr>
+
+               <?php   if (empty($cart_url)) { ?>
+				 <span class='val_error'><strong>ERROR:</strong> Include the Checkout/Process Page Url on the Plugin Settings</span>
+				<?php  } else {	 ?>
+                                <tr><td class='ck_content go_to_checkout' colspan="3">
+				 <div style="text-align: right"><span class='go_to_checkout'><a href='<?php echo $cart_url ?>'><strong>Go to Checkout</strong></a> </span></div> 
+				<?php } ?>
 				<tr class='ck_content total'>
 				<td align='right' colspan='2'><strong>Total</strong></td>
 				<td align='right'><strong><?php echo $currency ?> <?php echo number_format($cart->total,2) ?></strong></td>
 				</tr>
-				<tr class='ck_content update_cart'>
-				<td colspan='3' align='left' class='buttons'>            
-				
-				
-				</td>
-				</tr>
-                <tr><td class='ck_content go_to_checkout' colspan="3">
-               <?php   if (empty($cart_url)) { ?>
-				 <span class='val_error'><strong>ERROR:</strong> Include the Checkout/Process Page Url on the Plugin Settings</span>
-				<?php  } else {	 ?>					 								
-				 <div style="text-align: right"><span class='go_to_checkout'><a href='<?php echo $cart_url ?>'><strong>Go to Checkout</strong></a> </span></div> 
-				
-				
-				<?php } ?>
+
                 </td></tr>
                 					   
         </table>
