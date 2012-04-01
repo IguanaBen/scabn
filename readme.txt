@@ -1,10 +1,5 @@
-=== Simple Cart & Buy Now ===
-Contributors: bluey80
-Donate link: http://
-Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, paypal, jquery, shopping cart widget, ajax, widget
-Requires at least: 3.2
-Tested up to: 3.3.1
-Stable tag: 1.2.2
+=== Simple Cart & Buy Now === Contributors: bluey80 Donate link: http:// Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, 
+paypal, jquery, shopping cart widget, ajax, widget Requires at least: 3.2 Tested up to: 3.3.1 Stable tag: 1.2.2
 
 Simple shopping cart system provides buy now buttons
 to purchase items via Paypal or Google Checkout. Base on Wordpress Checkout
@@ -28,6 +23,16 @@ Features:
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
 You will find 'SCABN Settings' menu in your WordPress admin panel and the icon in your post editor panel.
+
+== Frequently Asked Questions ==
+
+= I just installed the plugin. Now what? = 
+
+1. Create a new page. Title something like 'Checkout'. In the pag edit toolbar, click on the 'W' icon (Add SCABN Item of Checkout). Check "Make this page my Checkout Page". Save the page and note its url.
+2. Go to Appearance / Widgets and add the 'SCABN Checkout Cart' widget somewhere on your side. This is a mini shopping cart that will be displayed on all your pages.
+3. Goto Plugins / SCABN Settings. Under 'Checkout/Process Page URL' put the url from step 1. Fill out other information as desired.
+4. Edit a page where you want an 'add to cart' item. Click on the 'W' icon as in step one, but this time fill out the item name, cost, etc.
+5. Done! View your page. When you click on the add to cart button, it should show up in the mini shopping cart widget. That widget will have a link to your checkout page. Your checkout page will then show you the full shopping cart and provide buy now buttons for paypal and google checkout.
 
 
 == Screenshots ==
