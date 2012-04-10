@@ -39,10 +39,10 @@ You will find 'SCABN Settings' menu in your WordPress admin panel and the icon i
 Unfortunately, Paypal and Google Checkout handle this differently. The shipping cost will depend on the shipping address (international, domestic, etc) and we don't ask for a customer's address -- Paypal or Google Checkout do. 
 With Google Checkout, we provide different shipping options. Such as:
 
-*   Domestic Ground ($5)
-*   Domestic Express ($10)
-*   International Ground ($10)
-*   International Express ($2)
+1. Domestic Ground ($5)
+2. Domestic Express ($10)
+3. International Ground ($10)
+4. International Express ($2)
 
 Then Google Checkout lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default/customize.php and copy it 
 to templates/SOMETHING/customize.php and edit it to your needs. Then in SCABN settings, select SOMETHING as your template. 
