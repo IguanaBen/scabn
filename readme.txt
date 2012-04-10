@@ -34,6 +34,20 @@ You will find 'SCABN Settings' menu in your WordPress admin panel and the icon i
 4. Edit a page where you want an 'add to cart' item. Click on the 'W' icon as in step one, but this time fill out the item name, cost, etc.
 5. Done! View your page. When you click on the add to cart button, it should show up in the mini shopping cart widget. That widget will have a link to your checkout page. Your checkout page will then show you the full shopping cart and provide buy now buttons for paypal and google checkout.
 
+= How do I select shipping options? = 
+
+Unfortunately, Paypal and Google Checkout handle this differently. The shipping cost will depend on the shipping address (international, domestic, etc) and we don't ask for a customer's address -- Paypal or Google Checkout do. 
+With Google Checkout, we provide different shipping options. Such as:
+* Domestic Ground ($5)
+* Domestic Express ($10)
+* International Ground ($10)
+* International Express ($2)
+Then Google Checkout lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default/customize.php and copy it 
+to templates/SOMETHING/customize.php and edit it to your needs. Then in SCABN settings, select SOMETHING as your template. 
+
+As for Paypal, it doesn't support this. Instead log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and 
+you can define different shipping options for different locations and weight OR price of the order.
+
 
 == Screenshots ==
 
