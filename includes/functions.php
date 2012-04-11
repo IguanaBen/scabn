@@ -166,28 +166,18 @@ function scabn_sc($atts) {
 			$output .= "<input type='hidden' value='".$options_name."' name='item_options_name' class ='item_options_name' />\n";
 			$options = explode(',',$options);
 
-			if (count($options) == 1) {
-				$info = explode(':',$options[0]);
+			$output .= "<select name='item_options' class = 'item_options' >\n";
+			foreach ($options as $option){
+				$info = explode(':',$option);
 				if (count($info) == 1) {
-					$output .= $info[0] . " (" . $currency.number_format($price,2) . ")\n";
+					$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($price,2) . ")</option>\n";
 				} else {
-					$output .= $info[0] . " (" . $currency.number_format($info[1],2) . ")\n";
+					$output .= "<option value='".$info[0].":" . $info[1]. "'>".$info[0]." (". $currency.number_format($info[1],2) . ")</option>\n";
 				}
-			} else {
-				$output .= "<select name='item_options' class = 'item_options' >\n";
-				foreach ($options as $option){
-					$info = explode(':',$option);
-					if (count($info) == 1) {
-						$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($price,2) . ")</option>\n";
-					} else {
-						$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($info[1],2) . ")</option>\n";
-					}
-
-				}
-				$output .= "</select>\n";
-
 			}
-         $output .= "<br/>\n";
+			$output .= "</select>\n";
+
+		        $output .= "<br/>\n";
 
 		} else {
 			$output .= "Unit Price: ".$currency.number_format($price,2)." each<br/>";
