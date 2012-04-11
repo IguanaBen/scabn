@@ -14,7 +14,7 @@ Features:
 *   Secure, encrypted Buy Now buttons for Paypal and Google Checkout	
 *   You can include options to your products
 *   Easy to customize, including custom functions to get pricing, shipping options, etc
-
+*   Optional: Adds Google Analyics tracking code and links Paypal & Google Checkout Purchases with Google Analytics Ecommerce
 
 
 == Installation ==
@@ -84,3 +84,8 @@ you can define different shipping options for different locations and weight OR 
 = 1.2.2 =
   * Shopping cart sent to google or paypal did not include item's options. Now adds items' options information to the cart.
   * Cleaned up some css on placement of add to cart button. 
+
+= 1.2.9 = 
+  * Added feature: Google Analytics tracking with Ecommerce Support
+  * Fixed bug with removing items from cart causing new items added to be ignored
+  * Fixed bug with having items with options where pricing is different for each option. 
