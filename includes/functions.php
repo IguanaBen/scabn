@@ -139,6 +139,7 @@ function scabn_sc($atts) {
 			$add_class = '';
 		} else {
 			$action_url = add_query_arg( array() );
+			$action_url = get_permalink();
 			$add_class = 'class="add"';
 		}
 
@@ -668,7 +669,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 	if ( $gc_merchantkey != "" ) $gcsig=base64_encode(CalcHmacSha1($gc,"$gc_merchantkey"));
 
  	if ( $options['analytics_id'] != '' ) {
-		$gout.= "<form method=\"POST\" onsubmit=\"_gaq.push(function() {var pageTracker = _gaq._getAsyncTracker();setUrchinInputCode(pageTracker);});\" action=\"https://checkout.google.com/api/checkout/v2/checkout/Merchant/".$gc_merchantid."/\">";
+		$gout.= "<form method=\"POST\" onsubmit=\"_gaq.push(function() {var pageTracker = _gat._getTrackerByName('myTracker');setUrchinInputCode(pageTracker);});\" action=\"https://checkout.google.com/api/checkout/v2/checkout/Merchant/".$gc_merchantid."/\">";
 	} else {
 		$gout.= "<form method=\"POST\" action=\"https://checkout.google.com/api/checkout/v2/checkout/Merchant/".$gc_merchantid."/\">";
 	}
