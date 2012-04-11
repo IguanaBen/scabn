@@ -29,11 +29,9 @@
                 </a></td>
 				<td align='right'><?php echo $currency ?> <?php echo number_format($item['price'],2) ?><br />
 <?php				
-				if ($remove_url == ""){
 				$remove_query = array();
 				$remove_query['remove'] = $item['id'];
 				$remove_url = add_query_arg($remove_query);
-				}
 				
 ?>				
 				
