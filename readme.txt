@@ -1,5 +1,5 @@
 === Simple Cart & Buy Now === Contributors: bluey80 Donate link: http:// Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, 
-paypal, jquery, shopping cart widget, ajax, widget Requires at least: 3.2 Tested up to: 3.3.1 Stable tag: 1.2.2
+paypal, jquery, shopping cart widget, ajax, widget Requires at least: 3.2 Tested up to: 3.3.1 Stable tag: 1.3.0
 
 Simple shopping cart system provides buy now buttons
 to purchase items via Paypal or Google Checkout. Base on Wordpress Checkout
@@ -12,9 +12,9 @@ Features:
 
 *   Easily add "Add to Cart" buttons to pages / posts
 *   Secure, encrypted Buy Now buttons for Paypal and Google Checkout	
-*   You can include options to your products
-*   Easy to customize, including custom functions to get pricing, shipping options, etc
-*   Optional: Adds Google Analyics tracking code and links Paypal & Google Checkout Purchases with Google Analytics Ecommerce
+*   You can include options to your products, with different prices if necessary
+*   Easy to customize, including custom functions to get pricing (e.g. volume discounts), shipping options, etc
+*   Optionally adds Google Analyics tracking code and links Paypal & Google Checkout Purchases with Google Analytics Ecommerce
 
 
 == Installation ==
@@ -42,7 +42,7 @@ With Google Checkout, we provide different shipping options. Such as:
 1. Domestic Ground ($5)
 2. Domestic Express ($10)
 3. International Ground ($10)
-4. International Express ($2)
+4. International Express ($20)
 
 Then Google Checkout lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default/customize.php and copy it 
 to templates/SOMETHING/customize.php and edit it to your needs. Then in SCABN settings, select SOMETHING as your template. 
@@ -89,3 +89,6 @@ you can define different shipping options for different locations and weight OR 
   * Added feature: Google Analytics tracking with Ecommerce Support
   * Fixed bug with removing items from cart causing new items added to be ignored
   * Fixed bug with having items with options where pricing is different for each option. 
+
+= 1.3.0 =
+  * Same as 1.2.9, but I'm marking this as stable after further testing of 1.2.9
