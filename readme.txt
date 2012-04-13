@@ -1,8 +1,11 @@
-=== Simple Cart & Buy Now === Contributors: bluey80 Donate link: http:// Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, 
-paypal, jquery, shopping cart widget, ajax, widget Requires at least: 3.2 Tested up to: 3.3.1 Stable tag: 1.3.1
+=== Simple Cart & Buy Now === 
+Contributors: bluey80  
+Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Google Wallet, encrypted carts, checkout, shopping cart widget, ajax, Google analytics, analytics, custom carts, custom shopping carts
+Requires at least: 3.2 
+Tested up to: 3.3.1 
+Stable tag: 1.3.1
 
-Simple shopping cart system provides buy now buttons
-to purchase items via Paypal or Google Checkout. Base on Wordpress Checkout
+Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Checkout. Also links to Google Analytics and tracks sales. Based on Wordpress Checkout
 
 == Description ==
 
