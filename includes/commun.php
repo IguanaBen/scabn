@@ -11,7 +11,7 @@ function scabn_request(){
 
 	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_item'  ){
 
-		if ( ( $_REQUEST['item_options'] != 'undefined') && ( $_REQUEST['item_options'] != '') ) {
+		if ( isset($_REQUEST['item_options']) && ( ( $_REQUEST['item_options'] != 'undefined') && ( $_REQUEST['item_options'] != '') ) ) {
         		$temp=explode(':',$_REQUEST['item_options']);
 			if ( count($temp) == 2) {
 				$price=$temp[1];

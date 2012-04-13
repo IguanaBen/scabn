@@ -1,5 +1,5 @@
 === Simple Cart & Buy Now === Contributors: bluey80 Donate link: http:// Tags: shopping cart, e-commerce, buy now, buynow, google checkout, encrypted carts,checkout, products, selling, sell, 
-paypal, jquery, shopping cart widget, ajax, widget Requires at least: 3.2 Tested up to: 3.3.1 Stable tag: 1.3.0
+paypal, jquery, shopping cart widget, ajax, widget Requires at least: 3.2 Tested up to: 3.3.1 Stable tag: 1.3.1
 
 Simple shopping cart system provides buy now buttons
 to purchase items via Paypal or Google Checkout. Base on Wordpress Checkout
@@ -92,3 +92,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.3.0 =
   * Same as 1.2.9, but I'm marking this as stable after further testing of 1.2.9
+
+= 1.3.1 =
+  * Fixed bug where some users got 'Undefined index: item_options' error
