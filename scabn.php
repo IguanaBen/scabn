@@ -3,7 +3,7 @@
 Plugin Name: Simple Cart & Buy Now
 Plugin URI: http://wordpress.org/extend/plugins/simple-cart-buy-now/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 1.3.1
+Version: 1.3.2
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
@@ -22,7 +22,8 @@ cart system and checkout system for wordpress e-commerce websites with two goals
 Paypal BuyNow & Google Checkout supported.
 Optional encrypted buttons for both Google & Paypal
 
-Also has support for giving customers custom shopping carts via url or uuid
+Also has support for giving customers custom shopping carts via url or uuid and 
+tracking visitors and customers with Google Analytics.
 
 Template system for customize look of the shopping cart
 and to use optional db backend or other phph functions to get 
