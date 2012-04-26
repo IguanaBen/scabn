@@ -31,7 +31,7 @@ function scabn_request(){
 			$item_id = sanitize_title($_REQUEST['item_id']);
 		}
 
-		$cart->add_item($item_id,$_REQUEST['item_qty'],$price,$_REQUEST['item_name'],$item_options,$_REQUEST['item_url'],$_REQUEST['item_shipping']);
+		$cart->add_item($item_id,$_REQUEST['item_qty'],$price,$_REQUEST['item_name'],$item_options,$_REQUEST['item_url'],$_REQUEST['item_shipping'],$_REQUEST['item_weight']);
 	}
 
 	if (isset ($_REQUEST['remove']) && $_REQUEST['remove'] ){

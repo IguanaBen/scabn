@@ -15,32 +15,32 @@ function getItemPricing($itemname,$qty,$inputprice) {
 	//the pricing that is input by the user then just return
 	//the $inputprice. This lets you set pricing in the simple
 	//wordpress syntax of [scabn name="ItemName" price="1.00"]
-	//however, this number is set by the user's computer and 
+	//however, this number is set by the user's computer and
 	//thus can easily be edited by a hacker to set the price
 	//to anything. For better security, and the ability to
-	//automatically apply price-breaks, you can have this 
-	//function return the pricing based entirely on some 
+	//automatically apply price-breaks, you can have this
+	//function return the pricing based entirely on some
 	//internal criteria and ignore the user-supplied price ($inputprice)
-	
-	//Not secure but simple
-	//return $inputprice 
 
-	//Sample db query	
+	//Not secure but simple
+	//return $inputprice
+
+	//Sample db query
 	//global $wpdb;
 	//$sql=$wpdb->prepare('SELECT price FROM pricing where name=%s and minimum <= %s order by minimum desc',$itemname,$qty);
 	//$price = $wpdb->get_var($sql);
-	//if ( $price == Null ) {		
+	//if ( $price == Null ) {
 		//print 'Error getting price for item '.$itemid.'. Please contact us about this problem.';
-		//This will get the buyer to notice the error and complain. Price should not be null from db query		
+		//This will get the buyer to notice the error and complain. Price should not be null from db query
 		//$price=99999.99;
 
 	//default to just use input for user
 	$price=$inputprice;
 	return $price;
 
-	}	
-	
-	
+	}
+
+
 
 
 function getItemWeight($itemname,$qty,$inputweight) {
@@ -48,15 +48,17 @@ function getItemWeight($itemname,$qty,$inputweight) {
 	//for all items in your cart. If you want to use
 	//the weight that is input by the user then just return
 	//the $inputweight. This lets you set pricing in the simple
-	//wordpress syntax of [scabn name="ItemName" weight="1.00"]				
+	//wordpress syntax of [scabn name="ItemName" weight="1.00"]
+
+	//Note: Paypal doesn't like a weight of zero, this makes
+	//sure weight it at least 0.01
 	if ($inputweight <= 0.01) {
 		$inputweight = 0.01;
 	}
 	return $inputweight;
-	
- 
+
+
 	} 
- 
 
 
 function getCustomCart($uuid) {

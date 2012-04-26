@@ -153,6 +153,7 @@ function scabn_sc($atts) {
 		$output .= "<input type='hidden' class='item_name' value='".$name."' name='item_name'/>\n";
 		$output .= "<input type='hidden' class='item_price' value='".$price."' name='item_price'/>\n";
 		$output .= "<input type='hidden' class='item_shipping' value='".$fshipping."' name='item_shipping'/>\n";
+		$output .= "<input type='hidden' class='item_weight' value='".$weight."' name='item_weight'/>\n";
 
 		//$output .= "<table border='0' cellspacing='0' cellpadding='5'>\n";
 		//$output .= "<p id='cartname'>".$name . " (".$currency.number_format($price,2)." each)</p>";

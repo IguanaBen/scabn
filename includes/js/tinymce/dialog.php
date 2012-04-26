@@ -49,21 +49,24 @@ require_once("../../../../../../wp-config.php");
   <tr>
     <td align="right" class="gray dwl_gray"><strong>Name</strong><br />(valid if you are using more than one product in your post. The title of the post is the name by default)</td>
     <td valign="top"><input name="name" type="text" class="prod dwl" id="name" size="20" /></td>
-  </tr>  
+  </tr>
   <tr>
     <td align="right" class="gray dwl_gray"><strong>Price </strong><?php echo $currency ?></td>
     <td><input name="price" type="text" class="prod dwl" id="price" size="10" /></td>
   </tr>
   <tr>
-    <td align="right" class="gray dwl_gray"><strong>Flat Shipping: </strong><?php echo $currency ?></td>
-    <td>
-    <input id="shipping" name="shipping" type="text" class="prod dwl" size="10"/>
-    </td>
-    <tr>
+    <td align="right" class="gray dwl_gray"><strong>Flat Shipping </strong><?php echo $currency ?></td>
+    <td><input id="shipping" name="shipping" type="text" class="prod dwl" size="10"/></td>
+  </tr>
+  <tr>
+    <td align="right" class="gray dwl_gray"><strong>Unit Weight </strong></td>
+    <td><input id="weight" name="weight" type="text" class="prod dwl" size="10"/></td>
+  </tr>
+   <tr>
     <td align="right" class="gray dwl_gray"><strong>Options Name</strong><br />(size,color,type...)</td>
     <td class="gray"><input id="p_options_name" name="p_options_name" type="text" class="prod" size="20" /></td>
   </tr>    
-    <tr>
+  <tr>
     <td align="right" class="gray dwl_gray"><strong>Product Options</strong><br /> separated by comma<br />(large,medium,small...)<br />optional: put price after ":"<br /> (large:40,medium:30,small:20)</td>
     <td class="gray"><textarea name="p_options" id ="p_options" cols="30" rows="3" class="prod dwl"></textarea></td>
   </tr>

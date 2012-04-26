@@ -21,6 +21,7 @@ class wfCart {
 	var $itemshipping = array();
 	var $user_info = array();
 	var $total_plus = 0;
+        var $itemweight = array();
 	//var $total_shipping = 0;
 
 
@@ -35,14 +36,15 @@ class wfCart {
 		        $item = FALSE;
 
 			$item['id'] = $tmp_item;
-            $item['qty'] = $this->itemqtys[$tmp_item];
-			$item['price'] = $this->itemprices[$tmp_item];			
+		        $item['qty'] = $this->itemqtys[$tmp_item];
+			$item['price'] = $this->itemprices[$tmp_item];
 			$item['shipping'] = $this->itemshipping[$tmp_item];
 			$item['name'] = $this->itemname[$tmp_item];
 			$item['options'] = $this->itemoptions[$tmp_item];
 			$item['url'] = $this->itemurl[$tmp_item];
+			$item['weight'] = $this->itemweight[$tmp_item];
 			$item['subtotal'] = $item['qty'] * $item['price'];
-			
+
             $items[] = $item;
 		}
 		return $items;
@@ -51,21 +53,26 @@ class wfCart {
 
 
 
-	function add_item($itemid,$qty=1,$price = FALSE, $name = FALSE, $options, $url = FALSE, $shipping = 0)
-	{ // adds an item to cart	 	
+	function add_item($itemid,$qty=1,$price = FALSE, $name = FALSE, $options, $url = FALSE, $shipping = 0,$weight=0.01)
+	{ // adds an item to cart
 		if($this->itemqtys[$itemid] > 0)
-            { 
+            {
             // the item is already in the cart, so we'll just increase the quantity
 		 	$this->itemqtys[$itemid] = $qty + $this->itemqtys[$itemid];
-			//use getItemPricing to get the pricing, rather than using value input from user via website			
-			$this->itemprices[$itemid]=getItemPricing($itemid,$this->itemqtys[$itemid],$price);						
-		} else {						
+			//use getItemPricing to get the pricing, rather than using value input from user via website
+			$this->itemprices[$itemid]=getItemPricing($itemid,$this->itemqtys[$itemid],$price);
+		} else {
 			$this->items[]=$itemid;
 			$this->itemqtys[$itemid] = $qty;
 			$this->itemprices[$itemid] = getItemPricing($itemid,$this->itemqtys[$itemid],$price);
 			$this->itemname[$itemid] = $name;
 			$this->itemoptions[$itemid] = $options;
 			$this->itemurl[$itemid] = $url;
+			if ( $weight == "" ) {
+				$this->itemweight[$itemid] = 0.01;
+			} else {
+				$this->itemweight[$itemid] = $weight;
+			}
 			$this->itemshipping[$itemid] = $shipping;
 		}
 		$this->_update_total();
@@ -112,6 +119,7 @@ class wfCart {
 		$this->itemqtys = array();
 		$this->itemname = array();
 		$this->itemurl = array();
+		$this->itemweight = array();
 		$this->itemshipping = array();
 	} // end of empty cart
 
@@ -134,16 +142,16 @@ class wfCart {
 	} // end of update_total
 
 
-  
+
 	function c_info($c_type, $c_title, $c_url, $c_curr, $c_theme){
-	
+
 	        $this->cart_info['curr'] = $c_curr;
 			$this->cart_info['type'] = $c_type;
 			$this->cart_info['title'] = $c_title;
 			$this->cart_info['url'] = $c_url;
-			$this->cart_info['theme'] = $c_theme;	
+			$this->cart_info['theme'] = $c_theme;
 	}
-	
-	
+
+
 }
 ?>
