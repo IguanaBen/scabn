@@ -206,6 +206,7 @@ function scabn_sc($atts) {
 		$tx_token = $_GET['tx'];
 
 		if ($tx_token) {
+			$cart->empty_cart();
 			return scabn_paypal_receipt($tx_token);
 		} else {
 			return scabn_process();

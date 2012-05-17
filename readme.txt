@@ -2,8 +2,8 @@
 Contributors: bluey80  
 Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Google Wallet, encrypted carts, checkout, shopping cart widget, ajax, Google analytics, analytics, custom carts, custom shopping carts
 Requires at least: 3.2 
-Tested up to: 3.3.1 
-Stable tag: 1.3.2
+Tested up to: 3.3.2 
+Stable tag: 1.3.3
 
 Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Checkout. Also links to Google Analytics and tracks sales. Based on Wordpress Checkout
 
@@ -101,3 +101,7 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.3.2 =
   * Added ability to set weight of an item in short code.
+
+= 1.3.3 =
+  * Empty cart when Paypal directs you to a receipt page. (IPN)
+
