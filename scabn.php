@@ -11,7 +11,7 @@ Author URI: http://iguanaworks.net
 /*
 This plugin was once Wordpress-Checkout. Thanks to Alain Gonzalez for
 that plugin -- I've forked it to remove features / complexity I don't
-need and to add support for Google Checkout, signed carts, etc.
+need and to add support for Google Wallet, signed carts, etc.
 
 Simple Cart & Buy Now (SCABN) is designed to implement a basic shopping
 cart system and checkout system for wordpress e-commerce websites with two goals:
@@ -19,7 +19,7 @@ cart system and checkout system for wordpress e-commerce websites with two goals
 2) Security: encrypted 'buynow' buttons and pricing information not obtained
    with data provided by the user's browser.
 
-Paypal BuyNow & Google Checkout supported.
+Paypal BuyNow & Google Wallet supported.
 Optional encrypted buttons for both Google & Paypal
 
 Also has support for giving customers custom shopping carts via url or uuid and 

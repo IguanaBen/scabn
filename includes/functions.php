@@ -662,7 +662,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 		$gc .= "\n\t</shipping-restrictions>";
         	$gc .= "\n\t</flat-rate-shipping>";
 	}
-	//End Shipping for Google Checkout
+	//End Shipping for Google Wallet
 	$gc .= "\n</shipping-methods></merchant-checkout-flow-support></checkout-flow-support>\n";
 	//End Google Cart
 	$gc .= "\n</checkout-shopping-cart>";
@@ -683,7 +683,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 		$gout .= "<input type=\"hidden\" name=\"signature\" value=\"$gcsig\">";
 	}
 
-	$gout .= "<input type=\"image\" border=\"0\" name=\"submit\" src=\"https://checkout.google.com/buttons/checkout.gif?merchant_id=".$gc_merchantid."&w=160&h=43&style=trans&variant=text&loc=en_US\" alt=\"Make payments with Google Checkout\"></form>";
+	$gout .= "<input type=\"image\" border=\"0\" name=\"submit\" src=\"https://checkout.google.com/buttons/checkout.gif?merchant_id=".$gc_merchantid."&w=160&h=43&style=trans&variant=text&loc=en_US\" alt=\"Make payments with Google Wallet\"></form>";
 	return $gout;
 
 	}

@@ -281,7 +281,7 @@ function scabn_settings() {
 
 <br />
 
-<h3 class="title">Google Checkout</h3>
+<h3 class="title">Google Wallet</h3>
 
 <table width="100%" cellpadding="10" class="form-table">
 
@@ -293,7 +293,7 @@ function scabn_settings() {
   	</td>  	
   </tr>
 </table><table width="100%" cellpadding="10" class="form-table">
-<H4>Optional Settings for Encrypted Cart for Google Checkout</H4>	
+<H4>Optional Settings for Encrypted Cart for Google Wallet</H4>	
 	<tr valign="top">
    	 <td align="right" scope="row" width="300" >Merchant Key</td>
   		<td align="left">

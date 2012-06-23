@@ -5,7 +5,7 @@ Requires at least: 3.2
 Tested up to: 3.3.2 
 Stable tag: 1.3.3
 
-Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Checkout. Also links to Google Analytics and tracks sales. Based on Wordpress Checkout
+Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics and tracks sales. Based on Wordpress Checkout
 
 == Description ==
 
@@ -14,10 +14,10 @@ Easy to use and customize this is a shopping cart that uses your posts or pages 
 Features:
 
 *   Easily add "Add to Cart" buttons to pages / posts
-*   Secure, encrypted Buy Now buttons for Paypal and Google Checkout	
+*   Secure, encrypted Buy Now buttons for Paypal and Google Wallet
 *   You can include options to your products, with different prices if necessary
 *   Easy to customize, including custom functions to get pricing (e.g. volume discounts), shipping options, etc
-*   Optionally adds Google Analyics tracking code and links Paypal & Google Checkout Purchases with Google Analytics Ecommerce
+*   Optionally adds Google Analyics tracking code and links Paypal & Google Wallet Purchases with Google Analytics Ecommerce
 
 
 == Installation ==
@@ -35,19 +35,19 @@ You will find 'SCABN Settings' menu in your WordPress admin panel and the icon i
 2. Go to Appearance / Widgets and add the 'SCABN Checkout Cart' widget somewhere on your side. This is a mini shopping cart that will be displayed on all your pages.
 3. Goto Plugins / SCABN Settings. Under 'Checkout/Process Page URL' put the url from step 1. Fill out other information as desired.
 4. Edit a page where you want an 'add to cart' item. Click on the 'W' icon as in step one, but this time fill out the item name, cost, etc.
-5. Done! View your page. When you click on the add to cart button, it should show up in the mini shopping cart widget. That widget will have a link to your checkout page. Your checkout page will then show you the full shopping cart and provide buy now buttons for paypal and google checkout.
+5. Done! View your page. When you click on the add to cart button, it should show up in the mini shopping cart widget. That widget will have a link to your checkout page. Your checkout page will then show you the full shopping cart and provide buy now buttons for Paypal and Google Wallet.
 
 = How do I select shipping options? = 
 
-Unfortunately, Paypal and Google Checkout handle this differently. The shipping cost will depend on the shipping address (international, domestic, etc) and we don't ask for a customer's address -- Paypal or Google Checkout do. 
-With Google Checkout, we provide different shipping options. Such as:
+Unfortunately, Paypal and Google Wallet handle this differently. The shipping cost will depend on the shipping address (international, domestic, etc) and we don't ask for a customer's address -- Paypal or Google Wallet do. 
+With Google Wallet, we provide different shipping options. Such as:
 
 1. Domestic Ground ($5)
 2. Domestic Express ($10)
 3. International Ground ($10)
 4. International Express ($20)
 
-Then Google Checkout lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default/customize.php and copy it 
+Then Google Wallet lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default/customize.php and copy it 
 to templates/SOMETHING/customize.php and edit it to your needs. Then in SCABN settings, select SOMETHING as your template. 
 
 As for Paypal, it doesn't support this. Instead log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and 
