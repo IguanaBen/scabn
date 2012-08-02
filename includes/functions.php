@@ -82,20 +82,19 @@ function scabn_customcart() {
 
 
 	if ( isset($uuid)) {
-		echo displayCustomCart($uuid);
+		$output=displayCustomCart($uuid);
 
 
 	} else {
-		?><BR>Please enter the custom cart id here:
-		<form name="input" action="custom-cart" method="GET">
-		Custom Cart ID: <input type="text" name="ccuuid" /><p>
-		<input type="submit" value="Submit" /></p>
-		</form>
-
-		<?php
+		$output="<BR>Please enter the custom cart id here:
+		<form name=\"input\" action=\"custom-cart\" method=\"GET\">
+		Custom Cart ID: <input type=\"text\" name=\"ccuuid\" /><p>
+		<input type=\"submit\" value=\"Submit\" /></p>
+		</form>";
 
 
 	}
+	return $output;
 
 }
 
@@ -257,7 +256,8 @@ function scabn_paypal_receipt($tx_token) {
 				$res .= $line;
 			}
 		}
-
+		fclose ($fp);
+		$output="";
 		// parse the data
 		$lines = explode("\n", $res);
 		$keyarray = array();
@@ -266,40 +266,39 @@ function scabn_paypal_receipt($tx_token) {
 				list($key,$val) = explode("=", $lines[$i]);
 				$keyarray[urldecode($key)] = urldecode($val);
 			}
-
-
-                     	/*Add Analytics Ecommerce Code */
-                        if ($scabn_options['analytics_id'] != '' ) {
-                                echo "<script type=\"text/javascript\">";
-                                echo "_gaq.push(function() { var pageTracker = _gat._getTrackerByName('myTracker');";
-                                echo "pageTracker._addTrans('" . $keyarray['txn_id'] ."','','" . $keyarray['payment_gross'] . "','" . $keyarray['tax'] . "','" . $keyarray['mc_shipping'] . "','" . $keyarray['address_city'] . "','" . $keyarray['address_state']. "','". $keyarray['address_country_code']. "');";
+         
+         /*Add Analytics Ecommerce Code */
+         if ($scabn_options['analytics_id'] != '' ) {
+         	$output .= "<script type=\"text/javascript\">";
+            $output .= "_gaq.push(function() { var pageTracker = _gat._getTrackerByName('myTracker');";
+            $output .= "pageTracker._addTrans('" . $keyarray['txn_id'] ."','','" . $keyarray['payment_gross'] . "','" . $keyarray['tax'] . "','" . $keyarray['mc_shipping'] . "','" . $keyarray['address_city'] . "','" . $keyarray['address_state']. "','". $keyarray['address_country_code']. "');";
 				$count=$keyarray['num_cart_items'];
 				for ( $i = 1; $i <= $count; $i++ ) {
 					$item="item_name" . $i;
-	                	        $qty="quantity" . $i;
-        	                	$cost="mc_gross_" . $i;
+	            $qty="quantity" . $i;
+        	      $cost="mc_gross_" . $i;
 					$totalprice=($keyarray[$cost]-$keyarray[$ship]);
-		                        $price=$totalprice/$keyarray[$qty];
-					echo "pageTracker._addItem('" . $keyarray['txn_id'] . "','" . $keyarray[$item] . "','" . $keyarray[$item] . "','','" . $price . "','" . $keyarray[$qty] . "');";
+		         $price=$totalprice/$keyarray[$qty];
+					$output .= "pageTracker._addItem('" . $keyarray['txn_id'] . "','" . $keyarray[$item] . "','" . $keyarray[$item] . "','','" . $price . "','" . $keyarray[$qty] . "');";
 				}
-				echo "pageTracker._trackTrans();";
-                                echo "});</script>";
-                        }
+				$output.="pageTracker._trackTrans();";
+            $output.= "});</script>";
+         }
 
 
-			display_paypal_receipt($keyarray);
+			$output .= display_paypal_receipt($keyarray);
 
 		}
 		else if (strcmp ($lines[0], "FAIL") == 0) {
-			echo "Error parsing Paypal's response. (order probably completed)<br/>";
-			display_paypal_receipt($keyarray);
+			$output .= "Error parsing Paypal's response. (order probably completed)<br/>";
+			$output .= display_paypal_receipt($keyarray);
 		} else {
-			echo "Unknown error from Paypal's response. (order probably completed)";
+			$output .= "Unknown error from Paypal's response. (order probably completed)";
 		}
 	}
 
-	fclose ($fp);
-
+	
+return $output;
 
 }
 
@@ -318,20 +317,19 @@ class scabnWidget extends WP_Widget {
 
     /** @see WP_Widget::widget */
     function widget($args, $instance) {
-        extract( $args );
-
-        $title = apply_filters('widget_title', $instance['title']);
+    	extract( $args );
+      $title = apply_filters('widget_title', $instance['title']);
 		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
-
-        ?>
-              <?php echo $before_widget; ?>
-                  <?php if ($type == 'full' && isset( $title )) {
-                        echo $before_title . $title . $after_title;
-                        }
-							echo "<div id='wpchkt_widget'>";
-							scabn_cart();
-							echo "</div>";
-						echo $after_widget;
+		$output="";
+      $output .= $before_widget;
+      if ($type == 'full' && isset( $title )) {
+      	$output .= $before_title . $title . $after_title;
+      }
+		$output .= "<div id='wpchkt_widget'>";
+		$output .=	scabn_cart();
+		$output .= "</div>";
+		$output .= $after_widget;
+		return $output;
     }
 
     /** @see WP_Widget::update */
@@ -374,30 +372,39 @@ class scabnWidget extends WP_Widget {
 
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
 		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
-        ?>
-            <div class = "wpchkt_cart_w">
-            <table border="0" cellspacing="5" cellpadding="0">
+		$output="";
+		$output .= "<div class = \"wpchkt_cart_w\">
+            <table border=\"0\" cellspacing=\"5\" cellpadding=\"0\">
               <tr>
-                <td><input name="<?php echo $this->get_field_name('type'); ?>" type="radio" value="full"  <?php if ( $type == 'full') echo "checked" ?> class = "wpchkt_cart_f"/></td>
+                <td><input name=\"";
+      $output .= $this->get_field_name('type') . "\" type=\"radio\" value=\"full\" ";
+      if ( $type == 'full') {
+      	$output .= "checked ";
+      }
+      $output .= "class = \"wpchkt_cart_f\"/></td>
                 <td><strong>Use Full Cart</strong></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td>Title <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></td>
+                <td>Title <input class=\"widefat\" id=\"" . $this->get_field_id('title') . "\" name=\"" . $this->get_field_name('title') . "\" type=\"text\" value=\"" .  $title; "\" /></td>
               </tr>
             </table>
             </div>
 
-            <div class = "wpchkt_cart_w">
-            <table border="0" cellspacing="5" cellpadding="0">
-              <tr>
-                <td><input name="<?php echo $this->get_field_name('type'); ?>" id="<?php echo $this->get_field_id('type'); ?>" type="radio" value="tiny" <?php if( $type == 'tiny') echo "checked" ?> /></td>
+            <div class = \"wpchkt_cart_w\">
+            <table border=\"0\" cellspacing=\"5\" cellpadding=\"0\">
+              <tr>";
+      $output .= "<td><input name=\"" . $this->get_field_name('type') ."\" id=\"" . $this->get_field_id('type') . "\" type=\"radio\" value=\"tiny\" "; 
+      if( $type == 'tiny') {
+      	$output .= "checked ";
+      	}
+      $output .= " /></td>
                 <td><strong>Use Tiny Cart</strong></td>
               </tr>
 
             </table>
-            </div>
-        <?php
+            </div>";
+      return $output;  
     }
 
 } // class scabnWidget
@@ -426,7 +433,7 @@ function scabn_cart($type = 'full',$checkout = FALSE) {
 	$currency = scabn_curr_symbol($options['currency']);
 
 	$cart = $_SESSION['wfcart'];
-
+	$output="";
 	if ($type == "tiny" || $cart_type == "tiny" && !$checkout){
 	    foreach($cart->get_contents() as $item) {
 
@@ -441,7 +448,7 @@ function scabn_cart($type = 'full',$checkout = FALSE) {
 		}
 	} else {
 		if ( $options['analytics_id'] != '' ) {
-			echo "<script src=\"http://checkout.google.com/files/digital/ga_post.js\"  type=\"text/javascript\"></script>";
+			$output .= "<script src=\"http://checkout.google.com/files/digital/ga_post.js\"  type=\"text/javascript\"></script>";
 		}
 
 		if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php")) {
@@ -450,7 +457,7 @@ function scabn_cart($type = 'full',$checkout = FALSE) {
 			include (SCABN_PLUGIN_DIR."/templates/default/shopping_cart.php");
 		}
 	}
-
+	return $output;
 }
 
 function scabn_add_query_arg ($key,$value){
@@ -485,23 +492,23 @@ function scabn_process() {
 
 	$cart =& $_SESSION['wfcart'];
 	$show_form=true;
-
+	$output="";
 	if(true == $show_form){
 
 		if (isset($error_hash)){
 
-			echo "<div class='val_error'>";
-			echo "<p><strong>Please fill out the required fields</strong></p>";
+			$output .= "<div class='val_error'>";
+			$output .=  "<p><strong>Please fill out the required fields</strong></p>";
 			foreach($error_hash as $inpname => $inp_err)
 			{
-			  echo "<p>$inp_err</p>\n";
+			  $output .=  "<p>$inp_err</p>\n";
 			}
-			echo "</div>";
+			$output .= "</div>";
 		}
-	   //echo "<h3>".$options['cart_title']."</h3>";
-		echo "<div id='wpchkt_checkout'>";
-		scabn_cart('full', TRUE);
-		echo "</div>";
+	   //$output .= "<h3>".$options['cart_title']."</h3>";
+		$output .=  "<div id='wpchkt_checkout'>";
+		$output .= scabn_cart('full', TRUE);
+		$output .=  "</div>";
 
 		if($cart->itemcount > 0) {
 			if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$options['cart_theme']."/process.php")) {
@@ -511,6 +518,7 @@ function scabn_process() {
 			}
 		}
 	}
+	return $output;
 }
 
 
@@ -609,8 +617,7 @@ function CalcHmacSha1($data,$key) {
 				)
 			)
 		);
-		//echo $hmac;
-		echo("\n");
+		//echo $hmac;		
 		return $hmac;
 }
 
@@ -698,21 +705,21 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 function scabn_googleanalytics() {
 	global $scabn_options;
 	$options = $scabn_options;
-
+	$output="";
 	if ( $options['analytics_id'] != '' ) {
 
-	?>
-<script type="text/javascript">
+		$output .= "<script type=\"text/javascript\">
 var _gaq = _gaq || [];
-_gaq.push(['myTracker._setAccount', '<?php echo $options['analytics_id'] ?>']);
+_gaq.push(['myTracker._setAccount', '" . $options['analytics_id'] . "']);
 _gaq.push(['myTracker._trackPageview']);
 (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
 })();
-</script>
-	<?php
+</script>";
+	
 	}
 }
+return $output;
 ?>

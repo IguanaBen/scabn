@@ -11,8 +11,8 @@ foreach($cart->get_contents() as $item) {
 	$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>getItemPricing($item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>getItemWeight($item['id'],$item['qty'],$item['weight']));	
 }
 
-echo ShopingCartInfo($holditems);
-echo scabn_make_paypal_button($options,$holditems);
-echo scabn_make_google_button($options,getShippingOptions($holditems),$holditems);
+$output .= ShopingCartInfo($holditems);
+$output .= scabn_make_paypal_button($options,$holditems);
+$output .= scabn_make_google_button($options,getShippingOptions($holditems),$holditems);
 
  ?>

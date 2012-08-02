@@ -45,7 +45,7 @@ function scabn_request(){
 	if (isset($_REQUEST['update']) && $_REQUEST['update']  ){
 		for ($i=0; $i<$cart->itemcount; $i++){
 			if (ctype_digit($_POST['qty_'.$i])){
-				echo is_int($_POST['qty_'.$i]);
+				//echo is_int($_POST['qty_'.$i]);
 				$cart->edit_item($_POST['item_'.$i],$_POST['qty_'.$i]);
 		   	}
 		}

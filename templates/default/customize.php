@@ -86,16 +86,17 @@ function displayCustomCart($uuid) {
 	//to make a buy now buttons. 
 
 	$options=get_scabn_options();
+	$output = "";
 	$items=getCustomCart($uuid);	
 	if ($items) {
 			
-		echo displayCustomCartContents($items);
-		echo scabn_make_paypal_button($options,$items);
-		echo scabn_make_google_button($options,$items);				
+		$output .= displayCustomCartContents($items);
+		$output .= scabn_make_paypal_button($options,$items);
+		$output .=scabn_make_google_button($options,$items);				
 	} else {				
-		echo 'Could not find your custom cart, or the cart has expired';
+		$output .= 'Could not find your custom cart, or the cart has expired';
 	}
-	return;
+	return $output;
 }
 
 
@@ -119,31 +120,31 @@ function getShippingOptions($items) {
 
 
 function displayCustomCartContents($items) {
-	if ($items) {	
-		?>	
-		<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>	
+	$output="";	
+	if ($items) {			
+		$output .="<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>	
 		<thead>
-		<tr class="thead">
-			<th scope="col">Qty</th>
-			<th scope="col">Items</th>
-			<th scope="col" align="right">Unit Price</th>
+		<tr class=\"thead\">
+			<th scope=\"col\">Qty</th>
+			<th scope=\"col\">Items</th>
+			<th scope=\"col\" align=\"right\">Unit Price</th>
 		</tr>
-		</thead>	
-		<?php
+		</thead>";	
+		
 		$options=get_scabn_options();
 		$currency = scabn_curr_symbol($options['currency']);		
 		foreach($items as $item) {
 
-			?>				
-		   <tr class = "ck_content">
-				<td><?php echo $item['qty'] ?> </td>            
-				<td><?php echo $item['name'] ?></td>
-				<td align='right'><?php echo $currency ?> <?php echo number_format($item['price'],2) ?>	</td>
-			</tr>
-			<?php 
+			$output .= "<tr class = \"ck_content\">
+				<td>" . $item['qty'] . "</td>            
+				<td>" . $item['name'] ."</td>
+				<td align='right'>" . $currency . number_format($item['price'],2) . "</td>
+			</tr>";
+			 
 		}
-		echo "</table>";		
+		$output .= "</table>";		
 	}
+	return $output;
 }
 
 
@@ -155,19 +156,20 @@ function display_paypal_receipt($keyarray) {
 		//the shopper back here via PDT and auto return.
 		//See Auto Return under paypal's Website
 		//Payments section for more details.
+		$output="";
 		$firstname = $keyarray['first_name'];
 		$lastname = $keyarray['last_name'];
 
 		$amount = $keyarray['payment_gross'];
 
-		echo "<p><h3>Checkout Complete -- Thank you for your purchase!</h3></p>";
-		echo "<h4>Payment Details</h4><ul>\n";
-		echo "<li>Name: $firstname $lastname</li>\n";
-		echo "<li>Total Amount: $amount</li>\n";
-		echo "</ul>";
-		echo "You will receive a confirmation e-mail when payment for the order clears and a second email when your order ships. "; 
-		echo "You may log into your paypal account at <a href=\"https://www.paypal.com/us\">paypal</a> to view details of this transaction.";
-
+		$output .= "<p><h3>Checkout Complete -- Thank you for your purchase!</h3></p>";
+		$output .= "<h4>Payment Details</h4><ul>\n";
+		$output .= "<li>Name: $firstname $lastname</li>\n";
+		$output .= "<li>Total Amount: $amount</li>\n";
+		$output .= "</ul>";
+		$output .= "You will receive a confirmation e-mail when payment for the order clears and a second email when your order ships. "; 
+		$output .= "You may log into your paypal account at <a href=\"https://www.paypal.com/us\">paypal</a> to view details of this transaction.";
+		return $output;
 }
 
 
