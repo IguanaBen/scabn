@@ -79,25 +79,6 @@ function getCustomCart($uuid) {
 	
 }
 
-function displayCustomCart($uuid) {
-	//This is a function that takes as custom cart uuid number
-	//and generates a custom cart. We do a db query to get
-	//the item(s) and pricing, etc, and then call paypal / google functions
-	//to make a buy now buttons. 
-
-	$options=get_scabn_options();
-	$output = "";
-	$items=getCustomCart($uuid);	
-	if ($items) {
-			
-		$output .= displayCustomCartContents($items);
-		$output .= scabn_make_paypal_button($options,$items);
-		$output .=scabn_make_google_button($options,$items);				
-	} else {				
-		$output .= 'Could not find your custom cart, or the cart has expired';
-	}
-	return $output;
-}
 
 
 function getShippingOptions($items) {
