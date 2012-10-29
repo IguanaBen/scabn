@@ -61,6 +61,8 @@ require_once SCABN_PLUGIN_DIR. '/includes/commun.php';
 require_once SCABN_PLUGIN_DIR. '/includes/scabn_codes.php';
 require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin2.php';
+require_once SCABN_PLUGIN_DIR. '/backend.php';
+
 
 $scabn_options = get_scabn_options();
 

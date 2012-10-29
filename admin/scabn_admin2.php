@@ -29,7 +29,9 @@ class scabn_Admin {
 		
 		add_settings_section('general_options', 'General Configuration:', array($this,'section_text'), 'general');
 		scabn_Admin::custom_add_settings_field('cart_url', 'Checkout Page Url: ', 'general', 'general_options','input_text_option');		
-		scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',$scabn_currency_codes);
+		//scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',$scabn_currency_codes);
+		scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',scabn_backend::getCurrencies());
+
 		scabn_Admin::custom_add_settings_field('template', 'Select Template: ', 'general', 'general_options','input_selection',scabn_get_templates());
 				
 		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');			
