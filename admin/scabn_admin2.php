@@ -4,7 +4,15 @@ class scabn_Admin {
 	function __construct() {
 		add_action('admin_menu', array($this, 'admin_menu'));
 		add_action('admin_init', array($this, 'options_init'));
-	}
+		add_action('admin_head',array($this, 'admin_register_head'));
+		add_action('admin_init',array($this,'addbuttons'));	
+
+		//add_action('admin_init', array($this,'addbuttons'));
+		
+		
+   	
+   }
+
 
 	static function &init() {
 		static $instance = false;
@@ -12,13 +20,59 @@ class scabn_Admin {
 				$instance = new scabn_Admin ;
 		}
 
+
+
+
 		return $instance;
 	}
 	
 
+	//Add buttons to edit window for easy adding of SCABN shortcode into pages/posts.
+	function addbuttons() {
+		//If user can edit pages or posts and rich editing is enabled, then add button widget.
+		if ( (  current_user_can('edit_posts') || current_user_can('edit_pages') ) && ( get_user_option('rich_editing') == 'true') ) {
+   		add_filter('mce_external_plugins', array($this, 'add_scabn_tinymce_plugin'));
+   		add_filter('mce_buttons', array($this,'register_button'));
+   	}
+	}
+
+
+	function admin_register_head() {
+   	$url_style = SCABN_PLUGIN_URL . '/admin/scabn_admin.css';
+    	echo "<link rel='stylesheet' type='text/css' href='$url_style' />\n";
+	}
+
+
+
+
+	function register_button($buttons) {
+   	array_push($buttons, "separator", "scabn");
+   	return $buttons;
+	}
+
+	function add_scabn_tinymce_plugin($plugin_array) {
+   	$plugin_array['scabn'] = SCABN_PLUGIN_URL.'/includes/js/tinymce/editor_plugin.js';
+   	return $plugin_array;
+	}
+
+
+
 	function admin_menu() {
 	add_submenu_page('plugins.php', 'SCABN Settings', 'SCABN Settings', 'administrator', 'scabn_admin_page', array($this, 'admin_page'));
 	}
+	
+	
+	function get_templates() {
+		$templates = array();
+		$dir = SCABN_PLUGIN_DIR."/templates/";
+		$dh  = opendir($dir);
+		while (false !== ($filename = readdir($dh))) {
+      	if (!(($filename == '.')||($filename == '..')))    $templates[] = $filename;
+    	}
+		return $templates;
+	}
+	
+	
 	
 	
 	//Todo: instead of using global for scabn_currency_code, make it a function you call//
@@ -32,7 +86,7 @@ class scabn_Admin {
 		//scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',$scabn_currency_codes);
 		scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',scabn_backend::getCurrencies());
 
-		scabn_Admin::custom_add_settings_field('template', 'Select Template: ', 'general', 'general_options','input_selection',scabn_get_templates());
+		scabn_Admin::custom_add_settings_field('template', 'Select Template: ', 'general', 'general_options','input_selection',array($this,'get_templates'));
 				
 		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');			
 		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: ', 'paypal', 'paypal_options','input_text_option');
