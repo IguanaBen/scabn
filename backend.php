@@ -1,6 +1,6 @@
 <?php
 
-class scabn_backend {
+class scabn_Backend {
 	
 	function getCurrencies() {
 		return array(
@@ -26,6 +26,12 @@ class scabn_backend {
 						);						  
 	}
 	
+	//List of Paypal URLs with Label. Used to generate form for
+	//Paypal butnow button.	
+	function paypal_urls() {
+		return	array('Live'=>'https://www.paypal.com/cgi-bin/webscr','Sandbox'=>'https://www.sandbox.paypal.com/cgi-bin/webscr');
+	}
+
 	
 }
 
