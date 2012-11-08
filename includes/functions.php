@@ -742,8 +742,9 @@ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
 })();
 </script>";
-	
+
 	}
+echo $output;
+
 }
-return $output;
 ?>
