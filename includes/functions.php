@@ -1,22 +1,6 @@
 <?php
 
 
-function scabn_ini(){
-
-	session_start();      // start the session
-
-	$cart =& $_SESSION['wfcart'];
-	if(!is_object($cart)) $cart = new wfCart();
-
-	global $scabn_options;
-	$options = $scabn_options;
-	$cart->c_info($options['cart_type'], $options['cart_title'], $options['cart_url'], $options['currency'], $options['cart_theme']);
-
-	scabn_request();
-
-	//scabn_w_register();
-
-}
 
 /**
  * Inserting files on the header
@@ -58,9 +42,9 @@ function get_scabn_options(){
 								'paypal_url' => 'sandbox',
 								'paypal_email' => '',
 								'cart_theme' => 'default',
-								'cart_title' => 'Shopping Cart',
+					/*			'cart_title' => 'Shopping Cart',
 								'cart_type' => 'full',
-								'version' => '1.0.2'
+								'version' => '1.0.2' */
 							  );
 
 	if ( isset($scabn_options) )	return $scabn_options;
@@ -458,29 +442,17 @@ function scabn_cart($type = 'full',$checkout = FALSE) {
 
 	$cart = $_SESSION['wfcart'];
 	$output="";
-	if ($type == "tiny" || $cart_type == "tiny" && !$checkout){
-	    foreach($cart->get_contents() as $item) {
-
-		   $item_num = $item_num + $item['qty'];
-
-		}
-
-		if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$cart_theme."/tiny_cart.php")) {
-			include (SCABN_PLUGIN_DIR."/templates/".$cart_theme."/tiny_cart.php");
-		} else {
-			include (SCABN_PLUGIN_DIR."/templates/default/tiny_cart.php");
-		}
-	} else {
-		if ( $options['analytics_id'] != '' ) {
-			$output .= "<script src=\"http://checkout.google.com/files/digital/ga_post.js\"  type=\"text/javascript\"></script>";
-		}
-
-		if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php")) {
-			include (SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php");
-		} else {
-			include (SCABN_PLUGIN_DIR."/templates/default/shopping_cart.php");
-		}
+	
+	if ( $options['analytics_id'] != '' ) {
+		$output .= "<script src=\"http://checkout.google.com/files/digital/ga_post.js\"  type=\"text/javascript\"></script>";
 	}
+
+	if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php")) {
+		include (SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php");
+	} else {
+		include (SCABN_PLUGIN_DIR."/templates/default/shopping_cart.php");
+	}
+	
 	return $output;
 }
 
@@ -501,10 +473,10 @@ function scabn_add_query_arg ($key,$value){
 
 function scabn_process() {
 
-	global $scabn_options;
+	//global $scabn_options;
 
-	$options = $scabn_options;
-
+	//$options = $scabn_options;
+	$options = get_option('scabn_options');
 	//require_once SCABN_PLUGIN_DIR. '/includes/paypal.class.php';
 	//global $scabn_states_code;
 	//global $scabn_country_code;

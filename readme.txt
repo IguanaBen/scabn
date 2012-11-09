@@ -5,7 +5,7 @@ Requires at least: 3.2
 Tested up to: 3.4.2 
 Stable tag: 1.4.1
 
-Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics and tracks sales. Based on Wordpress Checkout
+Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics to tracks sales. Based on Wordpress Checkout.
 
 == Description ==
 
@@ -31,10 +31,10 @@ You will find 'SCABN Settings' menu in your WordPress admin panel and the icon i
 
 = I just installed the plugin. Now what? = 
 
-1. Create a new page. Title something like 'Checkout'. In the pag edit toolbar, click on the 'W' icon (Add SCABN Item of Checkout). Check "Make this page my Checkout Page". Save the page and note its url.
+1. Create a new page. Title something like 'Checkout'. In the page edit toolbar, click on the Shoping Cart Icon (Add SCABN Item of Checkout). Check "Make this page my Checkout Page". Save the page and note its url.
 2. Go to Appearance / Widgets and add the 'SCABN Checkout Cart' widget somewhere on your side. This is a mini shopping cart that will be displayed on all your pages.
 3. Goto Plugins / SCABN Settings. Under 'Checkout/Process Page URL' put the url from step 1. Fill out other information as desired.
-4. Edit a page where you want an 'add to cart' item. Click on the 'W' icon as in step one, but this time fill out the item name, cost, etc.
+4. Edit a page where you want an 'add to cart' item. Click on the Shopping Cart Icon as in step one, but this time fill out the item name, cost, etc.
 5. Done! View your page. When you click on the add to cart button, it should show up in the mini shopping cart widget. That widget will have a link to your checkout page. Your checkout page will then show you the full shopping cart and provide buy now buttons for Paypal and Google Wallet.
 
 = How do I select shipping options? = 
@@ -109,4 +109,4 @@ you can define different shipping options for different locations and weight OR 
   * Attempt to remove echos from code and use function returns as should be done with shotcodes. Not heavily tested
 
 = 1.4.1 =
- * Most testing and it works fine, so tagging as stable. Also tested against Wordpress 3.4.2.
+ * More testing and it works fine, so tagging as stable. Also tested against Wordpress 3.4.2.

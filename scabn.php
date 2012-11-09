@@ -20,12 +20,11 @@ principal goals:
 
 1) No storing of user information
 2) Security: encrypted 'buynow' buttons and pricing information not obtained
-   with data provided by the user's browser.
+   from data provided by the user's browser.
 
-Paypal BuyNow & Google Wallet supported.
-Optional encrypted buttons for both Google & Paypal
+Paypal BuyNow & Google Wallet both supported with encrypted BuyNow buttons.
 
-Also has support for giving customers custom shopping carts via url or uuid and 
+Also has hooks support for giving customers custom shopping carts via url or uuid and 
 tracking visitors and customers with Google Analytics.
 
 Template system for customize look of the shopping cart
@@ -60,38 +59,31 @@ require_once SCABN_PLUGIN_DIR. '/includes/functions.php';
 require_once SCABN_PLUGIN_DIR. '/includes/commun.php';
 require_once SCABN_PLUGIN_DIR. '/includes/scabn_codes.php';
 require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
-//require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin2.php';
 require_once SCABN_PLUGIN_DIR. '/backend.php';
 
+//Add hook to run SCABN -- just starts session
+//for getting cart info
+add_action('init','scabn_Backend::scabn_init');
 
-$scabn_options = get_scabn_options();
+$scabn_options = get_option('scabn_options');
 
-//if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php') ) {
-//	require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php';
-//} else {
-//	require_once SCABN_PLUGIN_DIR. '/templates/default/customize.php';
-//}
 
-//Apparently we don't need this
-//as I removed it and nothing
-//seems to have broken.
-//wp_enqueue_script('jquery');
 
-add_action('init','scabn_ini');
 if ( $scabn_options['analytics_id'] != '' ) {
 	add_action('wp_head', 'scabn_googleanalytics');
 }
 
 add_action('wp_head', 'scabn_head');
-//add_action('admin_init','scabn_addbuttons');
 
 add_shortcode('scabn', 'scabn_sc');
 add_shortcode('scabn_customcart', 'scabn_customcart');
 
-//add_action('admin_menu', 'scabn_add_pages');
 
+//Add SCABN Settings page to Admin view
+//And button for adding SCABN options to
+//pages &
 scabn_Admin::init();
-//add_action('admin_head', 'scabn_admin_register_head');
+scabn_Backend::init();
 
 
 

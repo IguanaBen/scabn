@@ -1,4 +1,4 @@
-<?php if($cart->itemcount > 0) { ?>
+<?php if(count($cart->items) != 0) { ?>
 	
 	<form action='<?php echo $post_url ?>' method='post'>
 	<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>	

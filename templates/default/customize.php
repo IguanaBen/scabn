@@ -9,7 +9,7 @@ function ShopingCartInfo($items) {
 
 
 
-function getItemPricing($itemname,$qty,$inputprice) {
+function getItemPricingold($itemname,$qty,$inputprice) {
 	//This is the function that sets the pricing
 	//for all items in your cart. If you want to use
 	//the pricing that is input by the user then just return
