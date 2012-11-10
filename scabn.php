@@ -56,8 +56,6 @@ if ( ! defined( 'SCABN_PLUGIN_URL' ) )  define( 'SCABN_PLUGIN_URL', WP_PLUGIN_UR
 
 require_once SCABN_PLUGIN_DIR. '/includes/cart.php';
 require_once SCABN_PLUGIN_DIR. '/includes/functions.php';
-require_once SCABN_PLUGIN_DIR. '/includes/commun.php';
-require_once SCABN_PLUGIN_DIR. '/includes/scabn_codes.php';
 require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 require_once SCABN_PLUGIN_DIR. '/backend.php';
 require_once SCABN_PLUGIN_DIR. '/display.php';
@@ -87,10 +85,10 @@ if ( $scabn_options['analytics_id'] != '' ) {
 	add_action('wp_head', 'scabn_googleanalytics');
 }
 
-add_action('wp_head', 'scabn_head');
+add_action('wp_head', 'scabn_Display::scabn_head');
 
 add_shortcode('scabn', 'scabn_sc');
-add_shortcode('scabn_customcart', 'scabn_customcart');
+add_shortcode('scabn_customcart', 'scabn_Backend::customcart');
 
 
 //Add SCABN Settings page to Admin view

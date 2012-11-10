@@ -33,7 +33,7 @@ require_once("../../../../../../wp-config.php");
 <?php
 	    global $scabn_options;	    
 	    $options = $scabn_options;		
-        $currency = scabn_curr_symbol($options['currency']); 
+        $currency = apply_filters('scabn_display_currency_symbol',$options['currency']); 
 ?>    
     <p>
     <input name="checkout_page" type="checkbox" value="1" class="checkout_page"/>

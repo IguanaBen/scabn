@@ -2,109 +2,8 @@
 
 
 
-/**
- * Inserting files on the header
- */
-function scabn_head() {
-
-	global $scabn_options;
-	$options = $scabn_options;
-
-	$scabn_header =  "\n<!-- Simple Cart and Buy Now -->\n";
-	$scabn_header .= "<script type=\"text/javascript\">scabn_c_url =\"".SCABN_PLUGIN_URL."/includes/scabn_ajax.php\";</script>\n";
-	if (file_exists(SCABN_PLUGIN_DIR . "/templates/" . $options['cart_theme'] . "/scabn.js ")) {
-		$scabn_header .= "<script type=\"text/javascript\" src=\"".SCABN_PLUGIN_URL."/templates/".$options['cart_theme']."/scabn.js\"></script>\n";	
-	} else {
-	$scabn_header .= "<script type=\"text/javascript\" src=\"".SCABN_PLUGIN_URL."/templates/default/scabn.js\"></script>\n";
-	}
-	if (file_exists(SCABN_PLUGIN_DIR."/templates/".$options['cart_theme']."/style.css")) {
-		$scabn_header .= "<link href=\"".SCABN_PLUGIN_URL."/templates/".$options['cart_theme']."/style.css\" rel=\"stylesheet\" type=\"text/css\" />\n";	
-	} else {
-		$scabn_header .= "<link href=\"".SCABN_PLUGIN_URL."/templates/default/style.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
-	}
-	$scabn_header .=  "\n<!-- Simple Cart and Buy Now End-->\n";
-
-	print($scabn_header);
-
-}
-
-/**
- *  Get Options or default
- */
-function get_scabn_options(){
-
-	global $scabn_options;
-
-	// Default Values
-	$scabn_options_d = array(
-								'cart_url' => '',
-								'currency' => 'USD',
-								'paypal_url' => 'sandbox',
-								'paypal_email' => '',
-								'cart_theme' => 'default',
-					/*			'cart_title' => 'Shopping Cart',
-								'cart_type' => 'full',
-								'version' => '1.0.2' */
-							  );
-
-	if ( isset($scabn_options) )	return $scabn_options;
-
-	$scabn_options = get_option('scabn_options');
-
-	if (  empty($scabn_options) ) $scabn_options = $scabn_options_d;
-
-	return $scabn_options;
-
-}
-
-function displayCustomCart($uuid) {
-	//This is a function that takes as custom cart uuid number
-	//and generates a custom cart. We do a db query to get
-	//the item(s) and pricing, etc, and then call paypal / google functions
-	//to make a buy now buttons.
-
-	$options=get_scabn_options();
-	$output = "";
-	$items=getCustomCart($uuid);
-	if ($items) {
-
-		$output .= displayCustomCartContents($items);
-		$output .= scabn_make_paypal_button($options,$items);
-		$output .=scabn_make_google_button($options,$items);
-	} else {
-		$output .= 'Could not find your custom cart, or the cart has expired';
-	}
-	return $output;
-}
-
-add_action('displayCustomCart','displayCustomCart',10,1);
 
 
-
-function scabn_customcart() {
-	if ( isset($_GET['ccuuid'])) {
-		$uuid=$_GET['ccuuid'];
-	} else if ( isset($_POST['ccuuid'])) {
-		$uuid=$_POST['ccuuid'];
-	}
-
-
-	if ( isset($uuid)) {
-		/*$output=displayCustomCart($uuid);*/
-		$output=do_action('displayCustomCart',$uuid);
-
-	} else {
-		$output="<BR>Please enter the custom cart id here:
-		<form name=\"input\" action=\"custom-cart\" method=\"GET\">
-		Custom Cart ID: <input type=\"text\" name=\"ccuuid\" /><p>
-		<input type=\"submit\" value=\"Submit\" /></p>
-		</form>";
-
-
-	}
-	return $output;
-
-}
 
 /**
  *  Shortcode
@@ -137,9 +36,9 @@ function scabn_sc($atts) {
 		$id = $post->ID;
 		$url =  $post->guid;
 
-	   global $scabn_options;
+	   //global $scabn_options;
 
-      $currency = scabn_curr_symbol($scabn_options['currency']);
+      $currency = apply_filters('scabn_display_currency_symbol',$scabn_options['currency']);
 
 		if ($no_cart) {
 			$action_url = SCABN_PLUGIN_URL."/includes/scabn_ajax.php";
@@ -429,17 +328,14 @@ add_action('widgets_init', create_function('', 'return register_widget("scabnWid
 
 function scabn_cart($type = 'full',$checkout = FALSE) {
 
-	global $scabn_options;
-
-	$options = $scabn_options;
-
+	$options = get_option('scabn_options');
 	$post_url = add_query_arg( array() );
 	$remove_url = "";
 	$cart_url = $options['cart_url'];
 	$cart_theme = $options['cart_theme'];
 	$cart_type = $options['cart_type'];
-	$currency = scabn_curr_symbol($options['currency']);
-
+	//$currency = scabn_curr_symbol($options['currency']);
+	$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);
 	$cart = $_SESSION['wfcart'];
 	$output="";
 	
@@ -483,7 +379,7 @@ function scabn_process() {
 
 
 	$post_url = add_query_arg( array() );
-	$currency = scabn_curr_symbol($options['currency']);
+	$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);		
 	$currency_code = $options['currency'];
 
 	$cart =& $_SESSION['wfcart'];
@@ -690,9 +586,6 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 	return $gout;
 
 	}
-
-
-
 
 
 

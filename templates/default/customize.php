@@ -61,24 +61,6 @@ function getItemWeight($itemname,$qty,$inputweight) {
 	} 
 
 
-function getCustomCart($uuid) {
-	//Return a list of items for custom cart based on the uuid of the cart
-	//Return nothing if no cart found.
-
-	//Sample db query to get custom cart:
-	//global $wpdb;	
-	//$sql=$wpdb->prepare('SELECT id,name,qty,price, weight FROM customcartitems, customcart where customcart.id = customcartitems.id and customcart.id =%s and customcart.expire > now()',$uuid);	
-	//$items = $wpdb->get_results($sql);	
-	//$cartitems=array();	
-	//foreach ($items as $item) {
-	//	$cartitems[]=array("id"=>$item->id,"name"=>$item->name,"qty"=>$item->qty,"price"=>$item->price,"weight"=>$item->weight);
-	//}		
-		
-	$cartitems=NULL;
-	return $cartitems;	
-	
-}
-
 
 
 function getShippingOptions($items) {
@@ -101,7 +83,7 @@ function getShippingOptions($items) {
 
 
 function displayCustomCartContents($items) {
-	$output="";	
+	$output="";		
 	if ($items) {			
 		$output .="<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>	
 		<thead>
@@ -111,9 +93,8 @@ function displayCustomCartContents($items) {
 			<th scope=\"col\" align=\"right\">Unit Price</th>
 		</tr>
 		</thead>";	
-		
-		$options=get_scabn_options();
-		$currency = scabn_curr_symbol($options['currency']);		
+		$options = get_option('scabn_options');		
+		$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);						
 		foreach($items as $item) {
 
 			$output .= "<tr class = \"ck_content\">

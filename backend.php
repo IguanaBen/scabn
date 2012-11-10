@@ -12,8 +12,9 @@
 class scabn_Backend {
 
 	function __construct() {
-		add_action('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
-		add_action('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
+		add_filter('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
+		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
+		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
 		
 	}	
 	
@@ -33,13 +34,13 @@ class scabn_Backend {
 		session_start();      // start the session
 		$cart =& $_SESSION['wfcart']; // load the cart from the session
 		if(!is_object($cart)) $cart = new wfCart(); // if there isn't a cart, create a new (empty) one	
-		scabn_Backend::scabn_request();
+		scabn_Backend::request();
 
 	
 
 }
 
-	function scabn_request(){
+	function request(){
 		//This function handles all the client input to change cart via GET / POST requests.
 		//Probably a good place to sanitize the data.
 	
@@ -98,6 +99,23 @@ class scabn_Backend {
 	}
 
 
+	function customcart() {
+		if ( isset($_GET['ccuuid'])) {
+			$uuid=$_GET['ccuuid'];
+		} else if ( isset($_POST['ccuuid'])) {
+			$uuid=$_POST['ccuuid'];
+		}
+		
+		if ( isset($uuid)) {			
+			$output=apply_filters('scabn_displayCustomCart',$uuid);
+	
+		} else {
+			$output=apply_filters('scabn_displayCartUUID','');			
+			
+		}
+		return $output;
+	}
+
 
 
 	function getItemPricing($itemname,$qty,$inputprice) {
@@ -130,6 +148,31 @@ class scabn_Backend {
 		return $inputprice;
 
 	}
+	
+	
+	
+	function getCustomCart($uuid) {
+		//This is a dummy function -- if you want to use it / write your own, you
+		//should use add_filter to create a hook from scabn_getCustomCart to your function.	
+		
+		//Return a list of items for custom cart based on the uuid of the cart
+		//Return nothing if no cart found.
+	
+		//Sample db query to get custom cart:
+		//global $wpdb;	
+		//$sql=$wpdb->prepare('SELECT id,name,qty,price, weight FROM customcartitems, customcart where customcart.id = customcartitems.id and customcart.id =%s and customcart.expire > now()',$uuid);	
+		//$items = $wpdb->get_results($sql);	
+		//$cartitems=array();	
+		//foreach ($items as $item) {
+		//	$cartitems[]=array("id"=>$item->id,"name"=>$item->name,"qty"=>$item->qty,"price"=>$item->price,"weight"=>$item->weight);
+		//}		
+			
+		$cartitems=NULL;
+		return $cartitems;	
+		
+	}
+	
+	
 	
 	
 	function getItemWeight($itemname,$qty,$weight) {
