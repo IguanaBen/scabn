@@ -63,7 +63,7 @@ require_once("../../../../../../wp-config.php");
     <td><input id="weight" name="weight" type="text" class="prod dwl" size="10"/></td>
   </tr>
    <tr>
-    <td align="right" class="gray dwl_gray"><strong>Options Name</strong><br />(size,color,type...)</td>
+    <td align="right" class="gray dwl_gray"><strong>Options Name</strong><br />(size or color or type, etc)</td>
     <td class="gray"><input id="p_options_name" name="p_options_name" type="text" class="prod" size="20" /></td>
   </tr>    
   <tr>

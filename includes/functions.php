@@ -215,7 +215,7 @@ function scabn_sc($atts) {
 		if ($tx_token) {
 			$cart->empty_cart();
 			return scabn_paypal_receipt($tx_token);
-		} else {
+		} else {					
 			return scabn_process();
 		}
 
@@ -505,8 +505,8 @@ function scabn_process() {
 		$output .=  "<div id='wpchkt_checkout'>";
 		$output .= scabn_cart('full', TRUE);
 		$output .=  "</div>";
-
-		if($cart->itemcount > 0) {
+		
+		if(count($cart->items) > 0) {						
 			if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$options['cart_theme']."/process.php")) {
 				include (SCABN_PLUGIN_DIR."/templates/".$options['cart_theme']."/process.php");
 			} else {
@@ -553,7 +553,7 @@ function scabn_make_paypal_button($options,$items) {
 		$count++;
 		$ppoptions[]=array("quantity_". (string)$count, $item['qty']);
 		if ( $item['options'] ) {
-			$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".scabn_item_options($item['options'],'--').")");
+			$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".apply_filters(scabn_display_item_options,$item['options']).")");
 		} else {
 			$ppoptions[]=array("item_name_". (string)$count,$item['name']);
 		}
@@ -621,7 +621,7 @@ function CalcHmacSha1($data,$key) {
 
 function scabn_make_google_button($options,$shipoptions,$items) {
 
-	$gc_merchantid= $options['gc_merchantid'];
+	$gc_merchantid = $options['gc_merchantid'];
 	$gc_merchantkey=$options['gc_merchantkey'];
 
 	$gc="<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -631,7 +631,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 	foreach($items as $item) {
 		$gc .= "\n\t\t<item>";
 		if ( $item['options']  ) {
-			$gc .= "\n\t\t\t<item-name>".$item['name']." (".scabn_item_options($item['options'],'--').")</item-name>";
+			$gc .= "\n\t\t\t<item-name>".$item['name']." (".apply_filters(scabn_display_item_options,$item['options']).")</item-name>";
 		} else {
 			$gc .= "\n\t\t\t<item-name>".$item['name']."</item-name>";
 		}
@@ -686,7 +686,7 @@ function scabn_make_google_button($options,$shipoptions,$items) {
 		$gout .= "<input type=\"hidden\" name=\"signature\" value=\"$gcsig\">";
 	}
 
-	$gout .= "<input type=\"image\" border=\"0\" name=\"submit\" src=\"https://checkout.google.com/buttons/checkout.gif?merchant_id=".$gc_merchantid."&w=160&h=43&style=trans&variant=text&loc=en_US\" alt=\"Make payments with Google Wallet\"></form>";
+	$gout .= "<input type=\"image\" border=\"0\" name=\"submit\" src=\"https://checkout.google.com/buttons/checkout.gif?merchant_id=".$gc_merchantid."&w=160&h=43&style=trans&variant=text&loc=en_US\" alt=\"Make payments with Google Wallet\"></form>";		
 	return $gout;
 
 	}

@@ -12,11 +12,11 @@
  * Return Items Options Pair
  */
 
-function scabn_item_options_old ($options_arr){
+function scabn_item_options ($options_arr){
 
 	foreach($options_arr as $key=>$value){
 
-	   $options_pair = $key."-".$value."<br />";
+	   $options_pair = $key.": ".$value."<br />";
 
 	}
 
@@ -25,22 +25,22 @@ function scabn_item_options_old ($options_arr){
 }
 
 /* Simple options in - format */
-function scabn_item_options ($options_arr,$separator="<br/>"){
+function scabn_item_options_old ($options_arr,$separator="<br/>"){
 	$begin=TRUE;
 	if ( count($options_arr) == 1 )	{
-   	    foreach($options_arr as $key=>$value) {
-		$options_pair = $value;
-            }
+   	foreach($options_arr as $key=>$value) {
+			$options_pair = $value;
+      }
 	} else {
-   	    foreach($options_arr as $key=>$value) {
-	        $options_pair = $key."-".$value;
-	        if ($begin == FALSE) {
-	            $options_pair .= $separator;
-	        } else {
-		    $begin=FALSE;
-	       }
-            }
-        }
+   	foreach($options_arr as $key=>$value) {
+	   	$options_pair = $key."-".$value;
+	      if ($begin == FALSE) {
+	      	$options_pair .= $separator;
+	      } else {
+		   	$begin=FALSE;
+	   	}
+   	}
+	}
 	return $options_pair;
 
 }

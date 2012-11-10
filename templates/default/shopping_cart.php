@@ -22,7 +22,8 @@
                 
 				<?php 
 				if (count($item['options']) > 0){
-				echo scabn_item_options($item['options']);
+				echo apply_filters(scabn_display_item_options,$item['options']);
+				//echo scabn_Display::display_item_options($item['options']);
 				} 
 				?>
                 

@@ -1,15 +1,14 @@
 <?php
 class scabn_Admin {
 	
-	function __construct() {
-		add_action('admin_head',array($this, 'admin_register_head'));	
+	function __construct() {			
 		add_action('admin_menu', array($this, 'admin_menu'));
 		add_action('admin_init', array($this, 'options_init'));
 		add_action('admin_init',array($this,'addbuttons'));	
    }
 
 
-	//I don't understand this -- I copied it, can someone explain
+	//I don't understand this -- I copied it, can someone explain?
 	static function &init() {
 		static $instance = false;
 		if ( !$instance ) {
@@ -36,15 +35,6 @@ class scabn_Admin {
 	function add_scabn_tinymce_plugin($plugin_array) {
    	$plugin_array['scabn'] = SCABN_PLUGIN_URL.'/includes/js/tinymce/editor_plugin.js';
    	return $plugin_array;
-	}
-
-
-
-	//Not sure why it register head / admin_head on the init
-	// but this adds css to admin page.	
-	function admin_register_head() {
-   	$url_style = SCABN_PLUGIN_URL . '/admin/scabn_admin.css';
-    	echo "<link rel='stylesheet' type='text/css' href='$url_style' />\n";
 	}
 
 
@@ -119,6 +109,8 @@ class scabn_Admin {
 	}
 
 	
+	//Below are functions used in options_init to generate html for forms to set SCABN configuration settings. 
+	//Most are general purpose to the input type (radio, text, etc), a few are custom.
 	
 	//Return array with list of Paypal URL
 	//Options formatted nicely.

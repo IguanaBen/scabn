@@ -60,6 +60,20 @@ require_once SCABN_PLUGIN_DIR. '/includes/commun.php';
 require_once SCABN_PLUGIN_DIR. '/includes/scabn_codes.php';
 require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 require_once SCABN_PLUGIN_DIR. '/backend.php';
+require_once SCABN_PLUGIN_DIR. '/display.php';
+
+
+
+if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php') ) {
+        require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php';
+} else {
+        require_once SCABN_PLUGIN_DIR. '/templates/default/customize.php';
+}
+
+
+
+
+
 
 //Add hook to run SCABN -- just starts session
 //for getting cart info
@@ -84,7 +98,7 @@ add_shortcode('scabn_customcart', 'scabn_customcart');
 //pages &
 scabn_Admin::init();
 scabn_Backend::init();
-
+scabn_Display::init();
 
 
 ?>

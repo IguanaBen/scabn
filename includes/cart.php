@@ -3,6 +3,11 @@
 /*
 Based on Webforce Cart v.1.5
 http://www.webforcecart.com/
+
+Stripped down for SCABN's simple purpose
+Class stores a list of items and their prices, weights, 
+names, and options and a url for the product description.
+
 */
 
 
@@ -19,9 +24,6 @@ class wfCart {
    
 	var $total = 0;
    
-
-
-	//function cart() {} // constructor function -- I don't really understand
 				
 	function get_contents()
 	{ // gets cart contents
@@ -43,7 +45,6 @@ class wfCart {
 	} // end of get_contents
 
 
-	
 	function add_item($itemid,$qty=1,$price = FALSE, $name = FALSE, $options, $url = FALSE, $weight=0)	{ 
 		
 		if($this->itemqtys[$itemid] > 0)  {								
@@ -110,6 +111,7 @@ class wfCart {
 		$this->itemurl = array();
 		$this->itemweight = array();		
 		$this->itemoptions = array();
+		$this->total = 0;
 	} // end of empty cart
 
 
@@ -122,17 +124,6 @@ class wfCart {
 				}
 			}
 	} // end of update_total
-
-
-
-	function c_info_old($c_curr){
-
-	        $this->cart_info['curr'] = $c_curr;
-			//$this->cart_info['type'] = $c_type;
-			//$this->cart_info['title'] = $c_title;
-			//$this->cart_info['url'] = $c_url;
-			//$this->cart_info['theme'] = $c_theme;
-	}
 
 
 }

@@ -1,12 +1,24 @@
 <?php
 
+/* This class handles SCABN's backend -- processing
+   GET / POST requests, initialization of the web session,
+   getting pricing, etc.
+   
+   It also contains functions to getting content: lists of
+   currencies and their display formats, Paypal URLs, etc.
+*/
+
+
 class scabn_Backend {
 
 	function __construct() {
 		add_action('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
+		add_action('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
 		
 	}	
 	
+	
+	//I need this and the call to it (scabn_Backend::init() -- I just don't know why 
 	static function &init() {
 		static $instance = false;
 		if ( !$instance ) {
@@ -15,9 +27,6 @@ class scabn_Backend {
 		return $instance;
 	}	
 	
-	
-	function initold(){
-	}
 
 	function scabn_init(){
 
@@ -123,7 +132,9 @@ class scabn_Backend {
 	}
 	
 	
-	
+	function getItemWeight($itemname,$qty,$weight) {
+			return 4.2;
+			}
 	
 	
 	function getCurrencies() {
