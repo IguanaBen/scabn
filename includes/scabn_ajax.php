@@ -28,7 +28,8 @@ $remove_url = "#";
 $cart_url = $cart_info['url'];
 $cart_theme = $cart_info['theme'];
 $cart_type = $cart_info['type'];
-$currency = scabn_curr_symbol($cart_info['curr']);
+$options = get_option('scabn_options');
+$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);
 
 	
 if (empty($cart_theme)  ) $cart_theme = 'default';
