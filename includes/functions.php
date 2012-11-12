@@ -187,7 +187,9 @@ function scabn_sc($atts) {
 
 
 		if (!empty ($options)){
-			$output .= $options_name.": \n";
+			if ( $options_name != "" ) {
+				$output .= $options_name.": \n";
+			}
 			$output .= "<input type='hidden' value='".$options_name."' name='item_options_name' class ='item_options_name' />\n";
 			$options = explode(',',$options);
 
