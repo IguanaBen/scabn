@@ -61,7 +61,7 @@ require_once SCABN_PLUGIN_DIR. '/backend.php';
 require_once SCABN_PLUGIN_DIR. '/display.php';
 
 
-
+//This should be reworked into better theme system 
 if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php') ) {
         require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php';
 } else {
@@ -69,34 +69,8 @@ if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/c
 }
 
 
-
-
-
-
-//Add hook to run SCABN -- just starts session
-//for getting cart info
-add_action('init','scabn_Backend::scabn_init');
-
-$scabn_options = get_option('scabn_options');
-
-
-
-if ( $scabn_options['analytics_id'] != '' ) {
-	add_action('wp_head', 'scabn_googleanalytics');
-}
-
-add_action('wp_head', 'scabn_Display::scabn_head');
-
-add_shortcode('scabn', 'scabn_sc');
-add_shortcode('scabn_customcart', 'scabn_Backend::customcart');
-
-
-//Add SCABN Settings page to Admin view
-//And button for adding SCABN options to
-//pages &
-scabn_Admin::init();
+//Start the magic
 scabn_Backend::init();
-scabn_Display::init();
 
 
 ?>

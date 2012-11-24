@@ -12,9 +12,20 @@
 class scabn_Backend {
 
 	function __construct() {
+		add_action('wp_head', 'scabn_Display::scabn_head');		
 		add_filter('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
 		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
 		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
+		add_shortcode('scabn_customcart', array($this,'customcart'));		
+		add_shortcode('scabn', 'scabn_Display::shortcodes');
+		
+		$scabn_options = get_option('scabn_options');
+		if ( $scabn_options['analytics_id'] != '' ) {
+			add_action('wp_head', 'scabn_googleanalytics');
+		}
+						
+		scabn_Admin::init();
+		scabn_Display::init();		
 		
 	}	
 	
@@ -25,6 +36,7 @@ class scabn_Backend {
 		if ( !$instance ) {
 				$instance = new scabn_Backend ;
 		}
+		scabn_Backend::scabn_init();		
 		return $instance;
 	}	
 	
@@ -48,7 +60,6 @@ class scabn_Backend {
 
 		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_item'  ){
 		
-
 			if ( isset($_REQUEST['item_options']) && (  $_REQUEST['item_options'] != '')  ) {
 				//item options set -- check if it is a list of options with ':' as separator			        		
 	        	$temp=explode(':',$_REQUEST['item_options']);

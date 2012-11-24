@@ -1,125 +1,28 @@
 <?php
 
 
-
-
-
-
 /**
  *  Shortcode
  */
-function scabn_sc($atts) {
-
-	global $post;
-
-	//session_start();
-
-	$cart = $_SESSION['wfcart'];
-
-	extract(shortcode_atts(array(
-			'name' => $post->post_title,
-           //'url' => $post->guid,
-			'price' => '',
-			'fshipping' => '',
-			'weight' => '',
-			'options_name' => '',
-			'options' => '',
-			'b_title' => '',
-			'qty_field' => '',
-			'no_cart' => FALSE
-			), $atts));
-
-	if (!empty ($atts)){
-
-		global $post;
-
-		$id = $post->ID;
-		$url =  $post->guid;
-
-	   //global $scabn_options;
-
-      $currency = apply_filters('scabn_display_currency_symbol',$scabn_options['currency']);
-
-		if ($no_cart) {
-			$action_url = SCABN_PLUGIN_URL."/includes/scabn_ajax.php";
-			$add_class = '';
-		} else {
-			$action_url = add_query_arg( array() );
-			$action_url = get_permalink();
-			$add_class = 'class="add"';
-		}
-
-		$item_id = sanitize_title($name);
-
-		$output = "<div class='addtocart'>\n";
-		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";
-		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
-		$output .= "<input type='hidden' class='item_url' value='".$url."' name='item_url'/>\n";
-		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
-		$output .= "<input type='hidden' class='item_name' value='".$name."' name='item_name'/>\n";
-		$output .= "<input type='hidden' class='item_price' value='".$price."' name='item_price'/>\n";
-		$output .= "<input type='hidden' class='item_shipping' value='".$fshipping."' name='item_shipping'/>\n";
-		$output .= "<input type='hidden' class='item_weight' value='".$weight."' name='item_weight'/>\n";
-
-		//$output .= "<table border='0' cellspacing='0' cellpadding='5'>\n";
-		//$output .= "<p id='cartname'>".$name . " (".$currency.number_format($price,2)." each)</p>";
-		$output .= "<p id='cartname'>".$name . "</p>";
-		$output .= "<p id='cartcontent'>";
-		//$output .= "Unit Price: ".$currency.number_format($price,2)." each<br/>";
-		//$output .= "<tr><td align='right'>Price:</td><td align='left'>".$currency." ".number_format($price,2)."</td></tr>\n";
 
 
-		if (!empty ($options)){
-			$output .= $options_name.": \n";
-			$output .= "<input type='hidden' value='".$options_name."' name='item_options_name' class ='item_options_name' />\n";
-			$options = explode(',',$options);
 
-			$output .= "<select name='item_options' class = 'item_options' >\n";
-			foreach ($options as $option){
-				$info = explode(':',$option);
-				if (count($info) == 1) {
-					$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($price,2) . ")</option>\n";
-				} else {
-					$output .= "<option value='".$info[0].":" . $info[1]. "'>".$info[0]." (". $currency.number_format($info[1],2) . ")</option>\n";
-				}
-			}
-			$output .= "</select>\n";
 
-		        $output .= "<br/>\n";
 
-		} else {
-			$output .= "Unit Price: ".$currency.number_format($price,2)." each<br/>";
-		}
 
-		if($qty_field) {
-			$output .= "Qty: <input type='text' class='item_qty' value='1' size='2' name='item_qty'/>\n";
-		} else {
-			$output .= "<input type='hidden' class='item_qty' value='1' size='2' name='item_qty'/>\n";
-		}
 
-		if ($no_cart) {
-			$output .= "<input type='hidden' value='true' name='no_cart'/>\n";
-		}
-		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$b_title."'/>\n";
-		$output .= "</form>\n";
-		$output .= "</p>\n";
-		$output .= "</div>\n";
 
-		return $output;
 
-	} else {
 
-		$tx_token = $_GET['tx'];
 
-		if ($tx_token) {
-			$cart->empty_cart();
-			return scabn_paypal_receipt($tx_token);
-		} else {					
-			return scabn_process();
-		}
 
-	}
-}
+
+
+
+
+
+
+
 
 
 function scabn_paypal_receipt($tx_token) {
