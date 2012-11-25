@@ -17,7 +17,7 @@ class scabn_Backend {
 		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
 		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
 		add_shortcode('scabn_customcart', array($this,'customcart'));		
-		add_shortcode('scabn', 'scabn_Display::shortcodes');
+		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
 		
 		$scabn_options = get_option('scabn_options');
 		if ( $scabn_options['analytics_id'] != '' ) {
@@ -108,6 +108,41 @@ class scabn_Backend {
 	
 	
 	}
+
+
+	//Handles all scabn shortcodes
+	//Both add to cart items on pages
+	// and checkout code.	
+	function shortcodes($atts) {		
+		
+		if (!empty ($atts)){			
+			//If arguments in shortcode, then it is add to cart button
+			$output=apply_filters('scabn_display_add_to_cart',$atts);						
+			return $output;
+	
+		} else {
+			//No options, so this is checkout page.
+			//Check for Paypal token in case this is a receipt page
+			$tx_token = $_GET['tx'];
+			
+			if ($tx_token) {
+				//Paypal redirected here should be receipt.
+				//Empty cart and show receipt
+				$cart = $_SESSION['wfcart'];			
+				$cart->empty_cart();
+				return scabn_paypal_receipt($tx_token);
+			} else {					
+				//Normal checkout page.				
+				return scabn_process();
+			}
+	
+		}
+	}
+
+
+
+
+
 
 
 	function customcart() {

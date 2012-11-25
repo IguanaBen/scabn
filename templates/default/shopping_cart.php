@@ -18,8 +18,7 @@
 			<td>
             <input type='hidden' name='item_<?php  echo $i; ?>' value='<?php echo $item['id']; ?>' />
             <input type='text' name='qty_<?php  echo $i; ?>' size='2' value='<?php echo $item['qty'] ?>' class = 'qty_<?php  echo $item['id']; ?>' title='<?php echo $item['id']; ?>' /></td>
-				<td><a href='<?php echo $item['url'] ?>'><strong><?php echo $item['name'] ?></strong><br />
-                
+				<td><a href='<?php echo $item['url'] ?>'><strong><?php echo $item['name'] ?></strong><br />                
 				<?php 
 				if (count($item['options']) > 0){
 				echo apply_filters(scabn_display_item_options,$item['options']);
