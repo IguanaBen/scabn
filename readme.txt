@@ -113,3 +113,5 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.4.2 =
   * Fixed bug where Google Analytics Tracking Code was not getting onto website.
+= 1.4.3 =
+  * Title set on SCABN's widget (hardcoded to 'Simple Checkout')
