@@ -344,7 +344,7 @@ class scabnWidget extends WP_Widget {
     /** @see WP_Widget::widget */
     function widget($args, $instance) {
     	extract( $args );
-      $title = apply_filters('widget_title', $instance['title']);
+      $title = apply_filters('widget_title', 'Simple Checkout');
 		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
 		$output="";
       $output .= $before_widget;
