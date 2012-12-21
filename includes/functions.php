@@ -232,9 +232,9 @@ function scabn_sc($atts) {
 
 		if ($tx_token) {
 			$cart->empty_cart();
-			return scabn_paypal_receipt($tx_token);
+			echo scabn_paypal_receipt($tx_token);
 		} else {
-			return scabn_process();
+			echo scabn_process();
 		}
 
 	}

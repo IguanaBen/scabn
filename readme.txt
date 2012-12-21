@@ -128,3 +128,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.4.7 =
   * Undid 1.4.6 as that didn't fix the problem.
+
+= 1.4.8 =
+  * Changed return of html content in scabn_sc to echo as it seems on some these that return gets sanitized to html, which is bad.
