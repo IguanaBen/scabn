@@ -86,7 +86,7 @@ function displayCustomCart($uuid) {
 
 		$output .= displayCustomCartContents($items);
 		$output .= scabn_make_paypal_button($options,$items);
-		$output .=scabn_make_google_button($options,$items);
+		$output .= scabn_make_google_button($options,$items);
 	} else {
 		$output .= 'Could not find your custom cart, or the cart has expired';
 	}
