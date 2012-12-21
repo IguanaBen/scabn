@@ -1,10 +1,10 @@
 <?php
 class scabn_Admin {
-	
-	function __construct() {			
+
+	function __construct() {
 		add_action('admin_menu', array($this, 'admin_menu'));
 		add_action('admin_init', array($this, 'options_init'));
-		add_action('admin_init',array($this,'addbuttons'));	
+		add_action('admin_init',array($this,'addbuttons'));
    }
 
 
@@ -16,7 +16,7 @@ class scabn_Admin {
 		}
 		return $instance;
 	}
-	
+
 
 	//Add buttons to edit window for easy adding of SCABN shortcode into pages/posts.
 	function addbuttons() {
@@ -24,6 +24,7 @@ class scabn_Admin {
 		if ( (  current_user_can('edit_posts') || current_user_can('edit_pages') ) && ( get_user_option('rich_editing') == 'true') ) {
    		add_filter('mce_external_plugins', array($this, 'add_scabn_tinymce_plugin'));
    		add_filter('mce_buttons', array($this,'register_button'));
+
    	}
 	}
 
@@ -42,7 +43,7 @@ class scabn_Admin {
 	function admin_menu() {
 	add_submenu_page('plugins.php', 'SCABN Settings', 'SCABN Settings', 'administrator', 'scabn_admin_page', array($this, 'admin_page'));
 	}
-	
+
 	//Will be replaced I think with not dirs, but single files... TODO
 	function get_templates() {
 		$templates = array();
@@ -70,8 +71,9 @@ class scabn_Admin {
 
 		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');			
 		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: ', 'paypal', 'paypal_options','input_text_option');
-		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());				
-		scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');		
+		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());								
+		scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_connection', 'Connect to Paypal (for receipt page) via HTTPS or HTTP (some servers don\'t support HTTPS', 'paypal', 'paypal_options','input_radio',array('https'=>'Secure (https)','http'=>'Unencrypted (http)'));
 		add_settings_section('paypal_optional', 'Optional Paypal Settings:', array($this,'section_text'), 'paypal_op');
 		
 		scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal_op', 'paypal_optional','input_text_option');		
@@ -132,8 +134,8 @@ class scabn_Admin {
 	function input_text_option($arg) {				
 		$options = get_option('scabn_options');
 		echo "<input id='" . $arg['id'] . "' name='scabn_options[" . $arg['id'] . "]' size='40' type='text' value='" . $options[$arg['id']] . "'/>";	
-		
-	}	
+
+	}
 	
 	//Wrapper for add_settings_field 
 	function custom_add_settings_field($id,$desc,$section_id,$section_name,$callfunc,$extratext="") {

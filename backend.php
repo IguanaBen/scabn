@@ -25,7 +25,7 @@ class scabn_Backend {
 		}
 						
 		scabn_Admin::init();
-		scabn_Display::init();		
+		scabn_Display::init();				
 		
 	}	
 	
@@ -130,7 +130,8 @@ class scabn_Backend {
 				//Empty cart and show receipt
 				$cart = $_SESSION['wfcart'];			
 				$cart->empty_cart();
-				return scabn_paypal_receipt($tx_token);
+				//return scabn_paypal_receipt($tx_token);
+				return scabn_paypal::receipt($x_token);
 			} else {					
 				//Normal checkout page.				
 				return scabn_process();

@@ -161,14 +161,6 @@ class scabn_Display {
 
 
 
-
-
-
-
-
-
-
-
 	function display_currency_symbol($code){	
   		$scabn_currency_codes= scabn_Backend::getCurrencies();
 		$d = $scabn_currency_codes[$code][0];

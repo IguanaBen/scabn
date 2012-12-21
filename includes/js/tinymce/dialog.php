@@ -7,11 +7,16 @@ require_once("../../../../../../wp-config.php");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Simple Cart & Buy Now</title>
-	<script type="text/javascript" src="js/tiny_mce_popup.js"></script>
+<!--	<script type="text/javascript" src="js/tiny_mce_popup.js"></script> 
+	<script type="text/javascript" src="../../../wp-includes/js/tinymce/tiny_mce_popup.js"</script> -->
+<script type="text/javascript" src="<?php echo site_url() ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
+
 	<script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>    
     <script type="text/javascript" src="../format/jquery.formatCurrency-1.0.0.min.js"></script>
-    
+<?php
+wp_enqueue_script('tinymce-popup', '/wp-includes/js/tinymce/tiny_mce_popup.js');
+?>
 
     <style type="text/css">
 	h2 {

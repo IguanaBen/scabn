@@ -9,110 +9,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function scabn_paypal_receipt($tx_token) {
-	global $scabn_options;
-	//This request came from paypal as their receipt page
-	//We must send confirmation to them to get info:
-
-	// read the post from PayPal system and add 'cmd'
-	$req = 'cmd=_notify-synch';
-	$auth_token = $scabn_options['paypal_pdt_token'];
-	//$auth_token='asdf';
-	$req .= "&tx=$tx_token&at=$auth_token";
-
-	// post back to PayPal system to validate
-	$header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
-	$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-	$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-	$fp = fsockopen ('www.paypal.com', 80, $errno, $errstr, 30);
-	// If possible, securely post back to paypal using HTTPS
-	// Your PHP server will need to be SSL enabled
-	// $fp = fsockopen ('ssl://www.paypal.com', 443, $errno, $errstr, 30);
-
-	if (!$fp) {
-		echo "Error Sending data to Paypal -- (order probably completed)<br/>";
-		echo $errno."<br/><br/>" . $errstr."<br/>";
-		return False;
-	} else {
-		fputs ($fp, $header . $req);
-		// read the body data 
-		$res = '';
-		$headerdone = false;
-		while (!feof($fp)) {
-			$line = fgets ($fp, 1024);
-			if (strcmp($line, "\r\n") == 0) {
-				// read the header
-				$headerdone = true;
-			}
-			else if ($headerdone)
-			{
-				// header has been read. now read the contents
-				$res .= $line;
-			}
-		}
-		fclose ($fp);
-		$output="";
-		// parse the data
-		$lines = explode("\n", $res);
-		$keyarray = array();
-		if (strcmp ($lines[0], "SUCCESS") == 0) {
-			for ($i=1; $i<count($lines);$i++){
-				list($key,$val) = explode("=", $lines[$i]);
-				$keyarray[urldecode($key)] = urldecode($val);
-			}
-         
-         /*Add Analytics Ecommerce Code */
-         if ($scabn_options['analytics_id'] != '' ) {
-         	$output .= "<script type=\"text/javascript\">";
-            $output .= "_gaq.push(function() { var pageTracker = _gat._getTrackerByName('myTracker');";
-            $output .= "pageTracker._addTrans('" . $keyarray['txn_id'] ."','','" . $keyarray['payment_gross'] . "','" . $keyarray['tax'] . "','" . $keyarray['mc_shipping'] . "','" . $keyarray['address_city'] . "','" . $keyarray['address_state']. "','". $keyarray['address_country_code']. "');";
-				$count=$keyarray['num_cart_items'];
-				for ( $i = 1; $i <= $count; $i++ ) {
-					$item="item_name" . $i;
-	            $qty="quantity" . $i;
-        	      $cost="mc_gross_" . $i;
-					$totalprice=($keyarray[$cost]-$keyarray[$ship]);
-		         $price=$totalprice/$keyarray[$qty];
-					$output .= "pageTracker._addItem('" . $keyarray['txn_id'] . "','" . $keyarray[$item] . "','" . $keyarray[$item] . "','','" . $price . "','" . $keyarray[$qty] . "');";
-				}
-				$output.="pageTracker._trackTrans();";
-            $output.= "});</script>";
-         }
-
-
-			$output .= display_paypal_receipt($keyarray);
-
-		}
-		else if (strcmp ($lines[0], "FAIL") == 0) {
-			$output .= "Error parsing Paypal's response. (order probably completed)<br/>";
-			$output .= display_paypal_receipt($keyarray);
-		} else {
-			$output .= "Unknown error from Paypal's response. (order probably completed)";
-		}
-	}
-
-	
-return $output;
-
-}
-
-
 /**
  *  The widget
  */
@@ -126,9 +22,9 @@ class scabnWidget extends WP_Widget {
 	}
 
     /** @see WP_Widget::widget */
-    function widget($args, $instance) {
+    function widget($args, $instance) {		    	
     	extract( $args );
-      $title = apply_filters('widget_title', $instance['title']);
+      $title = apply_filters('widget_title', 'Simple Checkout');
 		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
 		$output="";
       $output .= $before_widget;
@@ -154,7 +50,8 @@ class scabnWidget extends WP_Widget {
 	$options = $scabn_options;
 
 	$cart_type = $options['cart_type'];
-	$cart_title = $options['cart_title'];
+	$cart_title = $options['cart_title'];	
+
 
 	$cart_options = array('cart_type' => $cart_type, 'cart_type' => $cart_title);
 
@@ -178,9 +75,8 @@ class scabnWidget extends WP_Widget {
     }
 
     /** @see WP_Widget::form */
-    function form($instance) {
-
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+    function form($instance) {		
+		$title = isset($instance['title']) ? esc_attr($instance['title']) : 'Cart Checkout';
 		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
 		$output="";
 		$output .= "<div class = \"wpchkt_cart_w\">
