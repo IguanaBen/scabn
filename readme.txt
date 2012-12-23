@@ -5,11 +5,13 @@ Requires at least: 3.2
 Tested up to: 3.4.2 
 Stable tag: 1.4.8
 
-Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics and tracks sales. Based on Wordpress Checkout
+Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics to tracks sales. 
 
 == Description ==
 
-Easy to use and customize this is a shopping cart that uses your posts or pages as products. With an editor button you can create products on the fly.
+Add "Add to Cart" buttons to your pages / posts with sidebar widget showing items currently in customer's shopping cart. When customer clicks on 'Go to Checkout' 
+then can purchase items via Paypal or Google Wallet. Simple, secure shopping cart system stores no user information (email, address, credit card, etc) but uses
+encrypted buy now buttons to pass customer over to Paypal / Google for providing purchasing information. 
 
 Features:
 
