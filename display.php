@@ -13,11 +13,13 @@ class scabn_Display {
 
 	function __construct() {
 		add_action('scabn_display_item_options',array($this, 'display_item_options'),10,1);
-		add_action('scabn_display_currency_symbol',array($this, 'display_currency_symbol'),10,1);
+		add_action('scabn_display_currency_symbol',array($this, 'display_currency_symbol'),10,0);
 		add_action('scabn_add_css',array($this, 'add_css'),10,0);
 		add_action('scabn_displayCustomCart',array($this,'displayCustomCart'),10,1);
 		add_action('scabn_displayCartUUID', array($this,'enter_cart_uuid'),10,0);
 		add_action('scabn_display_add_to_cart', array($this,'display_add_to_cart'),10,1);
+		add_action('scabn_display_widget', array($this,'display_widget'),10,1);
+		add_action('scabn_display_cart', array($this,'display_cart'),10,1);
 	}	
 	
 	//Again, not sure why I need this, but I do
@@ -52,7 +54,17 @@ class scabn_Display {
 	}
 
 	
-	
+	function display_widget($title) {
+		$output = $before_widget;		      		      
+      if ($title) {
+      	$output .= $before_title . $title . $after_title;      
+      }
+		$output .= apply_filters(scabn_display_cart,'widget');		
+		//$output .=	scabn_cart();		
+		$output .= $after_widget;
+						
+		return $output;
+	}
 
 
 	function enter_cart_uuid(){
@@ -95,7 +107,7 @@ class scabn_Display {
 		global $post;		
 		$item_id=sanitize_title($item['name']);		
 		$scabn_options=get_option('scabn_options');		
-	   $currency = apply_filters('scabn_display_currency_symbol',$scabn_options['currency']);
+	   $currency = apply_filters('scabn_display_currency_symbol',NULL);
 	   
 		if ($item['no_cart']) {				
 			$action_url = $scabn_options['cart_url'];
@@ -161,9 +173,10 @@ class scabn_Display {
 
 
 
-	function display_currency_symbol($code){	
+	function display_currency_symbol(){	
   		$scabn_currency_codes= scabn_Backend::getCurrencies();
-		$d = $scabn_currency_codes[$code][0];
+  		$options = get_option('scabn_options');
+		$d = $scabn_currency_codes[$options['currency']][0];
 		$symbol = "&#".$d.";";
 		return $symbol;
 	}
@@ -189,6 +202,99 @@ class scabn_Display {
 		
 		
 	}
+
+
+	function display_cart($carttype){
+		//$carttype is 'widget' or 'checkout'					
+		$cart = $_SESSION['wfcart'];
+		$options = get_option('scabn_options');
+		$cart_url = $options['cart_url'];
+		$currency = apply_filters('scabn_display_currency_symbol',Null);
+
+		if ($carttype == 'widget'){
+			$output = "<div id='scabn_widget'>"; 						
+		} else {			
+			$output = "<div id='wpchkt_checkout'>";			
+		}
+
+ 				
+		if(count($cart->items) != 0) {
+			$output .= "<form action='".$post_url."' method='post'>";
+			$output .= "<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>";	
+			$output .= "	<thead><tr class='thead'>";
+			$output .= "   	<th scope='col'>Qty</th>";
+			$output .= "     <th scope='col'>Items</th>";
+			$output .= "     <th scope='col' align='right'>Unit Price</th>";
+			$output .= "	</tr></thead>";	
+			$i=0;
+			foreach($cart->get_contents() as $item) {
+				$output .= "<tr class = 'ck_content'><td>";
+            $output .= "<input type='hidden' name='item_".$i."' value='".$item['id']."' />";
+            $output .= "<input type='text' name='qty_".$i."' size='2' value='".$item['qty']."' class = 'qty_".$item['id']."' title='".$item['id']."' /></td>";
+				$output .= "<td><a href='". $item['url']."'><strong>".$item['name']."</strong><br />";                				
+				if (count($item['options']) > 0){
+					$output .= apply_filters(scabn_display_item_options,$item['options']);
+				} 
+				$output .= "</a></td>";
+				$output .= "<td align='right'>".$currency." ".number_format($item['price'],2)."<br />";
+
+				$remove_query = array();
+				$remove_query['remove'] = $item['id'];
+				$remove_url = add_query_arg($remove_query);
+				
+				$output .= "<a href='".$remove_url."' class ='remove_item' name = '".$item['id']."'>Remove</a></td></tr>";
+				$i ++;
+			}
+
+			$output .= "<tr class='ck_content'>";
+			$output .= "<td><input type='submit' name='update' value='Update' class ='update_cart' /></td>";				
+
+			if ($carttype == 'widget' ){
+				$output .= "<td align='right' colspan='1'><strong>Sub-total</strong></td>";
+				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";	
+			} else {
+				$output .= "<td align='right' colspan='1'>Sub-total</td>";
+				$output .= "<td align='right'>".$currency." ".number_format($cart->total,2)."</td>";			
+			}
+			
+			$output .= "</tr>";
+			
+			
+			if ($carttype != 'widget') {
+				$output .= "<tr class='ck_content shipping'>";				
+				$output .= "<td align='right' colspan='2'>Shipping</td>";
+				$output .= "<td align='right'>TBD</td></tr>";
+			}
+     		if (empty($cart_url)) {
+				 $output .= "<span class='val_error'><strong>Configuration Error:</strong> Include the Checkout/Process Page Url in the SCABN Plugin Settings</span>";
+			} elseif ($carttype == 'widget') {	 
+         	$output .= "<tr><td class='ck_content go_to_checkout' colspan='3'>";
+				$output .= "<div style='text-align: right'><span class='go_to_checkout'><a href='".$cart_url."'><strong>Go to Checkout</strong></a> </span></div>"; 
+			}
+									
+			if ($carttype != 'widget') {
+				$output .= "<tr class='ck_content total'>";
+				$output .= "<td align='right' colspan='2'><strong>Total</strong></td>";
+				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";
+				$output .= "</tr>";
+			}
+			$output .= "</td></tr></table></form>";	
+        
+		} else {  	   
+			$output .= "<span class='no_items'>No items in your cart</span>";
+        
+  		} 	
+		$output .= "</div>";
+		return $output;
+	}
+
+				  
+
+
+
+
+
+
 
 
 

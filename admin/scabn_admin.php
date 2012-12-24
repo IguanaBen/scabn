@@ -72,7 +72,7 @@ class scabn_Admin {
 		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');			
 		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: ', 'paypal', 'paypal_options','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());								
-		scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');
+		//scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_connection', 'Connect to Paypal (for receipt page) via HTTPS or HTTP (some servers don\'t support HTTPS', 'paypal', 'paypal_options','input_radio',array('https'=>'Secure (https)','http'=>'Unencrypted (http)'));
 		add_settings_section('paypal_optional', 'Optional Paypal Settings:', array($this,'section_text'), 'paypal_op');
 		

@@ -134,14 +134,40 @@ class scabn_Backend {
 				return scabn_paypal::receipt($x_token);
 			} else {					
 				//Normal checkout page.				
-				return scabn_process();
+				return scabn_Backend::checkout_page();
 			}
 	
 		}
 	}
 
 
-
+	
+	function checkout_page() {
+		//main checkout page when shopping (not receipt for transaction)
+										
+		
+		//display cart
+		$output .= apply_filters(scabn_display_cart,'checkout');
+		
+		//build array of items for passing to Paypal / Google button generating functions
+		$cart = $_SESSION['wfcart'];
+		if(count($cart->items) > 0) {						
+			$options = get_option('scabn_options');	
+			
+			$holditems=array();
+			foreach($cart->get_contents() as $item) {			
+				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
+			}
+			
+			$output .= ShopingCartInfo($holditems);
+			$output .= scabn_make_paypal_button($options,$holditems);
+			$output .= scabn_make_google_button($options,getShippingOptions($holditems),$holditems);			
+	
+		}
+		return $output;
+	}
+	
+	
 
 
 

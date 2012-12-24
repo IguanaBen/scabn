@@ -60,6 +60,7 @@ require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 require_once SCABN_PLUGIN_DIR. '/backend.php';
 require_once SCABN_PLUGIN_DIR. '/display.php';
 require_once SCABN_PLUGIN_DIR. '/paypal.php';
+require_once SCABN_PLUGIN_DIR. '/widget.php';
 
 
 //This should be reworked into better theme system 

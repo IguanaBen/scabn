@@ -1,7 +1,7 @@
 <?
 
 
-/* This class handles SCABN's paypal interactions -- generatingg
+/* This class handles SCABN's paypal interactions -- generating
    content to send to Paypal for shopping cart, handling
    receipt page, etc.
 */
@@ -36,7 +36,7 @@ class scabn_paypal {
 					
 		if (!$fp) {						
 			echo "Error Sending data to Paypal -- (order probably completed)<br/>";			
-			echo "<br/>Errstr:" . $errstr."<br/>Errno: ". $errno. "<br/>";
+			echo "Errstr:" . $errstr."<br/>Errno: ". $errno. "<br/>";
 			return False;
 		} else {
 			fputs ($fp, $header . $req);
@@ -89,9 +89,7 @@ class scabn_paypal {
 	
 			}
 			else if (strcmp ($lines[0], "FAIL") == 0) {
-				$output .= "<h4>Paypal failed to recognize order -- Maybe order too old or does not exist.</h4>";
-				//print_r($lines);		
-				//$output .= display_paypal_receipt($keyarray);
+				$output .= "<h4>Paypal failed to recognize order -- Maybe order too old or does not exist.</h4>";				
 			} else {
 				$output .= "Unknown error from Paypal's response. (order probably completed)";
 				$output .= "<br/>Details:<br/>";

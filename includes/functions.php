@@ -1,123 +1,6 @@
 <?php
 
 
-/**
- *  Shortcode
- */
-
-
-
-
-
-/**
- *  The widget
- */
-
-
-class scabnWidget extends WP_Widget {
-    /** constructor */
-    function scabnWidget() {
-		$widget_ops = array('classname' => 'wpchkt_w', 'description' => __( 'Allows to display the shopping cart'));
-		$this->WP_Widget('wpchkt_w', __('SCABN Checkout Cart'), $widget_ops);
-	}
-
-    /** @see WP_Widget::widget */
-    function widget($args, $instance) {		    	
-    	extract( $args );
-      $title = apply_filters('widget_title', 'Simple Checkout');
-		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
-		$output="";
-      $output .= $before_widget;
-      if ($type == 'full' && isset( $title )) {
-      	$output .= $before_title . $title . $after_title;
-      }
-		$output .= "<div id='wpchkt_widget'>";
-		$output .=	scabn_cart();
-		$output .= "</div>";
-		$output .= $after_widget;
-		return $output;
-    }
-
-    /** @see WP_Widget::update */
-    function update($new_instance, $old_instance) {
-
-	$instance = $old_instance;
-	$instance['title'] = strip_tags($new_instance['title']);
-	$instance['type'] = strip_tags($new_instance['type']);
-
-	global $scabn_options;
-
-	$options = $scabn_options;
-
-	$cart_type = $options['cart_type'];
-	$cart_title = $options['cart_title'];	
-
-
-	$cart_options = array('cart_type' => $cart_type, 'cart_type' => $cart_title);
-
-	$newoptions = array();
-
-	$newoptions['cart_type'] = strip_tags($new_instance['type']);
-	$newoptions['cart_title'] = strip_tags($new_instance['title']);
-
-	if ( $cart_options != $newoptions ) {
-		$options['cart_type'] = $newoptions['cart_type'];
-		$options['cart_title'] = $newoptions['cart_title'];
-		update_option('scabn_options', $options);
-
-		$scabn_options = $options;
-	}
-
-
-
-
-        return $instance;
-    }
-
-    /** @see WP_Widget::form */
-    function form($instance) {		
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : 'Cart Checkout';
-		$type= isset($instance['type']) ? esc_attr($instance['type']) : 'full';
-		$output="";
-		$output .= "<div class = \"wpchkt_cart_w\">
-            <table border=\"0\" cellspacing=\"5\" cellpadding=\"0\">
-              <tr>
-                <td><input name=\"";
-      $output .= $this->get_field_name('type') . "\" type=\"radio\" value=\"full\" ";
-      if ( $type == 'full') {
-      	$output .= "checked ";
-      }
-      $output .= "class = \"wpchkt_cart_f\"/></td>
-                <td><strong>Use Full Cart</strong></td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Title <input class=\"widefat\" id=\"" . $this->get_field_id('title') . "\" name=\"" . $this->get_field_name('title') . "\" type=\"text\" value=\"" .  $title; "\" /></td>
-              </tr>
-            </table>
-            </div>
-
-            <div class = \"wpchkt_cart_w\">
-            <table border=\"0\" cellspacing=\"5\" cellpadding=\"0\">
-              <tr>";
-      $output .= "<td><input name=\"" . $this->get_field_name('type') ."\" id=\"" . $this->get_field_id('type') . "\" type=\"radio\" value=\"tiny\" "; 
-      if( $type == 'tiny') {
-      	$output .= "checked ";
-      	}
-      $output .= " /></td>
-                <td><strong>Use Tiny Cart</strong></td>
-              </tr>
-
-            </table>
-            </div>";
-      return $output;  
-    }
-
-} // class scabnWidget
-
-
-// register scabnWidget widget
-add_action('widgets_init', create_function('', 'return register_widget("scabnWidget");'));
 
 
 
@@ -125,92 +8,10 @@ add_action('widgets_init', create_function('', 'return register_widget("scabnWid
  * The Cart
  */
 
-function scabn_cart($type = 'full',$checkout = FALSE) {
-
-	$options = get_option('scabn_options');
-	$post_url = add_query_arg( array() );
-	$remove_url = "";
-	$cart_url = $options['cart_url'];
-	$cart_theme = $options['cart_theme'];
-	$cart_type = $options['cart_type'];
-	//$currency = scabn_curr_symbol($options['currency']);
-	$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);
-	$cart = $_SESSION['wfcart'];
-	$output="";
-	
-	if ( $options['analytics_id'] != '' ) {
-		$output .= "<script src=\"http://checkout.google.com/files/digital/ga_post.js\"  type=\"text/javascript\"></script>";
-	}
-
-	if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php")) {
-		include (SCABN_PLUGIN_DIR."/templates/".$cart_theme."/shopping_cart.php");
-	} else {
-		include (SCABN_PLUGIN_DIR."/templates/default/shopping_cart.php");
-	}
-	
-	return $output;
-}
-
-function scabn_add_query_arg ($key,$value){
-
-	$remove_query = array();
-	$remove_query[$key] = $value;
-
-	$url = 'http://'.$_SERVER['HTTP_HOST'].add_query_arg($remove_query);
-
-	return $url;
-
-}
 
 /**
  * Cart Process
  */
-
-function scabn_process() {
-
-	//global $scabn_options;
-
-	//$options = $scabn_options;
-	$options = get_option('scabn_options');
-	//require_once SCABN_PLUGIN_DIR. '/includes/paypal.class.php';
-	//global $scabn_states_code;
-	//global $scabn_country_code;
-
-
-	$post_url = add_query_arg( array() );
-	$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);		
-	$currency_code = $options['currency'];
-
-	$cart =& $_SESSION['wfcart'];
-	$show_form=true;
-	$output="";
-	if(true == $show_form){
-
-		if (isset($error_hash)){
-
-			$output .= "<div class='val_error'>";
-			$output .=  "<p><strong>Please fill out the required fields</strong></p>";
-			foreach($error_hash as $inpname => $inp_err)
-			{
-			  $output .=  "<p>$inp_err</p>\n";
-			}
-			$output .= "</div>";
-		}
-	   //$output .= "<h3>".$options['cart_title']."</h3>";
-		$output .=  "<div id='wpchkt_checkout'>";
-		$output .= scabn_cart('full', TRUE);
-		$output .=  "</div>";
-		
-		if(count($cart->items) > 0) {						
-			if ( file_exists(SCABN_PLUGIN_DIR."/templates/".$options['cart_theme']."/process.php")) {
-				include (SCABN_PLUGIN_DIR."/templates/".$options['cart_theme']."/process.php");
-			} else {
-				include (SCABN_PLUGIN_DIR."/templates/default/process.php");
-			}
-		}
-	}
-	return $output;
-}
 
 
 function scabn_make_paypal_button($options,$items) {
@@ -225,8 +26,8 @@ function scabn_make_paypal_button($options,$items) {
 	$MY_CERT_FILE= $options['paypal_my_cert_file'];
 	$MY_KEY_FILE = $options['paypal_key_file'];
 	$PAYPAL_CERT_FILE=$options['paypal_paypal_cert_file'];
-
-	if ($paypal_url == "live" ) {
+	
+	if ($paypal_url == "Live" ) {
 		$ppo="<form method=\"post\" action=\"https://www.paypal.com/cgi-bin/webscr\">\n";
 	} else {
 	 	$ppo="<form method=\"post\" action=\"https://www.sandbox.paypal.com/cgi-bin/webscr\"> \n";
