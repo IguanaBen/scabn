@@ -19,9 +19,9 @@ class scabn_Backend {
 		add_shortcode('scabn_customcart', array($this,'customcart'));		
 		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
 		
-		$scabn_options = get_option('scabn_options');
-		if ( $scabn_options['analytics_id'] != '' ) {
-			add_action('wp_head', 'scabn_googleanalytics');
+		$scabn_options = get_option('scabn_options');		
+		if ( $scabn_options['analytics_id'] != '' ) {						
+			add_action('wp_head', array($this, 'googleanalytics'));
 		}
 						
 		scabn_Admin::init();
@@ -145,12 +145,12 @@ class scabn_Backend {
 	function checkout_page() {
 		//main checkout page when shopping (not receipt for transaction)
 										
-		
 		//display cart
-		$output .= apply_filters(scabn_display_cart,'checkout');
+		$output = apply_filters(scabn_display_cart,'checkout');
 		
 		//build array of items for passing to Paypal / Google button generating functions
 		$cart = $_SESSION['wfcart'];
+		
 		if(count($cart->items) > 0) {						
 			$options = get_option('scabn_options');	
 			
@@ -159,12 +159,14 @@ class scabn_Backend {
 				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
 			}
 			
-			$output .= ShopingCartInfo($holditems);
-			$output .= scabn_make_paypal_button($options,$holditems);
-			$output .= scabn_make_google_button($options,getShippingOptions($holditems),$holditems);			
+			$output .= ShopingCartInfo($holditems);			
+			$output .= scabn_paypal::make_button($holditems);
+			$output .= scabn_google::make_button(getShippingOptions($holditems),$holditems);			
 	
 		}
+				
 		return $output;
+		
 	}
 	
 	
@@ -244,8 +246,30 @@ class scabn_Backend {
 		return $cartitems;	
 		
 	}
+		
+		
 	
+	/* Google Analytics Functions */
+	function googleanalytics() {						
+		$options=get_option('scabn_options');
+		$output="";
+		if ( $options['analytics_id'] != '' ) {
 	
+			$output .= "<script type=\"text/javascript\">
+	var _gaq = _gaq || [];
+	_gaq.push(['myTracker._setAccount', '" . $options['analytics_id'] . "']);
+	_gaq.push(['myTracker._trackPageview']);
+	(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})();
+	</script>";
+		
+		}
+	echo $output;
+	}
+
 	
 	
 	function getItemWeight($itemname,$qty,$weight) {

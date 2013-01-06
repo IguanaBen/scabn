@@ -60,6 +60,7 @@ require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 require_once SCABN_PLUGIN_DIR. '/backend.php';
 require_once SCABN_PLUGIN_DIR. '/display.php';
 require_once SCABN_PLUGIN_DIR. '/paypal.php';
+require_once SCABN_PLUGIN_DIR. '/google.php';
 require_once SCABN_PLUGIN_DIR. '/widget.php';
 
 

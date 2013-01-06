@@ -88,8 +88,8 @@ class scabn_Display {
 		if ($items) {
 	
 			$output .= displayCustomCartContents($items);
-			$output .= scabn_make_paypal_button($options,$items);
-			$output .= scabn_make_google_button($options,$items);
+			$output .= scabn_paypal::make_button($items);	
+			$output .= scabn_google::make_button(getShippingOptions($items),$items);
 		} else {
 			$output .= '<h4>Could not find your custom cart, or the cart has expired</h4>';
 			$output .= apply_filters('scabn_displayCartUUID','');
@@ -205,6 +205,7 @@ class scabn_Display {
 
 
 	function display_cart($carttype){
+				
 		//$carttype is 'widget' or 'checkout'					
 		$cart = $_SESSION['wfcart'];
 		$options = get_option('scabn_options');
@@ -284,7 +285,7 @@ class scabn_Display {
 			$output .= "<span class='no_items'>No items in your cart</span>";
         
   		} 	
-		$output .= "</div>";
+		$output .= "</div>";				
 		return $output;
 	}
 

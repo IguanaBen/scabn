@@ -9,6 +9,93 @@
 
 class scabn_paypal {
 
+	function make_button($items) {
+		$options=get_option('scabn_options');
+		$currency = $options['currency'];
+		$cart_url = $options['cart_url'];
+		$paypal_email = $options['paypal_email'];
+		$paypal_url = $options['paypal_url'];
+		$paypal_pdt_token=$options['paypal_pdt_token'];
+		$paypal_cancel_url=$options['paypal_cancel_url'];
+		$paypal_cert_id = $options['paypal_cert_id'];
+		$OPENSSL=$options['openssl_command'];
+		$MY_CERT_FILE= $options['paypal_my_cert_file'];
+		$MY_KEY_FILE = $options['paypal_key_file'];
+		$PAYPAL_CERT_FILE=$options['paypal_paypal_cert_file'];
+		
+		if ($paypal_url == "Live" ) {
+			$ppo="<form method=\"post\" action=\"https://www.paypal.com/cgi-bin/webscr\">\n";
+		} else {
+		 	$ppo="<form method=\"post\" action=\"https://www.sandbox.paypal.com/cgi-bin/webscr\"> \n";
+		}
+	
+		$ppoptions=array();
+		$ppoptions[]=array("business",$paypal_email);
+		$ppoptions[]=array("cmd","_cart");
+		$ppoptions[]=array("currency_code",$currency);
+		$ppoptions[]=array("lc","US");
+		$ppoptions[]=array("bn","PP-BuyNowBF");
+		$ppoptions[]=array("upload","1");
+		if ( $paypal_pdt_token != "" ) $ppoptions[]=array("return",$cart_url);
+		if ( $paypal_cancel_url != "" ) $ppoptions[]=array("cancel_return",$paypal_cancel_url);
+		$ppoptions[]=array("weight_unit","lbs");
+	
+		$count=0;
+		foreach($items as $item) {
+			$count++;
+			$ppoptions[]=array("quantity_". (string)$count, $item['qty']);
+			if ( $item['options'] ) {
+				$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".apply_filters(scabn_display_item_options,$item['options']).")");
+			} else {
+				$ppoptions[]=array("item_name_". (string)$count,$item['name']);
+			}
+			$ppoptions[]=array("amount_". (string)$count, $item['price']);
+			$ppoptions[]=array("weight_". (string)$count, $item['weight']);
+	      }
+	
+		if (  ( $options['paypal_paypal_cert_file'] != "" ) & ( $options['paypal_key_file'] != "" ) & ( $options['paypal_my_cert_file'] !=  "" ) & ( $options['openssl_command'] != "" ) & (  $options['paypal_cert_id'] !="" ) ) {						
+			$ppoptions[]=array("cert_id",$paypal_cert_id);
+	
+			$ppencrypt="";
+			foreach($ppoptions as $value) {
+				$ppencrypt .= $value[0] . "=" . $value[1] . "\n";
+				}
+			$openssl_cmd = "($OPENSSL smime -sign -signer $MY_CERT_FILE -inkey $MY_KEY_FILE " .
+							"-outform der -nodetach -binary <<_EOF_\n$ppencrypt\n_EOF_\n) | " .
+							"$OPENSSL smime -encrypt -des3 -binary -outform pem $PAYPAL_CERT_FILE 2>&1";
+			exec($openssl_cmd, $output, $error);			
+			if ($error) {
+				echo "ERROR: encryption failed: $error<BR>" . implode($output) ;
+	 		} else {
+	
+			$ppo .= "<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">\n";
+			$ppo .= "<input type=\"hidden\" name=\"encrypted\" value=\"" . implode("\n",$output) . "\">\n";
+			}
+	
+		} else {
+			//echo "No Encryption";
+			foreach($ppoptions as $value) {
+				$ppo .= "<input type=\"hidden\" name=\"" . $value[0] . "\" value=\"" . $value[1] . "\">\n";
+			}
+		}
+		$ppo .= "<input type=\"image\" border=\"0\" name=\"submit\"
+	         src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\"
+	         alt=\"Make payments with PayPal - it's fast, free and secure!\"></form>";
+		return $ppo;
+	
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 	function receipt($tx_token) {
 		//This request came from paypal as their receipt page
 		//We must send confirmation to them to get info:
@@ -107,3 +194,5 @@ class scabn_paypal {
 
 
 }
+
+?>
