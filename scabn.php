@@ -55,7 +55,6 @@ if ( ! defined( 'SCABN_PLUGIN_DIR' ) ) 	define( 'SCABN_PLUGIN_DIR', WP_PLUGIN_DI
 if ( ! defined( 'SCABN_PLUGIN_URL' ) )  define( 'SCABN_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) );
 
 require_once SCABN_PLUGIN_DIR. '/includes/cart.php';
-require_once SCABN_PLUGIN_DIR. '/includes/functions.php';
 require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
 require_once SCABN_PLUGIN_DIR. '/backend.php';
 require_once SCABN_PLUGIN_DIR. '/display.php';

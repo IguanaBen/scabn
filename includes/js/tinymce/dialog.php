@@ -6,17 +6,11 @@ require_once("../../../../../../wp-config.php");
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Simple Cart & Buy Now</title>
-<!--	<script type="text/javascript" src="js/tiny_mce_popup.js"></script> 
-	<script type="text/javascript" src="../../../wp-includes/js/tinymce/tiny_mce_popup.js"</script> -->
-<script type="text/javascript" src="<?php echo site_url() ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
-
-	<script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>    
-    <script type="text/javascript" src="../format/jquery.formatCurrency-1.0.0.min.js"></script>
-<?php
-wp_enqueue_script('tinymce-popup', '/wp-includes/js/tinymce/tiny_mce_popup.js');
-?>
+<title>Simple Cart & Buy Now</title>
+<script type="text/javascript" src="<?php echo includes_url( 'js/tinymce/tiny_mce_popup.js' ) ?>"></script>
+<script type="text/javascript" src="js/dialog.js"></script>    
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="../format/jquery.formatCurrency-1.0.0.min.js"></script>
 
     <style type="text/css">
 	h2 {
@@ -34,7 +28,7 @@ wp_enqueue_script('tinymce-popup', '/wp-includes/js/tinymce/tiny_mce_popup.js');
     
 </head>
 <body>
-<form onsubmit="WPCheckoutDialog.insert();return false;" action="#">
+<form onsubmit="SCABNDialog.insert();return false;" action="#">
 <?php
 	    global $scabn_options;	    
 	    $options = $scabn_options;		
@@ -104,7 +98,7 @@ wp_enqueue_script('tinymce-popup', '/wp-includes/js/tinymce/tiny_mce_popup.js');
 
 	<div class="mceActionPanel">
 		<div style="float: left">
-			<input type="button" id="insert" name="insert" value="{#insert}" onclick="WPCheckoutDialog.insert();" />
+			<input type="button" id="insert" name="insert" value="{#insert}" onclick="SCABNDialog.insert();" />
 		</div>
 
 		<div style="float: right">
@@ -118,24 +112,3 @@ wp_enqueue_script('tinymce-popup', '/wp-includes/js/tinymce/tiny_mce_popup.js');
 
 
 
-<?php
-function wpchkt_downloadbles_product() {
-    
-	global $wpdb;
-
-
-   	    $table_name = $wpdb->prefix . "wpckt_downloadbles";
-	
-	    echo $table_name;
-	    
-        $products = "SELECT id, name FROM ". $table_name ." ORDER BY id DESC;";
-      	if($results = $wpdb->get_results($products,"ARRAY_A")){
-		
-		return $results;
-
-		} else {	  
-			return "No downloadble products uploaded.";
-		}
-			
-}
-?>
