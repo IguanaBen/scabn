@@ -54,20 +54,20 @@ pricing, shipping, weight information, bulk discounts, etc
 if ( ! defined( 'SCABN_PLUGIN_DIR' ) ) 	define( 'SCABN_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . plugin_basename( dirname( __FILE__ ) ) );
 if ( ! defined( 'SCABN_PLUGIN_URL' ) )  define( 'SCABN_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) );
 
-require_once SCABN_PLUGIN_DIR. '/includes/cart.php';
-require_once SCABN_PLUGIN_DIR. '/admin/scabn_admin.php';
-require_once SCABN_PLUGIN_DIR. '/backend.php';
-require_once SCABN_PLUGIN_DIR. '/display.php';
-require_once SCABN_PLUGIN_DIR. '/paypal.php';
-require_once SCABN_PLUGIN_DIR. '/google.php';
-require_once SCABN_PLUGIN_DIR. '/widget.php';
+require_once SCABN_PLUGIN_DIR. '/classes/cart.php';
+require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
+require_once SCABN_PLUGIN_DIR. '/classes/backend.php';
+require_once SCABN_PLUGIN_DIR. '/classes/display.php';
+require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
+require_once SCABN_PLUGIN_DIR. '/classes/google.php';
+require_once SCABN_PLUGIN_DIR. '/classes/widget.php';
 
 
 //This should be reworked into better theme system 
-if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php') ) {
-        require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'/customize.php';
+if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'.php') ) {
+        require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'.php';
 } else {
-        require_once SCABN_PLUGIN_DIR. '/templates/default/customize.php';
+        require_once SCABN_PLUGIN_DIR. '/templates/default.php';
 }
 
 

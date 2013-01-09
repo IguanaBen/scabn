@@ -1,4 +1,12 @@
 <?php
+/*
+   This class handles all functions used to configure SCABN:
+  	Adding Configure SCABN buttons to main configuration page,
+  	Adding SCABN icon to edit page/post toolbar, generating
+  	content for SCABN's configuration page, etc.
+*/
+
+
 class scabn_Admin {
 
 	function __construct() {
@@ -44,13 +52,15 @@ class scabn_Admin {
 	add_submenu_page('plugins.php', 'SCABN Settings', 'SCABN Settings', 'administrator', 'scabn_admin_page', array($this, 'admin_page'));
 	}
 
-	//Will be replaced I think with not dirs, but single files... TODO
+	//Look for files ending in .php in templates directory
 	function get_templates() {
 		$templates = array();
 		$dir = SCABN_PLUGIN_DIR."/templates/";
 		$dh  = opendir($dir);
 		while (false !== ($filename = readdir($dh))) {
-      	if (!(($filename == '.')||($filename == '..')))    $templates[] = $filename;
+			if ( substr($filename,strlen($filename)-4,4) == '.php'){
+				$templates[]=substr($filename,0,strlen($filename)-4);
+			}       				
     	}
 		return $templates;
 	}
