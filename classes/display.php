@@ -82,7 +82,7 @@ class scabn_Display {
 		//and generates a custom cart. We do a db query to get
 		//the item(s) and pricing, etc, and then call paypal / google functions
 		//to make a buy now buttons.
-		$options = get_option('scabn_options');		
+				
 		$output = "";
 		$items=apply_filters('scabn_getCustomCart',$uuid);
 		if ($items) {

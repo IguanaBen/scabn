@@ -24,7 +24,7 @@ class scabn_Backend {
 			add_action('wp_head', array($this, 'googleanalytics'));
 		}
 						
-		scabn_Admin::init();
+		if (is_admin()) scabn_Admin::init();
 		scabn_Display::init();				
 		
 	}	
@@ -129,8 +129,8 @@ class scabn_Backend {
 				//Paypal redirected here should be receipt.
 				//Empty cart and show receipt
 				$cart = $_SESSION['wfcart'];			
-				$cart->empty_cart();
-				//return scabn_paypal_receipt($tx_token);
+				$cart->empty_cart();				
+				require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';				
 				return scabn_paypal::receipt($x_token);
 			} else {					
 				//Normal checkout page.				
@@ -143,6 +143,11 @@ class scabn_Backend {
 
 	
 	function checkout_page() {
+		//  Delay loading Paypal & Google classes as we only need them
+		//	 on final checkout page and custom cart page.	
+		require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
+		require_once SCABN_PLUGIN_DIR. '/classes/google.php';
+		
 		//main checkout page when shopping (not receipt for transaction)
 										
 		//display cart
@@ -158,7 +163,7 @@ class scabn_Backend {
 			foreach($cart->get_contents() as $item) {			
 				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
 			}
-			
+		
 			$output .= ShopingCartInfo($holditems);			
 			$output .= scabn_paypal::make_button($holditems);
 			$output .= scabn_google::make_button(getShippingOptions($holditems),$holditems);			
@@ -175,6 +180,11 @@ class scabn_Backend {
 
 
 	function customcart() {
+		//  Delay loading Paypal & Google classes as we only need them
+		//	 on final checkout page and custom cart page.	
+		require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
+		require_once SCABN_PLUGIN_DIR. '/classes/google.php';
+
 		if ( isset($_GET['ccuuid'])) {
 			$uuid=$_GET['ccuuid'];
 		} else if ( isset($_POST['ccuuid'])) {
