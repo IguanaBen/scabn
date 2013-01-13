@@ -49,11 +49,10 @@ class wfCart {
 		
 		if($this->itemqtys[$itemid] > 0)  {								
 				//Item already in cart, just increment quantity.            
-		 		$this->itemqtys[$itemid] = $qty + $this->itemqtys[$itemid];
-
+		 		$this->itemqtys[$itemid] = $qty + $this->itemqtys[$itemid];				
 				//use getItemPricing to get the pricing, rather than using value input from user via website
 				//Allows pricebreaks based on quantity, etc, to be reflected in the shopping cart.
-				$this->itemprices[$itemid]=apply_filters(scabn_getItemPricing,$itemid,$this->itemqtys[$itemid],$price);
+				$this->itemprices[$itemid]=apply_filters(scabn_getItemPricing,$itemid,$this->itemqtys[$itemid],$price);				
 				
 
 		} else {
@@ -116,7 +115,7 @@ class wfCart {
 
 
 	function _update_total()
-	{ // internal function to update the total in the cart	   
+	{ // internal function to update the total in the cart	   		
 		$this->total = 0;				
       	if(sizeof($this->items > 0)) {
          	foreach($this->items as $item) {

@@ -60,27 +60,23 @@ require_once SCABN_PLUGIN_DIR. '/classes/backend.php';
 require_once SCABN_PLUGIN_DIR. '/classes/display.php';
 require_once SCABN_PLUGIN_DIR. '/classes/widget.php';
 
-
-
-//require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
-//require_once SCABN_PLUGIN_DIR. '/classes/google.php';
-
-
-
 //No need to burden SCABN with admin settings when user is not admin
 if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
 
 
-//This should be reworked into better theme system 
-if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'.php') ) {
-        require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['cart_theme'].'.php';
-} else {
-        require_once SCABN_PLUGIN_DIR. '/templates/default.php';
-}
-
-
 //Start the magic
-scabn_Backend::init();
+//scabn_Backend::init();
+
+//Switched from above, to this
+//As maybe 'best practice' and
+//in hope of remove_filter being
+//able to reference functions
+//in the class via the class instance
+//variable. It failed, but I left this in.
+$scabn_B = new scabn_Backend();
+$scabn_B->init();
+
+
 
 
 ?>

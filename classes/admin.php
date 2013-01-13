@@ -59,7 +59,7 @@ class scabn_Admin {
 		$dh  = opendir($dir);
 		while (false !== ($filename = readdir($dh))) {
 			if ( substr($filename,strlen($filename)-4,4) == '.php'){
-				$templates[]=substr($filename,0,strlen($filename)-4);
+				$templates[substr($filename,0,strlen($filename)-4)]=substr($filename,0,strlen($filename)-4);
 			}       				
     	}
 		return $templates;
@@ -69,7 +69,7 @@ class scabn_Admin {
 	
 	
 	//Loads all the options to be configured using custom_add_settings_field function to
-	//simplify proccess of adding new options.
+	//simplify process of adding new options.
 	function options_init() {				
 				
 		register_setting( 'scabn_options', 'scabn_options',array($this, 'options_validate'));		

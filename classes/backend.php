@@ -12,24 +12,34 @@
 class scabn_Backend {
 
 	function __construct() {
-		add_action('wp_head', 'scabn_Display::scabn_head');		
-		add_filter('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
-		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
-		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
-		add_shortcode('scabn_customcart', array($this,'customcart'));		
-		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
 		
+		add_shortcode('scabn_customcart', array($this,'customcart'));		
+		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));		
+		add_action('wp_head', 'scabn_Display::scabn_head');		
+		add_filter('scabn_getItemPricing',array($this, 'getItemPricing3'),10,3);
+		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
+		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);		
+		add_filter('scabn_shoppingCartInfo',array($this,'shoppingCartInfo'),10,1);															
+		add_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10,1);				
+		
+				
 		$scabn_options = get_option('scabn_options');		
 		if ( $scabn_options['analytics_id'] != '' ) {						
 			add_action('wp_head', array($this, 'googleanalytics'));
 		}
 						
 		if (is_admin()) scabn_Admin::init();
-		scabn_Display::init();				
+		scabn_Display::init();							
+		
+		
+		//All filters should have been applied by now, so we can now load template		
+		if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['template'].'.php') && $scabn_options['template'] != 'default' ) {	
+			require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['template'].'.php';
+		}	
 		
 	}	
 	
-	
+				
 	//I need this and the call to it (scabn_Backend::init() -- I just don't know why 
 	static function &init() {
 		static $instance = false;
@@ -40,17 +50,29 @@ class scabn_Backend {
 		return $instance;
 	}	
 	
-
 	function scabn_init(){
-
 		session_start();      // start the session
 		$cart =& $_SESSION['wfcart']; // load the cart from the session
 		if(!is_object($cart)) $cart = new wfCart(); // if there isn't a cart, create a new (empty) one	
+		
 		scabn_Backend::request();
+	}
+
+
+	function shoppingCartInfo($items) {									
+		return '';		
+	}		
+		
+	
+	function getShippingOptions($items){
+		$ship=array();
+		$ship[]=array("name" => "Standard Shipping", "price" => "5", "region" => "all");
+		return $ship;	
+	}
+
+
 
 	
-
-}
 
 	function request(){
 		//This function handles all the client input to change cart via GET / POST requests.
@@ -163,10 +185,10 @@ class scabn_Backend {
 			foreach($cart->get_contents() as $item) {			
 				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
 			}
-		
-			$output .= ShopingCartInfo($holditems);			
+						
+			$output .= apply_filters(scabn_shoppingCartInfo,$holditems);			
 			$output .= scabn_paypal::make_button($holditems);
-			$output .= scabn_google::make_button(getShippingOptions($holditems),$holditems);			
+			$output .= scabn_google::make_button(apply_filters('scabn_getShippingOptions',$holditems),$holditems);			
 	
 		}
 				
@@ -174,9 +196,6 @@ class scabn_Backend {
 		
 	}
 	
-	
-
-
 
 
 	function customcart() {
@@ -202,59 +221,14 @@ class scabn_Backend {
 	}
 
 
-
-	function getItemPricing($itemname,$qty,$inputprice) {
-		//This is the function that sets the pricing
-		//for all items in your cart. If you want to use
-		//the pricing that is input by the user then just return
-		//the $inputprice. This lets you set pricing in the simple
-		//wordpress syntax of [scabn name="ItemName" price="1.00"]
-		//however, this number is set by the user's computer and
-		//thus can easily be edited by a hacker to set the price
-		//to anything. For better security and the ability to
-		//automatically apply price-breaks, you can have this
-		//function return the pricing based entirely on some
-		//internal criteria and ignore the user-supplied price ($inputprice)
-		//I recommend using a db query where the db stores your pricing. 
-		//Putting the pricing in the database will have to be done outside SCABN.
-		
-		//Sample db query
-		//global $wpdb;
-		//$sql=$wpdb->prepare('SELECT price FROM pricing where name=%s and minimum <= %s order by minimum desc',$itemname,$qty);
-		//$price = $wpdb->get_var($sql);
-		//if ( $price == Null ) {
-			//print 'Error getting price for item '.$itemid.'. Please contact us about this problem.';
-			//This will get the buyer to notice the error and complain. Price should not be null from db query
-			//$price=99999.99;
-		//return $price;
-		
-		
-		//Not secure but simple
+	function getItemPricing3($itemname,$qty,$inputprice) {				
 		return $inputprice;
-
 	}
 	
 	
 	
 	function getCustomCart($uuid) {
-		//This is a dummy function -- if you want to use it / write your own, you
-		//should use add_filter to create a hook from scabn_getCustomCart to your function.	
-		
-		//Return a list of items for custom cart based on the uuid of the cart
-		//Return nothing if no cart found.
-	
-		//Sample db query to get custom cart:
-		//global $wpdb;	
-		//$sql=$wpdb->prepare('SELECT id,name,qty,price, weight FROM customcartitems, customcart where customcart.id = customcartitems.id and customcart.id =%s and customcart.expire > now()',$uuid);	
-		//$items = $wpdb->get_results($sql);	
-		//$cartitems=array();	
-		//foreach ($items as $item) {
-		//	$cartitems[]=array("id"=>$item->id,"name"=>$item->name,"qty"=>$item->qty,"price"=>$item->price,"weight"=>$item->weight);
-		//}		
-			
-		$cartitems=NULL;
-		return $cartitems;	
-		
+		return NULL;									
 	}
 		
 		
@@ -282,9 +256,15 @@ class scabn_Backend {
 
 	
 	
-	function getItemWeight($itemname,$qty,$weight) {
-			return 4.2;
-			}
+	function getItemWeight($itemname,$qty,$inputweight) {
+		//Note: Paypal doesn't like a weight of zero, this makes
+		//sure weight it at least 0.01		
+		if ($inputweight <= 0.01) {
+			$inputweight = 0.01;
+		}
+	
+	return $inputweight;				
+	}
 	
 	
 	function getCurrencies() {

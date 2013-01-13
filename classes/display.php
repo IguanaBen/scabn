@@ -20,6 +20,9 @@ class scabn_Display {
 		add_action('scabn_display_add_to_cart', array($this,'display_add_to_cart'),10,1);
 		add_action('scabn_display_widget', array($this,'display_widget'),10,1);
 		add_action('scabn_display_cart', array($this,'display_cart'),10,1);
+		add_action('scabn_displayCustomCartContents', array($this,'displayCustomCartContents'),10,1);
+		add_filter('scabn_display_paypal_receipt',array($this, 'display_paypal_receipt'),10,1);
+		
 	}	
 	
 	//Again, not sure why I need this, but I do
@@ -67,6 +70,31 @@ class scabn_Display {
 	}
 
 
+
+	function display_paypal_receipt($keyarray) {	
+		$output="";
+		$firstname = $keyarray['first_name'];
+		$lastname = $keyarray['last_name'];
+
+		$amount = $keyarray['payment_gross'];
+
+		$output .= "<p><h3>Checkout Complete -- Thank you for your purchase!</h3></p>";
+		$output .= "<h4>Payment Details</h4><ul>\n";
+		$output .= "<li>Name: $firstname $lastname</li>\n";
+		$output .= "<li>Total Amount: $amount</li>\n";
+		$output .= "</ul>";
+		$output .= "You will receive a confirmation e-mail when payment for the order clears and a second email when your order ships. "; 
+		$output .= "You may log into your paypal account at <a href=\"https://www.paypal.com/us\">paypal</a> to view details of this transaction.";
+		return $output;
+}
+
+
+
+
+
+
+
+
 	function enter_cart_uuid(){
 		$output="<BR>Please enter the custom cart id here:
 			<form name=\"input\" action=\"custom-cart\" method=\"GET\">
@@ -74,6 +102,34 @@ class scabn_Display {
 			<input type=\"submit\" value=\"Submit\" /></p>
 			</form>";
 		return $output;
+	}
+
+	function displayCustomCartContents($items) {
+		$output="";		
+		if ($items) {			
+			$output .="<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>	
+		<thead>
+		<tr class=\"thead\">
+			<th scope=\"col\">Qty</th>
+			<th scope=\"col\">Items</th>
+			<th scope=\"col\" align=\"right\">Unit Price</th>
+		</tr>
+		</thead>";	
+			$options = get_option('scabn_options');		
+			$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);						
+			foreach($items as $item) {
+
+				$output .= "<tr class = \"ck_content\">
+				<td>" . $item['qty'] . "</td>            
+				<td>" . $item['name'] ."</td>
+				<td align='right'>" . $currency . number_format($item['price'],2) . "</td>
+			</tr>";
+			 
+			}
+		$output .= "</table>";		
+	}
+	return $output;
+				
 	}
 
 	
@@ -84,10 +140,10 @@ class scabn_Display {
 		//to make a buy now buttons.
 				
 		$output = "";
-		$items=apply_filters('scabn_getCustomCart',$uuid);
+		$items=apply_filters('scabn_getCustomCart',$uuid);		
 		if ($items) {
 	
-			$output .= displayCustomCartContents($items);
+			$output .= apply_filters('scabn_displayCustomCartContents',$items);
 			$output .= scabn_paypal::make_button($items);	
 			$output .= scabn_google::make_button(getShippingOptions($items),$items);
 		} else {

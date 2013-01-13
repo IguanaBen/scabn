@@ -172,7 +172,7 @@ class scabn_paypal {
 	         }
 	
 	
-				$output .= display_paypal_receipt($keyarray);
+				$output .= apply_filters('scabn_display_paypal_receipt',$keyarray);
 	
 			}
 			else if (strcmp ($lines[0], "FAIL") == 0) {
@@ -184,7 +184,7 @@ class scabn_paypal {
 			}
 		}
 
-	
+	$output .= apply_filters('scabn_display_paypal_receipt','asdf');
 	return $output;
 
 	}
