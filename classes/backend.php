@@ -3,7 +3,7 @@
 /* This class handles SCABN's backend -- processing
    GET / POST requests, initialization of the web session,
    getting pricing, etc.
-   
+
    It also contains functions to getting content: lists of
    currencies and their display formats, Paypal URLs, etc.
 */
@@ -12,58 +12,54 @@
 class scabn_Backend {
 
 	function __construct() {
-		
-		add_shortcode('scabn_customcart', array($this,'customcart'));		
-		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));		
-		add_action('wp_head', 'scabn_Display::scabn_head');		
-		add_filter('scabn_getItemPricing',array($this, 'getItemPricing3'),10,3);
+
+		add_shortcode('scabn_customcart', array($this,'customcart'));
+		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
+		add_action('wp_head', 'scabn_Display::scabn_head');
+		add_filter('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
 		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
-		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);		
-		add_filter('scabn_shoppingCartInfo',array($this,'shoppingCartInfo'),10,1);															
-		add_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10,1);				
-		
-				
-		$scabn_options = get_option('scabn_options');		
-		if ( $scabn_options['analytics_id'] != '' ) {						
+		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
+		add_filter('scabn_shoppingCartInfo',array($this,'shoppingCartInfo'),10,1);
+		add_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10,1);
+
+
+		$scabn_options = get_option('scabn_options');
+		if ( $scabn_options['analytics_id'] != '' ) {
 			add_action('wp_head', array($this, 'googleanalytics'));
 		}
-						
-		if (is_admin()) scabn_Admin::init();
-		scabn_Display::init();							
-		
-		
-		//All filters should have been applied by now, so we can now load template		
+
+		if (is_admin()) $this->admin=scabn_Admin::init();
+		$this->display=scabn_Display::init();
+
+		//All filters should have been applied by now, so we can now load template
 		if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['template'].'.php') && $scabn_options['template'] != 'default' ) {	
 			require_once SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['template'].'.php';
-		}	
-		
-	}	
-	
-				
-	//I need this and the call to it (scabn_Backend::init() -- I just don't know why 
+		}
+
+	}
+
+
+	//I need this and the call to it (scabn_Backend::init() -- I just don't know why
 	static function &init() {
 		static $instance = false;
 		if ( !$instance ) {
-				$instance = new scabn_Backend ;
+			$instance = new scabn_Backend ;
 		}
-		scabn_Backend::scabn_init();		
+		scabn_Backend::scabn_init();
 		return $instance;
-	}	
-	
+	}
+
 	function scabn_init(){
 		session_start();      // start the session
 		$cart =& $_SESSION['wfcart']; // load the cart from the session
-		if(!is_object($cart)) $cart = new wfCart(); // if there isn't a cart, create a new (empty) one	
-		
+		if(!is_object($cart)) $cart = new wfCart(); // if there isn't a cart, create a new (empty) one
+
 		scabn_Backend::request();
 	}
 
 
-	function shoppingCartInfo($items) {									
-		return '';		
-	}		
-		
 	
+
 	function getShippingOptions($items){
 		$ship=array();
 		$ship[]=array("name" => "Standard Shipping", "price" => "5", "region" => "all");
@@ -185,8 +181,8 @@ class scabn_Backend {
 			foreach($cart->get_contents() as $item) {			
 				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
 			}
-						
-			$output .= apply_filters(scabn_shoppingCartInfo,$holditems);			
+			
+			$output .= apply_filters('scabn_shoppingCartInfo',$holditems);
 			$output .= scabn_paypal::make_button($holditems);
 			$output .= scabn_google::make_button(apply_filters('scabn_getShippingOptions',$holditems),$holditems);			
 	
@@ -221,14 +217,17 @@ class scabn_Backend {
 	}
 
 
-	function getItemPricing3($itemname,$qty,$inputprice) {				
+	function getItemPricing($itemname,$qty,$inputprice) {				
 		return $inputprice;
 	}
 	
-	
+	function shoppingCartInfo($items) {		
+		return 'Placeholder';
+	}
+
 	
 	function getCustomCart($uuid) {
-		return NULL;									
+		return Null;									
 	}
 		
 		

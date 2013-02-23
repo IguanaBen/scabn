@@ -65,7 +65,8 @@ if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
 
 
 //Start the magic
-//scabn_Backend::init();
+global $scabn_B;
+$scabn_B=scabn_Backend::init();
 
 //Switched from above, to this
 //As maybe 'best practice' and
@@ -73,8 +74,8 @@ if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
 //able to reference functions
 //in the class via the class instance
 //variable. It failed, but I left this in.
-$scabn_B = new scabn_Backend();
-$scabn_B->init();
+//$scabn_B = new scabn_Backend();
+//$scabn_B->init();
 
 
 
