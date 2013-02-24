@@ -110,3 +110,12 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.4.1 =
  * More testing and it works fine, so tagging as stable. Also tested against Wordpress 3.4.2.
+
+= 1.4.2 =
+  * Fixed bug where Google Analytics Tracking Code was not getting onto website.
+
+= 1.4.3 =
+  * Fixed bug where ":" was displayed for item options name even when name was blank.
+
+= 1.4.4 =
+  * Title set on SCABN's widget (hardcoded to 'Simple Checkout')
