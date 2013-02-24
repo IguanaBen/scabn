@@ -181,7 +181,7 @@ class scabn_Backend {
 			foreach($cart->get_contents() as $item) {			
 				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
 			}
-			
+			//print_r($holditems);		
 			$output .= apply_filters('scabn_shoppingCartInfo',$holditems);
 			$output .= scabn_paypal::make_button($holditems);
 			$output .= scabn_google::make_button(apply_filters('scabn_getShippingOptions',$holditems),$holditems);			
@@ -257,11 +257,10 @@ class scabn_Backend {
 	
 	function getItemWeight($itemname,$qty,$inputweight) {
 		//Note: Paypal doesn't like a weight of zero, this makes
-		//sure weight it at least 0.01		
+		//sure weight it at least 0.01				
 		if ($inputweight <= 0.01) {
 			$inputweight = 0.01;
 		}
-	
 	return $inputweight;				
 	}
 	

@@ -68,16 +68,4 @@ if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
 global $scabn_B;
 $scabn_B=scabn_Backend::init();
 
-//Switched from above, to this
-//As maybe 'best practice' and
-//in hope of remove_filter being
-//able to reference functions
-//in the class via the class instance
-//variable. It failed, but I left this in.
-//$scabn_B = new scabn_Backend();
-//$scabn_B->init();
-
-
-
-
 ?>

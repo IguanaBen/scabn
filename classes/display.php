@@ -62,8 +62,7 @@ class scabn_Display {
       if ($title) {
       	$output .= $before_title . $title . $after_title;      
       }
-		$output .= apply_filters(scabn_display_cart,'widget');		
-		//$output .=	scabn_cart();		
+		$output .= apply_filters(scabn_display_cart,'widget');						
 		$output .= $after_widget;
 						
 		return $output;
@@ -139,7 +138,7 @@ class scabn_Display {
 		//the item(s) and pricing, etc, and then call paypal / google functions
 		//to make a buy now buttons.
 				
-		$output = "";
+		$output = "";		
 		$items=apply_filters('scabn_getCustomCart',$uuid);		
 		if ($items) {
 	
