@@ -6,12 +6,11 @@ require_once("../../../../../../wp-config.php");
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Simple Cart & Buy Now</title>
-	<script type="text/javascript" src="<?php echo site_url() ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
-	<script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>    
-    <script type="text/javascript" src="../format/jquery.formatCurrency-1.0.0.min.js"></script>
-    
+<title>Simple Cart & Buy Now</title>
+<script type="text/javascript" src="<?php echo includes_url( 'js/tinymce/tiny_mce_popup.js' ) ?>"></script>
+<script type="text/javascript" src="js/dialog.js"></script>    
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="../format/jquery.formatCurrency-1.0.0.min.js"></script>
 
     <style type="text/css">
 	h2 {
@@ -29,11 +28,11 @@ require_once("../../../../../../wp-config.php");
     
 </head>
 <body>
-<form onsubmit="WPCheckoutDialog.insert();return false;" action="#">
+<form onsubmit="SCABNDialog.insert();return false;" action="#">
 <?php
 	    global $scabn_options;	    
 	    $options = $scabn_options;		
-        $currency = scabn_curr_symbol($options['currency']); 
+        $currency = apply_filters('scabn_display_currency_symbol',$options['currency']); 
 ?>    
     <p>
     <input name="checkout_page" type="checkbox" value="1" class="checkout_page"/>
@@ -63,7 +62,7 @@ require_once("../../../../../../wp-config.php");
     <td><input id="weight" name="weight" type="text" class="prod dwl" size="10"/></td>
   </tr>
    <tr>
-    <td align="right" class="gray dwl_gray"><strong>Options Name</strong><br />(size,color,type...)</td>
+    <td align="right" class="gray dwl_gray"><strong>Options Name</strong><br />(size or color or type, etc)</td>
     <td class="gray"><input id="p_options_name" name="p_options_name" type="text" class="prod" size="20" /></td>
   </tr>    
   <tr>
@@ -99,7 +98,7 @@ require_once("../../../../../../wp-config.php");
 
 	<div class="mceActionPanel">
 		<div style="float: left">
-			<input type="button" id="insert" name="insert" value="{#insert}" onclick="WPCheckoutDialog.insert();" />
+			<input type="button" id="insert" name="insert" value="{#insert}" onclick="SCABNDialog.insert();" />
 		</div>
 
 		<div style="float: right">
@@ -113,24 +112,3 @@ require_once("../../../../../../wp-config.php");
 
 
 
-<?php
-function wpchkt_downloadbles_product() {
-    
-	global $wpdb;
-
-
-   	    $table_name = $wpdb->prefix . "wpckt_downloadbles";
-	
-	    echo $table_name;
-	    
-        $products = "SELECT id, name FROM ". $table_name ." ORDER BY id DESC;";
-      	if($results = $wpdb->get_results($products,"ARRAY_A")){
-		
-		return $results;
-
-		} else {	  
-			return "No downloadble products uploaded.";
-		}
-			
-}
-?>

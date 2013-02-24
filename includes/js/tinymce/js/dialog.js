@@ -1,6 +1,6 @@
 tinyMCEPopup.requireLangPack();
 	
-var WPCheckoutDialog = {
+var SCABNDialog = {
 	init : function() {
 		var f = document.forms[0];
         var shortcode;
@@ -125,5 +125,5 @@ var WPCheckoutDialog = {
 	}
 };
 
-tinyMCEPopup.onInit.add(WPCheckoutDialog.init, WPCheckoutDialog);
+tinyMCEPopup.onInit.add(SCABNDialog.init, SCABNDialog);
 

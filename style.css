@@ -1,0 +1,45 @@
+.hidden{
+	display:none;
+}
+
+.val_error{
+	color:#FF0000;
+}
+
+.val_error p{
+	margin:5px 0;
+}
+
+
+.addtocart {
+	padding: 2px;
+	display: block;
+	float:right;
+	margin-left: 20px;
+	margin-top:0px;
+	margin-bottom:0px;
+	border: 3px solid #AACCAA;
+ 	-moz-border-radius: 20px;
+   -webkit-border-radius: 20px;
+   -khtml-border-radius: 20px;
+    border-radius: 20px;
+	position:relative;
+	top:-30px;
+	margin-top:0px;
+	margin-bottom:-30px;
+	padding-top:3px;
+	padding-bottom:3px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+
+.addtocart p#cartname {
+	font-size: 18px;
+    line-height: 12px;
+	text-align:center;
+	padding-top:0;
+	padding-bottom:0;
+	margin-top:0;
+	margin-bottom:15px;
+}
