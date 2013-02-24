@@ -3,7 +3,7 @@ Contributors: bluey80
 Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Google Wallet, encrypted carts, checkout, shopping cart widget, ajax, Google analytics, analytics, custom carts, custom shopping carts
 Requires at least: 3.2 
 Tested up to: 3.4.2 
-Stable tag: 1.4.2
+Stable tag: 1.4.8
 
 Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics to tracks sales. Based on Wordpress Checkout.
 
@@ -119,3 +119,15 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.4.4 =
   * Title set on SCABN's widget (hardcoded to 'Simple Checkout')
+
+= 1.4.5 = 
+  * Changed loading of tiny_mce_popup to work with WordPress 3.5
+
+= 1.4.6 =
+  * Fixed missing ">" typo in Paypal checkout button when using unencrypted buttons.
+
+= 1.4.7 =
+  * Undid 1.4.6 as that didn't fix the problem.
+
+= 1.4.8 =
+  * Changed return of html content in scabn_sc to echo as it seems on some these that return gets sanitized to html, which is bad.
