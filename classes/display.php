@@ -58,9 +58,9 @@ class scabn_Display {
 
 	
 	function display_widget($title) {
-		$output = $before_widget;		      		      
+		$output = $before_widget;
       if ($title) {
-      	$output .= $before_title . $title . $after_title;      
+      	$output .= $before_title . "<h4 class=\"widgettitle\">$title</h4>" . $after_title;      
       }
 		$output .= apply_filters(scabn_display_cart,'widget');						
 		$output .= $after_widget;
