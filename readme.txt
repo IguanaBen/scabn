@@ -137,3 +137,6 @@ you can define different shipping options for different locations and weight OR 
 = 1.9.1 =
   * Major rewrite for SCABN 2.0. Uses classes, removes dead code from WP Checkout. Better customization / template system.
   * Because of major rewrite to template system, please backup your template before upgrading and you will need to port your customization to new system.
+
+= 1.9.2 =
+  * Only display Paypal / Google buy now buttons if merchant id / email is set in SCABN's settings.

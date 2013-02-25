@@ -15,7 +15,10 @@ class scabn_google {
 		$options=get_option('scabn_options');
 		$gc_merchantid = $options['gc_merchantid'];
 		$gc_merchantkey=$options['gc_merchantkey'];
-	
+
+		//If no merchant ID, don't bother or create new button.
+		if ( $gc_merchantid != "" ) {
+
 		$gc="<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 		<checkout-shopping-cart xmlns=\"http://checkout.google.com/schema/2\">";
 		$gc .= "<shopping-cart>\n\t<items>";
@@ -82,7 +85,7 @@ class scabn_google {
 		return $gout;
 	
 		}
-	
+		}
 
 	
 	function CalcHmacSha1($data,$key) {

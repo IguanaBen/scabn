@@ -22,13 +22,16 @@ class scabn_paypal {
 		$MY_CERT_FILE= $options['paypal_my_cert_file'];
 		$MY_KEY_FILE = $options['paypal_key_file'];
 		$PAYPAL_CERT_FILE=$options['paypal_paypal_cert_file'];
-		
+
 		if ($paypal_url == "Live" ) {
 			$ppo="<form method=\"post\" action=\"https://www.paypal.com/cgi-bin/webscr\">\n";
 		} else {
 		 	$ppo="<form method=\"post\" action=\"https://www.sandbox.paypal.com/cgi-bin/webscr\"> \n";
 		}
-	
+
+
+		//If no Paypal email, skip everything, don't make a button.
+		if ( $paypal_email != "" ) {
 		$ppoptions=array();
 		$ppoptions[]=array("business",$paypal_email);
 		$ppoptions[]=array("cmd","_cart");
@@ -39,7 +42,7 @@ class scabn_paypal {
 		if ( $paypal_pdt_token != "" ) $ppoptions[]=array("return",$cart_url);
 		if ( $paypal_cancel_url != "" ) $ppoptions[]=array("cancel_return",$paypal_cancel_url);
 		$ppoptions[]=array("weight_unit","lbs");
-	
+
 		$count=0;
 		foreach($items as $item) {
 			$count++;
@@ -52,10 +55,10 @@ class scabn_paypal {
 			$ppoptions[]=array("amount_". (string)$count, $item['price']);
 			$ppoptions[]=array("weight_". (string)$count, $item['weight']);
 	      }
-	
+
 		if (  ( $options['paypal_paypal_cert_file'] != "" ) & ( $options['paypal_key_file'] != "" ) & ( $options['paypal_my_cert_file'] !=  "" ) & ( $options['openssl_command'] != "" ) & (  $options['paypal_cert_id'] !="" ) ) {						
 			$ppoptions[]=array("cert_id",$paypal_cert_id);
-	
+
 			$ppencrypt="";
 			foreach($ppoptions as $value) {
 				$ppencrypt .= $value[0] . "=" . $value[1] . "\n";
@@ -63,15 +66,15 @@ class scabn_paypal {
 			$openssl_cmd = "($OPENSSL smime -sign -signer $MY_CERT_FILE -inkey $MY_KEY_FILE " .
 							"-outform der -nodetach -binary <<_EOF_\n$ppencrypt\n_EOF_\n) | " .
 							"$OPENSSL smime -encrypt -des3 -binary -outform pem $PAYPAL_CERT_FILE 2>&1";
-			exec($openssl_cmd, $output, $error);			
+			exec($openssl_cmd, $output, $error);
 			if ($error) {
 				echo "ERROR: encryption failed: $error<BR>" . implode($output) ;
 	 		} else {
-	
+
 			$ppo .= "<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">\n";
 			$ppo .= "<input type=\"hidden\" name=\"encrypted\" value=\"" . implode("\n",$output) . "\">\n";
 			}
-	
+
 		} else {
 			//echo "No Encryption";
 			foreach($ppoptions as $value) {
@@ -82,16 +85,8 @@ class scabn_paypal {
 	         src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\"
 	         alt=\"Make payments with PayPal - it's fast, free and secure!\"></form>";
 		return $ppo;
-	
+		}
 	}
-
-
-
-
-
-
-
-
 
 
 
