@@ -140,3 +140,9 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.2 =
   * Only display Paypal / Google buy now buttons if merchant id / email is set in SCABN's settings.
+
+= 1.9.3 =
+  * Removed 'Placeholder' echo leftover from debugging.
+
+= 1.9.4 = 
+  * Small code changes to remove warning / notification with running WP with DEBUG on.

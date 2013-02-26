@@ -46,20 +46,20 @@ class wfCart {
 
 
 	function add_item($itemid,$qty=1,$price = FALSE, $name = FALSE, $options, $url = FALSE, $weight=0)	{ 
-		
-		if($this->itemqtys[$itemid] > 0)  {								
-				//Item already in cart, just increment quantity.            
-		 		$this->itemqtys[$itemid] = $qty + $this->itemqtys[$itemid];				
+
+		if( array_key_exists($itemid,$this->itemqtys) && $this->itemqtys[$itemid] > 0)  {
+				//Item already in cart, just increment quantity.
+		 		$this->itemqtys[$itemid] = $qty + $this->itemqtys[$itemid];
 				//use getItemPricing to get the pricing, rather than using value input from user via website
 				//Allows pricebreaks based on quantity, etc, to be reflected in the shopping cart.
-				$this->itemprices[$itemid]=apply_filters(scabn_getItemPricing,$itemid,$this->itemqtys[$itemid],$price);				
-				
+				$this->itemprices[$itemid]=apply_filters('scabn_getItemPricing',$itemid,$this->itemqtys[$itemid],$price);
+
 
 		} else {
 			//Adding new items to cart.		
 			$this->items[]=$itemid;
 			$this->itemqtys[$itemid] = $qty;
-			$this->itemprices[$itemid] = apply_filters(scabn_getItemPricing,$itemid,$this->itemqtys[$itemid],$price);									
+			$this->itemprices[$itemid] = apply_filters('scabn_getItemPricing',$itemid,$this->itemqtys[$itemid],$price);									
 			$this->itemname[$itemid] = $name;
 			$this->itemoptions[$itemid] = $options;
 			$this->itemurl[$itemid] = $url;
@@ -79,7 +79,7 @@ class wfCart {
 			$this->del_item($itemid);
 		} else {
 			$this->itemqtys[$itemid] = $qty;			
-			$this->itemprices[$itemid] = apply_filters(scabn_getItemPricing,$itemid,$this->itemqtys[$itemid],$this->itemprices[$itemid]);			
+			$this->itemprices[$itemid] = apply_filters('scabn_getItemPricing',$itemid,$this->itemqtys[$itemid],$this->itemprices[$itemid]);			
 		}
 		$this->_update_total();
 	} // end of edit_item

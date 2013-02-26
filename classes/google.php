@@ -26,7 +26,7 @@ class scabn_google {
 		foreach($items as $item) {
 			$gc .= "\n\t\t<item>";
 			if ( $item['options']  ) {
-				$gc .= "\n\t\t\t<item-name>".$item['name']." (".apply_filters(scabn_display_item_options,$item['options']).")</item-name>";
+				$gc .= "\n\t\t\t<item-name>".$item['name']." (".apply_filters('scabn_display_item_options',$item['options']).")</item-name>";
 			} else {
 				$gc .= "\n\t\t\t<item-name>".$item['name']."</item-name>";
 			}
@@ -66,7 +66,7 @@ class scabn_google {
 		$gc .= "\n</checkout-shopping-cart>";
 	
 		$b64=base64_encode($gc);
-	
+		$gout="";
 	 	if ( $options['analytics_id'] != '' ) {
 			$gout.= "<form method=\"POST\" onsubmit=\"_gaq.push(function() {var pageTracker = _gat._getTrackerByName('myTracker');setUrchinInputCode(pageTracker);});\" action=\"https://checkout.google.com/api/checkout/v2/checkout/Merchant/".$gc_merchantid."/\">";
 		} else {

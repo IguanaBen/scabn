@@ -79,7 +79,7 @@ class scabn_Admin {
 		scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',scabn_Backend::getCurrencies());
 		scabn_Admin::custom_add_settings_field('template', 'Select Template: ', 'general', 'general_options','input_selection',scabn_Admin::get_templates());
 
-		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');			
+		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');
 		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: ', 'paypal', 'paypal_options','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());								
 		//scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');
@@ -136,8 +136,9 @@ class scabn_Admin {
 			
 
 	//Set text, if any, to display after new section.
-	function section_text($arg) {				
-		if (is_array($arg))	echo $arg[0];
+	function section_text($arg) {
+		//if (is_array($arg) && sizeof($arg) > 0)	echo $arg[0];
+		//print_r($arg);
 	}
 	
 	//Generate html for a normal text input option

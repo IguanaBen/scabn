@@ -99,20 +99,29 @@ class scabn_Backend {
 				$price = floatval($_REQUEST['item_price']);
 				$item_id = sanitize_title($_REQUEST['item_id']);
 			}		
-			$cart->add_item($item_id,intval($_REQUEST['item_qty']),$price,sanitize_text_field($_REQUEST['item_name']),$item_options,esc_url($_REQUEST['item_url']),floatval($_REQUEST['item_weight']));		
+
+			$temparray=array();
+			foreach (array("item_qty","item_name","item_url","item_weight") as $label) {
+				if (array_key_exists($label,$_REQUEST)) {
+					$temparray[$label]=$_REQUEST[$label];
+				} else {
+					$temparray[$label]="";
+				}
+			}
+			$cart->add_item($item_id,intval($temparray['item_qty']),$price,sanitize_text_field($temparray['item_name']),$item_options,esc_url($temparray['item_url']),floatval($temparray['item_weight']));
 		}
-	
+
 		if (isset ($_REQUEST['remove']) && $_REQUEST['remove'] ){
 		   $cart->del_item(sanitize_title($_REQUEST['remove']));
 		}
-	
+
 		if (isset($_REQUEST['empty']) && $_REQUEST['empty']  ){
 		   $cart->empty_cart();
 		}
-	
-		if (isset($_REQUEST['update']) && $_REQUEST['update']  ){				
+
+		if (isset($_REQUEST['update']) && $_REQUEST['update']  ){
 			for ($i=0; $i<sizeof($cart->items); $i++){
-				if (ctype_digit($_POST['qty_'.$i])){												
+				if (ctype_digit($_POST['qty_'.$i])){
 					$cart->edit_item(sanitize_title($_POST['item_'.$i]),intval($_POST['qty_'.$i]));
 			   	}
 			}
@@ -141,9 +150,11 @@ class scabn_Backend {
 		} else {
 			//No options, so this is checkout page.
 			//Check for Paypal token in case this is a receipt page
-			$tx_token = $_GET['tx'];
+			if ( array_key_exists('tx',$_GET)) {
+				$tx_token = $_GET['tx'];
+			}
 			
-			if ($tx_token) {
+			if (isset($tx_token)) {
 				//Paypal redirected here should be receipt.
 				//Empty cart and show receipt
 				$cart = $_SESSION['wfcart'];			
@@ -169,7 +180,7 @@ class scabn_Backend {
 		//main checkout page when shopping (not receipt for transaction)
 										
 		//display cart
-		$output = apply_filters(scabn_display_cart,'checkout');
+		$output = apply_filters('scabn_display_cart','checkout');
 		
 		//build array of items for passing to Paypal / Google button generating functions
 		$cart = $_SESSION['wfcart'];
@@ -179,7 +190,7 @@ class scabn_Backend {
 			
 			$holditems=array();
 			foreach($cart->get_contents() as $item) {			
-				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters(scabn_getItemPricing,$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters(scabn_getItemWeight,$item['id'],$item['qty'],$item['weight']));	
+				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters('scabn_getItemPricing',$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters('scabn_getItemWeight',$item['id'],$item['qty'],$item['weight']));	
 			}
 			//print_r($holditems);		
 			$output .= apply_filters('scabn_shoppingCartInfo',$holditems);

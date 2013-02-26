@@ -48,7 +48,7 @@ class scabn_paypal {
 			$count++;
 			$ppoptions[]=array("quantity_". (string)$count, $item['qty']);
 			if ( $item['options'] ) {
-				$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".apply_filters(scabn_display_item_options,$item['options']).")");
+				$ppoptions[]=array("item_name_". (string)$count,$item['name']." (".apply_filters('scabn_display_item_options',$item['options']).")");
 			} else {
 				$ppoptions[]=array("item_name_". (string)$count,$item['name']);
 			}

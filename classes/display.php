@@ -1,8 +1,8 @@
 <?php
 
-/* This class handles SCABN's Display -- 
-	Generating HTML, etc. 
-	
+/* This class handles SCABN's Display --
+	Generating HTML, etc.
+
 	All functions here are called via actions / filters
 	so they can easily be replaced / hijacked for customization.
 */
@@ -22,55 +22,55 @@ class scabn_Display {
 		add_action('scabn_display_cart', array($this,'display_cart'),10,1);
 		add_action('scabn_displayCustomCartContents', array($this,'displayCustomCartContents'),10,1);
 		add_filter('scabn_display_paypal_receipt',array($this, 'display_paypal_receipt'),10,1);
-		
-	}	
-	
+
+	}
+
 	//Again, not sure why I need this, but I do
 	static function &init() {
-				
+
 		static $instance = false;
 		if ( !$instance ) {
 				$instance = new scabn_Display ;
 		}
 		return $instance;
-	}		
-	
-	
+	}
+
+
 	//How should item options be displayed in the cart
 	//Do we display the option name (eg color)? Or just the value (eg Red)?
 	//Shirt
 	//Color: Red
-	
+
 	//or
-	
+
 	//Shirt
 	//Red
-	function display_item_options ($options_arr){				
-		foreach($options_arr as $key=>$value) {				   
-			if (isset($options_pair)) {	   	
-		   	$options_pair .= "<BR/>".$value;
+	function display_item_options ($options_arr){
+		foreach($options_arr as $key=>$value) {
+			if (isset($options_pair)) {
+		   		$options_pair .= "<BR/>".$value;
 			} else {
-	   		$options_pair = $value;
-	   	}
-		}	
+	   			$options_pair = $value;
+	   		}
+		}
 		return $options_pair;
 	}
 
-	
+
 	function display_widget($title) {
-		$output = $before_widget;
-      if ($title) {
-      	$output .= $before_title . "<h4 class=\"widgettitle\">$title</h4>" . $after_title;      
-      }
-		$output .= apply_filters(scabn_display_cart,'widget');						
-		$output .= $after_widget;
-						
+		$output = "";
+		if (isset($before_widget)) $output .= $before_widget;
+ 		if ($title) {
+		     	$output .= $before_title . "<h4 class=\"widgettitle\">$title</h4>" . $after_title;
+		}
+		$output .= apply_filters('scabn_display_cart','widget');
+		if (isset($after_widget)) $output .= $after_widget;
 		return $output;
 	}
 
 
 
-	function display_paypal_receipt($keyarray) {	
+	function display_paypal_receipt($keyarray) {
 		$output="";
 		$firstname = $keyarray['first_name'];
 		$lastname = $keyarray['last_name'];
@@ -89,11 +89,6 @@ class scabn_Display {
 
 
 
-
-
-
-
-
 	function enter_cart_uuid(){
 		$output="<BR>Please enter the custom cart id here:
 			<form name=\"input\" action=\"custom-cart\" method=\"GET\">
@@ -104,9 +99,9 @@ class scabn_Display {
 	}
 
 	function displayCustomCartContents($items) {
-		$output="";		
-		if ($items) {			
-			$output .="<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>	
+		$output="";
+		if ($items) {
+			$output .="<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>
 		<thead>
 		<tr class=\"thead\">
 			<th scope=\"col\">Qty</th>
@@ -160,31 +155,35 @@ class scabn_Display {
 		//items to the cart.		
 		
 		global $post;		
-		$item_id=sanitize_title($item['name']);		
-		$scabn_options=get_option('scabn_options');		
+		if (array_key_exists('name',$item)) {
+			$item_id=sanitize_title($item['name']);	
+		} else {
+			$item_id="";
+		}
+		$scabn_options=get_option('scabn_options');	
 	   $currency = apply_filters('scabn_display_currency_symbol',NULL);
 	   
-		if ($item['no_cart']) {				
+		if (array_key_exists('no_cart',$item)) {
 			$action_url = $scabn_options['cart_url'];
 			$add_class = '';
-		} else {				
+		} else {
 			$action_url = get_permalink();
 			$add_class = 'class="add"';
-		}		
-				
+		}
+
 		$output = "<div class='addtocart'>\n";
 		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
 		$output .= "<input type='hidden' class='item_url' value='".$post->guid."' name='item_url'/>\n";
 		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
-		$output .= "<input type='hidden' class='item_name' value='".$item['name']."' name='item_name'/>\n";
-		$output .= "<input type='hidden' class='item_price' value='".$item['price']."' name='item_price'/>\n";
-		$output .= "<input type='hidden' class='item_shipping' value='".$item['fshipping']."' name='item_shipping'/>\n";
-		$output .= "<input type='hidden' class='item_weight' value='".$item['weight']."' name='item_weight'/>\n";
-			
-		$output .= "<p id='cartname'>".$item['name'] . "</p>";
+		if (array_key_exists('name',$item)) $output .= "<input type='hidden' class='item_name' value='".$item['name']."' name='item_name'/>\n";
+		if (array_key_exists('price',$item)) $output .= "<input type='hidden' class='item_price' value='".$item['price']."' name='item_price'/>\n";
+		if (array_key_exists('fshipping',$item)) $output .= "<input type='hidden' class='item_shipping' value='".$item['fshipping']."' name='item_shipping'/>\n";
+		if (array_key_exists('weight',$item)) $output .= "<input type='hidden' class='item_weight' value='".$item['weight']."' name='item_weight'/>\n";
+
+		if (array_key_exists('name',$item)) $output .= "<p id='cartname'>".$item['name'] . "</p>";
 		$output .= "<p id='cartcontent'>";
-		
+
 		if (!empty ($item['options'])){
  			if ( $item['options_name'] != "" ) { 
  	  	   	$output .= $item['options_name'].": \n"; 
@@ -194,7 +193,7 @@ class scabn_Display {
 			$options = explode(',',$item['options']);			
 			$output .= "<select name='item_options' class = 'item_options' >\n";
 			foreach ($options as $option){
-				$info = explode(':',$option);				
+				$info = explode(':',$option);
 				if (count($info) == 1) {
 					$output .= "<option value='".$info[0]."'>".$info[0]." (". $currency.number_format($item['price'],2) . ")</option>\n";
 				} else {
@@ -208,16 +207,16 @@ class scabn_Display {
 			$output .= "Unit Price: ".$currency.number_format($item['price'],2)." each<br/>";
 		}
 
-		if($item['qty_field']) {
+		if(array_key_exists('qty_field',$item)) {
 			$output .= "Qty: <input type='text' class='item_qty' value='1' size='2' name='item_qty'/>\n";
 		} else {
 			$output .= "<input type='hidden' class='item_qty' value='1' size='2' name='item_qty'/>\n";
-		}		
-	
-		if ($item['no_cart']) {
+		}
+
+		if (array_key_exists('no_cart',$item)) {
 			$output .= "<input type='hidden' value='true' name='no_cart'/>\n";
 		}
-		
+
 		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$item['b_title']."'/>\n";
 		$output .= "</form>\n";
 		$output .= "</p>\n";
@@ -273,9 +272,9 @@ class scabn_Display {
 			$output = "<div id='wpchkt_checkout'>";			
 		}
 
- 				
+
 		if(count($cart->items) != 0) {
-			$output .= "<form action='".$post_url."' method='post'>";
+			$output .= "<form action='' method='post'>";
 			$output .= "<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>";	
 			$output .= "	<thead><tr class='thead'>";
 			$output .= "   	<th scope='col'>Qty</th>";
@@ -289,7 +288,7 @@ class scabn_Display {
             $output .= "<input type='text' name='qty_".$i."' size='2' value='".$item['qty']."' class = 'qty_".$item['id']."' title='".$item['id']."' /></td>";
 				$output .= "<td><a href='". $item['url']."'><strong>".$item['name']."</strong><br />";                				
 				if (count($item['options']) > 0){
-					$output .= apply_filters(scabn_display_item_options,$item['options']);
+					$output .= apply_filters('scabn_display_item_options',$item['options']);
 				} 
 				$output .= "</a></td>";
 				$output .= "<td align='right'>".$currency." ".number_format($item['price'],2)."<br />";
