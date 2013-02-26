@@ -222,7 +222,7 @@ class scabn_Backend {
 	}
 	
 	function shoppingCartInfo($items) {		
-		return 'Placeholder';
+		return '';
 	}
 
 	
