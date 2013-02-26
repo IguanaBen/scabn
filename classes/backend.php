@@ -13,9 +13,13 @@ class scabn_Backend {
 
 	function __construct() {
 
+		if (is_admin()) $this->admin=scabn_Admin::init();
+		$this->display=scabn_Display::init();
+
+
 		add_shortcode('scabn_customcart', array($this,'customcart'));
 		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
-		add_action('wp_head', 'scabn_Display::scabn_head');
+		add_action('wp_head', array($this->display, 'scabn_Display::scabn_head'));
 		add_filter('scabn_getItemPricing',array($this, 'getItemPricing'),10,3);
 		add_filter('scabn_getItemWeight',array($this, 'getItemWeight'),10,3);
 		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
@@ -28,8 +32,6 @@ class scabn_Backend {
 			add_action('wp_head', array($this, 'googleanalytics'));
 		}
 
-		if (is_admin()) $this->admin=scabn_Admin::init();
-		$this->display=scabn_Display::init();
 
 		//All filters should have been applied by now, so we can now load template
 		if (file_exists(SCABN_PLUGIN_DIR. '/templates/'.$scabn_options['template'].'.php') && $scabn_options['template'] != 'default' ) {	

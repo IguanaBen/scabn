@@ -146,3 +146,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.4 = 
   * Small code changes to remove warning / notification with running WP with DEBUG on.
+
+= 1.9.5 =
+  * Changed how display class was loaded in backend to (maybe) fix call_user_func warning on some systems
