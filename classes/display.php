@@ -60,6 +60,8 @@ class scabn_Display {
 	function display_widget($title) {
 		$output = "";
 		if (isset($before_widget)) $output .= $before_widget;
+		if (! isset($before_widget)) $before_widget = "";
+		if (! isset($after_widget)) $after_widget = "";
  		if ($title) {
 		     	$output .= $before_title . "<h4 class=\"widgettitle\">$title</h4>" . $after_title;
 		}

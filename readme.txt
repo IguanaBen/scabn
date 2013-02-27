@@ -149,3 +149,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.5 =
   * Changed how display class was loaded in backend to (maybe) fix call_user_func warning on some systems
+
+= 1.9.6 =
+  * Added code to check for $before_widget and $after_widget to prevent warnings on sites with themes that don't use those variables.
