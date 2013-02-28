@@ -152,3 +152,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.6 =
   * Added code to check for $before_widget and $after_widget to prevent warnings on sites with themes that don't use those variables.
+
+= 1.9.7 =
+  * Code in 1.9.6 didn't fix warnings about before/after widget. Moved functionality to widget class from display as not all variables getting passed to function.
