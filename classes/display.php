@@ -57,21 +57,6 @@ class scabn_Display {
 	}
 
 
-	function display_widget($title) {
-		$output = "";
-		if (isset($before_widget)) $output .= $before_widget;
-		if (! isset($before_widget)) $before_widget = "";
-		if (! isset($after_widget)) $after_widget = "";
- 		if ($title) {
-		     	$output .= $before_title . "<h4 class=\"widgettitle\">$title</h4>" . $after_title;
-		}
-		$output .= apply_filters('scabn_display_cart','widget');
-		if (isset($after_widget)) $output .= $after_widget;
-		return $output;
-	}
-
-
-
 	function display_paypal_receipt($keyarray) {
 		$output="";
 		$firstname = $keyarray['first_name'];
