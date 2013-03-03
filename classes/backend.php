@@ -141,30 +141,30 @@ class scabn_Backend {
 
 	//Handles all scabn shortcodes
 	//Both add to cart items on pages
-	// and checkout code.	
-	function shortcodes($atts) {		
-		
-		if (!empty ($atts)){			
+	// and checkout code.
+	function shortcodes($atts) {
+
+		if (!empty ($atts)){
 			//If arguments in shortcode, then it is add to cart button
-			$output=apply_filters('scabn_display_add_to_cart',$atts);						
+			$output=apply_filters('scabn_display_add_to_cart',$atts);
 			return $output;
-	
+
 		} else {
 			//No options, so this is checkout page.
 			//Check for Paypal token in case this is a receipt page
 			if ( array_key_exists('tx',$_GET)) {
 				$tx_token = $_GET['tx'];
 			}
-			
+
 			if (isset($tx_token)) {
 				//Paypal redirected here should be receipt.
 				//Empty cart and show receipt
-				$cart = $_SESSION['wfcart'];			
-				$cart->empty_cart();				
-				require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';				
+				$cart = $_SESSION['wfcart'];
+				$cart->empty_cart();
+				require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
 				return scabn_paypal::receipt($x_token);
-			} else {					
-				//Normal checkout page.				
+			} else {
+				//Normal checkout page.
 				return scabn_Backend::checkout_page();
 			}
 	

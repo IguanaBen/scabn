@@ -139,17 +139,19 @@ class scabn_Display {
 	function display_add_to_cart($item) {
 		//Displays the 'add to cart' button on pages. Contains
 		//both the visual data and the form submission for adding
-		//items to the cart.		
-		
-		global $post;		
+		//items to the cart.
+
+		global $post;
 		if (array_key_exists('name',$item)) {
-			$item_id=sanitize_title($item['name']);	
+			$item_id=sanitize_title($item['name']);
+			$name=$item['name'];
 		} else {
-			$item_id="";
+			$item_id=sanitize_title($post->post_title);
+			$name=$post->post_title;
 		}
-		$scabn_options=get_option('scabn_options');	
-	   $currency = apply_filters('scabn_display_currency_symbol',NULL);
-	   
+		$scabn_options=get_option('scabn_options');
+		$currency = apply_filters('scabn_display_currency_symbol',NULL);
+
 		if (array_key_exists('no_cart',$item)) {
 			$action_url = $scabn_options['cart_url'];
 			$add_class = '';
@@ -163,21 +165,21 @@ class scabn_Display {
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
 		$output .= "<input type='hidden' class='item_url' value='".$post->guid."' name='item_url'/>\n";
 		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
-		if (array_key_exists('name',$item)) $output .= "<input type='hidden' class='item_name' value='".$item['name']."' name='item_name'/>\n";
+		$output .= "<input type='hidden' class='item_name' value='".$name."' name='item_name'/>\n";
 		if (array_key_exists('price',$item)) $output .= "<input type='hidden' class='item_price' value='".$item['price']."' name='item_price'/>\n";
 		if (array_key_exists('fshipping',$item)) $output .= "<input type='hidden' class='item_shipping' value='".$item['fshipping']."' name='item_shipping'/>\n";
 		if (array_key_exists('weight',$item)) $output .= "<input type='hidden' class='item_weight' value='".$item['weight']."' name='item_weight'/>\n";
 
-		if (array_key_exists('name',$item)) $output .= "<p id='cartname'>".$item['name'] . "</p>";
+		$output .= "<p id='cartname'>".$name . "</p>";
 		$output .= "<p id='cartcontent'>";
 
 		if (!empty ($item['options'])){
- 			if ( $item['options_name'] != "" ) { 
- 	  	   	$output .= $item['options_name'].": \n"; 
-		 	} 		
-									
+ 			if ( $item['options_name'] != "" ) {
+ 	  	   	$output .= $item['options_name'].": \n";
+		 	}
+
 			$output .= "<input type='hidden' value='".$item['options_name']."' name='item_options_name' class ='item_options_name' />\n";
-			$options = explode(',',$item['options']);			
+			$options = explode(',',$item['options']);
 			$output .= "<select name='item_options' class = 'item_options' >\n";
 			foreach ($options as $option){
 				$info = explode(':',$option);
@@ -203,8 +205,12 @@ class scabn_Display {
 		if (array_key_exists('no_cart',$item)) {
 			$output .= "<input type='hidden' value='true' name='no_cart'/>\n";
 		}
-
-		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$item['b_title']."'/>\n";
+		if (array_key_exists('b_title',$item)) {
+			$b_title=$item['b_title'];
+		} else {
+			$b_title='Add to Cart';
+		}
+		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$b_title."'/>\n";
 		$output .= "</form>\n";
 		$output .= "</p>\n";
 		$output .= "</div>\n";
