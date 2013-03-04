@@ -163,7 +163,7 @@ class scabn_Display {
 		$output = "<div class='addtocart'>\n";
 		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
-		$output .= "<input type='hidden' class='item_url' value='".$post->guid."' name='item_url'/>\n";
+		$output .= "<input type='hidden' class='item_url' value='".get_permalink()."' name='item_url'/>\n";
 		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
 		$output .= "<input type='hidden' class='item_name' value='".$name."' name='item_name'/>\n";
 		if (array_key_exists('price',$item)) $output .= "<input type='hidden' class='item_price' value='".$item['price']."' name='item_price'/>\n";

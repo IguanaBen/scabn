@@ -158,3 +158,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.8 =
   * Fixed code so you can leave name="bla" blank in short code and SCABN will use post_title on the current page.
+
+= 1.9.9 =
+  * Use get_permalink instead of get_guid for link to item page in shopping cart.
