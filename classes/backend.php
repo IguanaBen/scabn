@@ -79,28 +79,32 @@ class scabn_Backend {
 		$cart =& $_SESSION['wfcart']; // get the cart
 
 		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_item'  ){
-		
+			require_once ABSPATH . 'wp-includes/pluggable.php'; // It looks like pluggable.php is loaded too late, so I'll do it
+			if ( ! wp_verify_nonce($_REQUEST['scabn-add'],'add_to_cart') ) {
+				wp_die('Security Check Failed!');
+			}
+
 			if ( isset($_REQUEST['item_options']) && (  $_REQUEST['item_options'] != '')  ) {
-				//item options set -- check if it is a list of options with ':' as separator			        		
-	        	$temp=explode(':',$_REQUEST['item_options']);
-	        	//if it is, it should be formatted as 'optionname:price' 
+				//item options set -- check if it is a list of options with ':' as separator
+		        	$temp=explode(':',$_REQUEST['item_options']);
+		        	//if it is, it should be formatted as 'optionname:price' 
 				if ( count($temp) == 2) {
 					$price=floatval($temp[1]);
 					$itemoptionvalue=sanitize_text_field($temp[0]);
-	
+
 				} else {
 					$price=floatval($_REQUEST['item_price']);
 					$itemoptionvalue=sanitize_text_field($_REQUEST['item_options']);
 				}
-	
+
 				$item_options = array (sanitize_title($_REQUEST['item_options_name']) => $itemoptionvalue);
 				$item_id = sanitize_title($_REQUEST['item_id']."-".$itemoptionvalue);
-	
+
 			} else {
 				$item_options = array ();
 				$price = floatval($_REQUEST['item_price']);
 				$item_id = sanitize_title($_REQUEST['item_id']);
-			}		
+			}
 
 			$temparray=array();
 			foreach (array("item_qty","item_name","item_url","item_weight") as $label) {

@@ -162,6 +162,7 @@ class scabn_Display {
 
 		$output = "<div class='addtocart'>\n";
 		$output .= "<form method='post' class='".$item_id."' action='".$action_url."'>\n";
+		$output .= wp_nonce_field( 'add_to_cart', 'scabn-add', false, false );
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
 		$output .= "<input type='hidden' class='item_url' value='".get_permalink()."' name='item_url'/>\n";
 		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
