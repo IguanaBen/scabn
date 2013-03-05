@@ -14,7 +14,7 @@ class scabn_Widget extends WP_Widget {
 		$title = apply_filters('widget_title', $instance['title']);
 		if (isset($before_widget)) { echo $before_widget;}
 		if ( !empty($title) ) {
-			echo $before_title . "<h4 class=\"widgettitle\">$title</h4>" . $after_title;
+			echo $before_title . $title . $after_title;
 		}
 		echo apply_filters('scabn_display_cart','widget');
 		if (isset($after_widget)) { echo $after_widget;}
