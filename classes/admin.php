@@ -80,7 +80,7 @@ class scabn_Admin {
 		scabn_Admin::custom_add_settings_field('template', 'Select Template: ', 'general', 'general_options','input_selection',scabn_Admin::get_templates());
 
 		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');
-		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: ', 'paypal', 'paypal_options','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: (blank disables Paypal)', 'paypal', 'paypal_options','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());								
 		//scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_connection', 'Connect to Paypal (for receipt page) via HTTPS or HTTP (some servers don\'t support HTTPS', 'paypal', 'paypal_options','input_radio',array('https'=>'Secure (https)','http'=>'Unencrypted (http)'));
@@ -97,7 +97,7 @@ class scabn_Admin {
 		scabn_Admin::custom_add_settings_field('paypal_cert_id', 'Certificate ID (see paypal\'s website): ', 'paypal_en', 'paypal_encrypt','input_text_option');
    
 		add_settings_section('google_options', 'Google Wallet Settings:', array($this,'section_text'), 'google');   
-   	scabn_Admin::custom_add_settings_field('gc_merchantid', 'Google Merchant ID: ', 'google', 'google_options','input_text_option');
+   	scabn_Admin::custom_add_settings_field('gc_merchantid', 'Google Merchant ID: (blank disables Wallet)', 'google', 'google_options','input_text_option');
    	scabn_Admin::custom_add_settings_field('gc_merchantkey', 'Google Merchant Key (optional, but required for encrypted carts): ', 'google', 'google_options','input_text_option');
    
 		add_settings_section('google_analytics', 'Google Analytics Settings (Optional):', array($this,'section_text'), 'google_ac');   
@@ -107,7 +107,7 @@ class scabn_Admin {
 
 	//Validates that the input for various fields meets certain criteria.
 	function options_validate($input) {
-		if (! is_email($input['paypal_email'])) $input['paypal_email'] = 'Invalid Email Entered';				
+		if (! is_email($input['paypal_email'])) $input['paypal_email'] = '';
 		$input['cart_url'] = esc_url($input['cart_url'],array('http','https'));
 		$input['cart_cancel_url'] = esc_url($input['cart_cancel_url'],array('http','https'));
 		if ( $input['gc_merchantid'] != "" ) 	$input['gc_merchantid']=substr($input['gc_merchantid'],0,32);

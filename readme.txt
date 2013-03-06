@@ -165,3 +165,6 @@ you can define different shipping options for different locations and weight OR 
 = 1.9.10 =
   * Security improvment to use nonce on add_to_cart POST
   * Tweak to widget to not add h4 encoding to title as it is now inside theme's wrapping for the title.
+
+= 1.9.11 =
+  * You can now disable Paypal by leaving the Paypal email address blank.
