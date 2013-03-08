@@ -70,37 +70,36 @@ class scabn_Admin {
 	
 	//Loads all the options to be configured using custom_add_settings_field function to
 	//simplify process of adding new options.
-	function options_init() {				
-				
-		register_setting( 'scabn_options', 'scabn_options',array($this, 'options_validate'));		
-		
+	function options_init() {
+
+		register_setting( 'scabn_options', 'scabn_options',array($this, 'options_validate'));
+
 		add_settings_section('general_options', 'General Configuration:', array($this,'section_text'), 'general');
-		scabn_Admin::custom_add_settings_field('cart_url', 'Checkout Page Url: ', 'general', 'general_options','input_text_option');		
+		scabn_Admin::custom_add_settings_field('cart_url', 'Checkout Page Url: ', 'general', 'general_options','input_text_option');
 		scabn_Admin::custom_add_settings_field('currency', 'Select Currency: ', 'general', 'general_options','input_selection_custom1',scabn_Backend::getCurrencies());
 		scabn_Admin::custom_add_settings_field('template', 'Select Template: ', 'general', 'general_options','input_selection',scabn_Admin::get_templates());
 
 		add_settings_section('paypal_options', 'Required Paypal Settings:', array($this,'section_text'), 'paypal');
 		scabn_Admin::custom_add_settings_field('paypal_email', 'Paypal Email Address: (blank disables Paypal)', 'paypal', 'paypal_options','input_text_option');
-		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());								
-		//scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal', 'paypal_options','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_url', 'Paypal URL: ', 'paypal', 'paypal_options','input_radio',scabn_Admin::display_paypal_url_options());
 		scabn_Admin::custom_add_settings_field('paypal_connection', 'Connect to Paypal (for receipt page) via HTTPS or HTTP (some servers don\'t support HTTPS', 'paypal', 'paypal_options','input_radio',array('https'=>'Secure (https)','http'=>'Unencrypted (http)'));
 		add_settings_section('paypal_optional', 'Optional Paypal Settings:', array($this,'section_text'), 'paypal_op');
-		
-		scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal_op', 'paypal_optional','input_text_option');		
-		scabn_Admin::custom_add_settings_field('paypal_pdt_token', 'Paypal Payment Data Transfer (PDT) Identity Token: ', 'paypal_op', 'paypal_optional','input_text_option');   
-		
-		add_settings_section('paypal_encrypt', 'Paypal Encryption Settings:', array($this,'section_text'), 'paypal_en');   
+
+		scabn_Admin::custom_add_settings_field('paypal_cancel_url', 'Paypal Return URL after order cancelled: ', 'paypal_op', 'paypal_optional','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_pdt_token', 'Paypal Payment Data Transfer (PDT) Identity Token: ', 'paypal_op', 'paypal_optional','input_text_option');
+
+		add_settings_section('paypal_encrypt', 'Paypal Encryption Settings:', array($this,'section_text'), 'paypal_en');
 		scabn_Admin::custom_add_settings_field('openssl_command', 'Full system path for openssl command (typical: /usr/bin/openssl): ', 'paypal_en', 'paypal_encrypt','input_text_option');   
 		scabn_Admin::custom_add_settings_field('paypal_my_cert_file', 'Full system path for Paypal Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_key_file', 'Full system path for Paypal Key File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_paypal_cert_file', 'Full system path for Paypal\'s Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_cert_id', 'Certificate ID (see paypal\'s website): ', 'paypal_en', 'paypal_encrypt','input_text_option');
    
-		add_settings_section('google_options', 'Google Wallet Settings:', array($this,'section_text'), 'google');   
+		add_settings_section('google_options', 'Google Wallet Settings:', array($this,'section_text'), 'google');
    	scabn_Admin::custom_add_settings_field('gc_merchantid', 'Google Merchant ID: (blank disables Wallet)', 'google', 'google_options','input_text_option');
    	scabn_Admin::custom_add_settings_field('gc_merchantkey', 'Google Merchant Key (optional, but required for encrypted carts): ', 'google', 'google_options','input_text_option');
    
-		add_settings_section('google_analytics', 'Google Analytics Settings (Optional):', array($this,'section_text'), 'google_ac');   
+		add_settings_section('google_analytics', 'Google Analytics Settings (Optional):', array($this,'section_text'), 'google_ac');
 		scabn_Admin::custom_add_settings_field('analytics_id', 'Google Analytics ID (UA-XXXXX-X): ', 'google_ac', 'google_analytics','input_text_option');   
    }
 	
@@ -109,7 +108,7 @@ class scabn_Admin {
 	function options_validate($input) {
 		if (! is_email($input['paypal_email'])) $input['paypal_email'] = '';
 		$input['cart_url'] = esc_url($input['cart_url'],array('http','https'));
-		$input['cart_cancel_url'] = esc_url($input['cart_cancel_url'],array('http','https'));
+		$input['paypal_cancel_url'] = esc_url($input['paypal_cancel_url'],array('http','https'));
 		if ( $input['gc_merchantid'] != "" ) 	$input['gc_merchantid']=substr($input['gc_merchantid'],0,32);
 		if ( $input['gc_merchantkey'] != "" ) 	$input['gc_merchantkey']=substr($input['gc_merchantkey'],0,32);
 		if ( $input['analytics_id'] != "" ) 	$input['analytics_id']=substr($input['analytics_id'],0,12);
