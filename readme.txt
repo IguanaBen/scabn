@@ -168,3 +168,7 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.11 =
   * You can now disable Paypal by leaving the Paypal email address blank.
+
+= 1.9.12 =
+  * Support for more complicated shipping regions for Google. Documented in template.php
+  * template.php shows how to change css file.

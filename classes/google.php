@@ -9,8 +9,49 @@
 
 class scabn_google {
 
+	function google_shipping_XML($shipoptions){
+		$options=get_option('scabn_options');
+		$gc = "\n<checkout-flow-support>
+	    <merchant-checkout-flow-support>
+	      <shipping-methods>";
 		
-	
+		foreach($shipoptions as $soption) {
+			$gc .= "\n\t<flat-rate-shipping name=\"". $soption['name'] . "\">";
+			$gc .= "\n\t<price currency=\"".$options['currency']."\">".$soption['price']. "</price>";
+			$gc .= "\n\t<shipping-restrictions>";
+			$gc .= "\n\t\t<allowed-areas>";
+			
+			if (array_key_exists('regions', $soption )) {					
+				$gc .= "\n\t\t\t<postal-area>";			
+				foreach($soption['regions'] as $region) {				
+					$gc .= "\n\t\t\t\t<country-code>".$region."</country-code>";
+				} 
+				$gc .= "\n\t\t\t</postal-area>";
+			}				
+						
+			$gc .= "\n\t\t</allowed-areas>";
+			
+			$gc .= "\n\t\t<excluded-areas>";			
+			if (array_key_exists('notregions', $soption )) {
+				$gc .= "\n\t\t\t<postal-area>";
+				foreach($soption['notregions'] as $region) {						
+					$gc .= "\n\t\t\t\t<country-code>".$region."</country-code>";
+				} 
+			$gc .= "\n\t\t\t</postal-area>";
+			}
+						
+			$gc .= "\n\t\t</excluded-areas>";
+						
+			$gc .= "\n\t</shipping-restrictions>";
+	      $gc .= "\n\t</flat-rate-shipping>";
+		}		
+		$gc .= "\n</shipping-methods></merchant-checkout-flow-support></checkout-flow-support>\n";
+				
+		return $gc;		
+	}
+
+
+			
 	function make_button($shipoptions,$items) {
 		$options=get_option('scabn_options');
 		$gc_merchantid = $options['gc_merchantid'];
@@ -37,34 +78,10 @@ class scabn_google {
 			}
 	
 		$gc .= "\n\t</items></shopping-cart>";
-		$gc .= "\n<checkout-flow-support>
-	    <merchant-checkout-flow-support>
-	      <shipping-methods>";
-	
-		foreach($shipoptions as $soption) {
-			$gc .= "\n\t<flat-rate-shipping name=\"". $soption['name'] . "\">";
-			$gc .= "\n\t<price currency=\"".$options['currency']."\">".$soption['price']. "</price>";
-			$gc .= "\n\t<shipping-restrictions>";
-			$gc .= "\n\t\t<allowed-areas>";
-			if ($soption['region'] == "USA" ) {
-				$gc .= "\n\t\t<us-country-area country-area=\"ALL\"/>";
-			} else {
-				$gc .= "\n\t\t<world-area/>";
-			}
-			$gc .= "\n\t\t</allowed-areas>";
-			$gc .= "\n\t\t<excluded-areas>";
-			if ($soption['region'] == "NotUSA" ) {
-				$gc .= "\n\t\t<us-country-area country-area=\"ALL\"/>";
-			}
-			$gc .= "\n\t\t</excluded-areas>";
-			$gc .= "\n\t</shipping-restrictions>";
-	        	$gc .= "\n\t</flat-rate-shipping>";
-		}
-		//End Shipping for Google Wallet
-		$gc .= "\n</shipping-methods></merchant-checkout-flow-support></checkout-flow-support>\n";
+		$gc .= apply_filters('scabn_google_shipping_XML',$shipoptions);				
 		//End Google Cart
-		$gc .= "\n</checkout-shopping-cart>";
-	
+		$gc .= "\n</checkout-shopping-cart>"; 
+						
 		$b64=base64_encode($gc);
 		$gout="";
 	 	if ( $options['analytics_id'] != '' ) {

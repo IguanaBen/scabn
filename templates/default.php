@@ -32,13 +32,16 @@
 	displayCustomCartContents
 	display_paypal_receipt	
 
+	add_css
 	getItemPricing
 	getItemWeight
 	getCustomCart		
 	shoppingCartInfo															
-	getShippingOptions	
+	getShippingOptions
+	scabn_google_shipping_XML
 	
 	
+
 	Below are some examples of how to replace these functions. Not all possible
 	functions are shown, but hopefully enough to get the idea. Simply uncomment from
 	remove_filter to the end of the function definition to enable the replacement function
@@ -47,6 +50,23 @@
 */
 
 
+/*
+   Use this function (add_css) to load a different css file for SCABN. The default css file
+   is style.css -- copy that you templates/YOURCSSFILE.css and edit as desired.
+   Then enable the code below to load your css instead of the orginal style.css
+
+/*
+/*
+remove_filter('scabn_add_css',array($this,'add_css'),10,0);
+add_filter('scabn_add_css','add_css',10,0);
+
+function add_css() {
+   if (file_exists(SCABN_PLUGIN_DIR."/templates/YOURCSSFILE.css")) {
+      $csslink = "<link href=\"".SCABN_PLUGIN_URL."/templates/YOURCSSFILE.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
+      return $csslink;
+   }
+}
+*/
 
 /* Use this function (shoppingCartInfo) to add text on the checkout page
 	between the shopping cart and the buy now buttons. For example, notes about
@@ -95,12 +115,14 @@ function getItemWeight($itemname,$qty,$inputweight) {
 
 /*
 	Currently only used for Google, as Paypal does not support
-	dyanmic shipping options with different regions. Set Paypal
+	dynamic shipping options with different regions. Set Paypal
 	shipping options via Paypal account settings. 		
 	Function returns an array of the shipping options and pricing.
 	In principle this can be a function of them items being shipped
 	their weight, etc. 
-	region can be "all" "NotUSA" or "USA"
+	The key "regions" is a list of country codes where the shipping is valid (US, CA, UK, etc)	
+	The key "notregions" is a list of country codes where the shipping is not valid.
+	Leave key regions/notreginos blank when not used
 
 */
 /*
@@ -108,11 +130,11 @@ remove_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10);
 add_filter('scabn_getShippingOptions','getShippingOptions',10,1);
 function getShippingOptions($items) {
 	$ship=array();
-	$ship[]=array("name" => "USPS Standard Shipping", "price" => "5", "region" => "all");
-	$ship[]=array("name" => "USPS Priority Shipping (USA Only)", "price" => "10", "region" => "USA");
-	$ship[]=array("name" => "USPS Express Shipping (USA Only)", "price" => "20", "region" => "USA");
-	$ship[]=array("name" => "Global Priority (6-10 days)", "price" => "20", "region" => "NotUSA");
-	$ship[]=array("name" => "Global Express (6 days)", "price" => "30", "region" => "NotUSA" );
+	$ship[]=array("name" => "USPS Standard Shipping (Anywhere)", "price" => "5");
+	$ship[]=array("name" => "USPS Priority Shipping (USA Only)", "price" => "10", "regions" => array('US'));
+	$ship[]=array("name" => "USPS Express Shipping (USA Only)", "price" => "20", "regions" => array('US'));
+	$ship[]=array("name" => "Global Priority Int'l (6-10 days)", "price" => "20", "notregions" => array('US'));
+	$ship[]=array("name" => "Global Express Int'l (6 days)", "price" => "30", "notregions" => array('US'));
 	return $ship;
 }
 */
@@ -209,7 +231,7 @@ function getItemPricing($itemname,$qty,$inputprice) {
 */
 
 /*
-remove_filter('scabn_getCustomCart',array($this,getCustomCart),10);
+remove_filter('scabn_getCustomCart',array($this,'getCustomCart'),10);
 add_filter('scabn_getCustomCart','getCustomCart',10,3);
 function getCustomCart($uuid) {	
 	//Sample db query to get custom cart:

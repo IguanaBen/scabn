@@ -17,6 +17,7 @@ class scabn_Backend {
 		$this->display=scabn_Display::init();
 
 
+
 		add_shortcode('scabn_customcart', array($this,'customcart'));
 		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
 		add_action('wp_head', array($this->display, 'scabn_Display::scabn_head'));
@@ -25,6 +26,9 @@ class scabn_Backend {
 		add_filter('scabn_getCustomCart',array($this, 'getCustomCart'),10,1);
 		add_filter('scabn_shoppingCartInfo',array($this,'shoppingCartInfo'),10,1);
 		add_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10,1);
+
+		
+		add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
 
 
 		$scabn_options = get_option('scabn_options');
@@ -58,18 +62,12 @@ class scabn_Backend {
 
 		scabn_Backend::request();
 	}
-
-
 	
-
 	function getShippingOptions($items){
 		$ship=array();
-		$ship[]=array("name" => "Standard Shipping", "price" => "5", "region" => "all");
+		$ship[]=array("name" => "Standard Shipping", "price" => "5");
 		return $ship;	
 	}
-
-
-
 	
 
 	function request(){
