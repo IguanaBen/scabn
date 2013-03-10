@@ -81,9 +81,7 @@ class scabn_paypal {
 				$ppo .= "<input type=\"hidden\" name=\"" . $value[0] . "\" value=\"" . $value[1] . "\">\n";
 			}
 		}
-		$ppo .= "<input type=\"image\" border=\"0\" name=\"submit\"
-	         src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\"
-	         alt=\"Make payments with PayPal - it's fast, free and secure!\"></form>";
+		$ppo .= "<input type=\"image\" border=\"0\" name=\"submit\" src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\" alt=\"Make payments with PayPal - it's fast, free and secure!\"></form>";
 		return $ppo;
 		}
 	}
