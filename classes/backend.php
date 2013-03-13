@@ -164,7 +164,7 @@ class scabn_Backend {
 				$cart = $_SESSION['wfcart'];
 				$cart->empty_cart();
 				require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
-				echo scabn_paypal::receipt($x_token);
+				echo scabn_paypal::receipt($tx_token);
 			} else {
 				//Normal checkout page.
 				echo scabn_Backend::checkout_page();
