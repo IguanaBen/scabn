@@ -149,25 +149,25 @@ class scabn_paypal {
 	         /*Add Analytics Ecommerce Code to track purchase in analytics*/
 	         if ($scabn_options['analytics_id'] != '' ) {
 	         	$output .= "<script type=\"text/javascript\">";
-	            $output .= "_gaq.push(function() { var pageTracker = _gat._getTrackerByName('myTracker');";
-	            $output .= "pageTracker._addTrans('" . $keyarray['txn_id'] ."','','" . $keyarray['payment_gross'] . "','" . $keyarray['tax'] . "','" . $keyarray['mc_shipping'] . "','" . $keyarray['address_city'] . "','" . $keyarray['address_state']. "','". $keyarray['address_country_code']. "');";
-					$count=$keyarray['num_cart_items'];
-					for ( $i = 1; $i <= $count; $i++ ) {
-						$item="item_name" . $i;
-		            $qty="quantity" . $i;
-	        	      $cost="mc_gross_" . $i;
-						$totalprice=($keyarray[$cost]-$keyarray[$ship]);
-			         $price=$totalprice/$keyarray[$qty];
-						$output .= "pageTracker._addItem('" . $keyarray['txn_id'] . "','" . $keyarray[$item] . "','" . $keyarray[$item] . "','','" . $price . "','" . $keyarray[$qty] . "');";
-					}
-					$output.="pageTracker._trackTrans();";
-	            $output.= "});</script>";
-	         }
-	
-	
-				$output .= apply_filters('scabn_display_paypal_receipt',$keyarray);
-	
+	                $output .= "_gaq.push(function() { var pageTracker = _gat._getTrackerByName('myTracker');";
+	                $output .= "pageTracker._addTrans('" . $keyarray['txn_id'] ."','','" . $keyarray['payment_gross'] . "','" . $keyarray['tax'] . "','" . $keyarray['mc_shipping'] . "','" . $keyarray['address_city'] . "','" . $keyarray['address_state']. "','". $keyarray['address_country_code']. "');";
+			$count=$keyarray['num_cart_items'];
+			for ( $i = 1; $i <= $count; $i++ ) {
+				$item="item_name" . $i;
+		            	$qty="quantity" . $i;
+	        	      	$cost="mc_gross_" . $i;
+				$totalprice=($keyarray[$cost]-$keyarray[$ship]);
+			        $price=$totalprice/$keyarray[$qty];
+				$output .= "pageTracker._addItem('" . $keyarray['txn_id'] . "','" . $keyarray[$item] . "','" . $keyarray[$item] . "','','" . $price . "','" . $keyarray[$qty] . "');";
 			}
+			$output.="pageTracker._trackTrans();";
+	        	$output.= "});</script>";
+	         }
+		//print_r($keyarray);
+		$output .= apply_filters('scabn_display_paypal_receipt',$keyarray);
+		//echo $output;
+
+	}
 			else if (strcmp ($lines[0], "FAIL") == 0) {
 				$output .= "<h4>Paypal failed to recognize order -- Maybe order too old or does not exist.</h4>";
 			} else {
@@ -177,7 +177,7 @@ class scabn_paypal {
 			}
 		}
 
-	$output .= apply_filters('scabn_display_paypal_receipt','asdf');
+	//$output .= apply_filters('scabn_display_paypal_receipt','asdf');
 	return $output;
 
 	}

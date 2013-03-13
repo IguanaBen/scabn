@@ -21,7 +21,7 @@ class scabn_Display {
 		add_action('scabn_display_widget', array($this,'display_widget'),10,1);
 		add_action('scabn_display_cart', array($this,'display_cart'),10,1);
 		add_action('scabn_displayCustomCartContents', array($this,'displayCustomCartContents'),10,1);
-		add_filter('scabn_display_paypal_receipt',array($this, 'display_paypal_receipt'),10,1);
+		add_action('scabn_display_paypal_receipt',array($this, 'display_paypal_receipt'),10,1);
 
 	}
 

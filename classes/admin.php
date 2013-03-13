@@ -114,7 +114,7 @@ class scabn_Admin {
 		if ( $input['analytics_id'] != "" ) 	$input['analytics_id']=substr($input['analytics_id'],0,12);
 		if ( $input['currency'] != "" ) 	$input['currency']=substr($input['currency'],0,4);
 		if ( $input['template'] != "" ) 	$input['template']=substr($input['template'],0,16);
-		if ( $input['paypal_pdt_token'] != "" ) 	$input['paypal_pdt_token']=substr($input['paypal_pdt_token'],0,24);
+		if ( $input['paypal_pdt_token'] != "" ) 	$input['paypal_pdt_token']=substr($input['paypal_pdt_token'],0,100);
 		if ( $input['paypal_cert_id'] != "" ) 	$input['paypal_cert_id']=substr($input['paypal_cert_id'],0,16);
 		return $input;
 	}

@@ -162,7 +162,7 @@ function displayCustomCartContents($items) {
 	full list of available variables, etc
 */
 /*
-remove_filter('scabn_display_paypal_receipt',array($this,'display_paypal_receipt'),10);
+remove_filter('scabn_display_paypal_receipt',array($this->display,'display_paypal_receipt'),10);
 add_filter('scabn_display_paypal_receipt','display_paypal_receipt',10,1);
 function display_paypal_receipt($keyarray) {
 		$output="";
