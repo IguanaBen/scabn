@@ -98,8 +98,8 @@ class scabn_paypal {
 		
 		//generate cmd / tx variables to push to Paypal to authorize
 		//data dump
-		$auth_token = $scabn_options['paypal_pdt_token'];	
-		$req = 'cmd=_notify-synch';			
+		$auth_token = $scabn_options['paypal_pdt_token'];
+		$req = 'cmd=_notify-synch';
 		$req .= "&tx=$tx_token&at=$auth_token";
 	
 		// post back to PayPal system to validate
@@ -114,7 +114,7 @@ class scabn_paypal {
 			$fp = fsockopen ('www.paypal.com', 80, $errno, $errstr, 30);			
 		}
 					
-		if (!$fp) {						
+		if (!$fp) {
 			echo "Error Sending data to Paypal -- (order probably completed)<br/>";			
 			echo "Errstr:" . $errstr."<br/>Errno: ". $errno. "<br/>";
 			return False;
@@ -169,7 +169,7 @@ class scabn_paypal {
 	
 			}
 			else if (strcmp ($lines[0], "FAIL") == 0) {
-				$output .= "<h4>Paypal failed to recognize order -- Maybe order too old or does not exist.</h4>";				
+				$output .= "<h4>Paypal failed to recognize order -- Maybe order too old or does not exist.</h4>";
 			} else {
 				$output .= "Unknown error from Paypal's response. (order probably completed)";
 				$output .= "<br/>Details:<br/>";
