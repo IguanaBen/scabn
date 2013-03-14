@@ -149,7 +149,7 @@ class scabn_Backend {
 		if (!empty ($atts)){
 			//If arguments in shortcode, then it is add to cart button
 			$output=apply_filters('scabn_display_add_to_cart',$atts);
-			echo $output;
+			return $output;
 
 		} else {
 			//No options, so this is checkout page.
@@ -164,10 +164,10 @@ class scabn_Backend {
 				$cart = $_SESSION['wfcart'];
 				$cart->empty_cart();
 				require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
-				echo scabn_paypal::receipt($tx_token);
+				return scabn_paypal::receipt($tx_token);
 			} else {
 				//Normal checkout page.
-				echo scabn_Backend::checkout_page();
+				return scabn_Backend::checkout_page();
 			}
 	
 		}
