@@ -1,9 +1,12 @@
 === Simple Cart & Buy Now === 
 Contributors: bluey80  
 Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Google Wallet, encrypted carts, checkout, shopping cart widget, ajax, Google analytics, analytics, custom carts, custom shopping carts
+Donate link: http://iguanaworks.net/SCABN/SCABN.html
 Requires at least: 3.2 
 Tested up to: 3.5.1
-Stable tag: 1.4.8
+Stable tag: 2.0.0
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics to tracks sales. 
 
@@ -29,15 +32,25 @@ Features:
 
 You will find 'SCABN Settings' menu in your WordPress admin panel and the icon in your post editor panel.
 
+== Upgrade Notice ==
+
+= 2.0 =
+SCABN 2.0 (and 1.9.X) is a major rewrite of the SCABN. The template system in particular is totally different. This means that any template / customization from 1.X will have
+to be rewritten to new system. Please make a backup of your template before upgrading and look at templates/default.php after upgrading for how to customize SCABN in new template system.
+
+Also, some of SCABN's settings will get lost in the upgrade and have to be reentered. Please make sure you have those settings (Paypal Email, PDT number, etc) written down / backed up before upgrading.
+ 
+
 == Frequently Asked Questions ==
 
 = I just installed the plugin. Now what? = 
 
 1. Create a new page. Title something like 'Checkout'. In the page edit toolbar, click on the icon of a shopping cart with an 'S' (Add SCABN Item or Checkout). Check "Make this page my Checkout Page". Save the page and note its url.
 2. Go to Appearance / Widgets and add the 'SCABN Checkout Cart' widget somewhere on your side. This is a mini shopping cart that will be displayed on all your pages.
-3. Goto Plugins / SCABN Settings. Under 'Checkout/Process Page URL' put the url from step 1. Fill out other information as desired.
+3. Goto Plugins / SCABN Settings. Under 'Checkout/Process Page URL' put the url from step 1. Fill out other information such as Paypal Account, etc as desired.
 4. Edit a page where you want an 'add to cart' item. Click on the icon of a shopping cart with an 'S' as in step one, but this time fill out the item name, cost, etc.
 5. Done! View your page. When you click on the add to cart button, it should show up in the mini shopping cart widget. That widget will have a link to your checkout page. Your checkout page will then show you the full shopping cart and provide buy now buttons for Paypal and Google Wallet.
+6. Optional: Read templates/default.php for example on how to customize SCABN. Copy default.php to yourtemplate.php and edit as desired. Enable this template (yourtemplate) via SCABN's setting page.
 
 = How do I select shipping options? = 
 
@@ -49,8 +62,8 @@ With Google Wallet, we provide different shipping options for different location
 3. International Ground ($10)
 4. International Express ($20)
 
-Then Google Wallet lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default/customize.php and copy it 
-to templates/SOMETHING/customize.php and edit it to your needs. Then in SCABN settings, select SOMETHING as your template. 
+Then Google Wallet lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default.php and copy it 
+to templates/SOMETHING.php and edit as desired. Then in SCABN settings, select SOMETHING as your template. 
 
 As for Paypal, it doesn't support this. Instead log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and 
 you can define different shipping options for different locations and weight OR price of the order.
