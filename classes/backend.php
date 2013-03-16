@@ -295,7 +295,7 @@ class scabn_Backend {
 						"MXN" => array (36, "Mexican Peso MXN"),
 						"NOK" => array (107, "Norwegian Krone NOK"),
 						"NZD" => array (36, "New Zealand Dollar NZD"),
-						"PLN" => array (122, "Polish Zloty PLN"),								
+						"PLN" => array ('122;&#322', "Polish Zloty PLN"),								
 						"GBP" => array (163, "Pound Sterling GBP"),
 						"SGD" => array (36, "Singapore Dollar SGD"),
 						"SEK" => array (107, "Swedish Krona SEK"),
