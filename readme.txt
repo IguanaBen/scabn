@@ -188,3 +188,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 1.9.13 =
   * Changed backend::shortcode function to echo shortcodes instead of return them. Should fix issues in some themes where outputs get filtered.
+
+= 2.0.0 =
+  Tagging 1.9.13 as 2.0.0 and stable.
