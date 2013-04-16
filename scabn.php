@@ -60,6 +60,19 @@ require_once SCABN_PLUGIN_DIR. '/classes/backend.php';
 require_once SCABN_PLUGIN_DIR. '/classes/display.php';
 require_once SCABN_PLUGIN_DIR. '/classes/widget.php';
 
+
+//localization
+
+function ap_action_init()  
+{  
+
+    load_textdomain( 'SCABN','/simple-cart-buy-now/SCABN-'.get_locale().'.mo' );
+	load_plugin_textdomain('SCABN', false, dirname(plugin_basename(__FILE__)) . '/languages');
+
+}  
+// Add actions  
+add_action('init', 'ap_action_init'); 
+
 //No need to burden SCABN with admin settings when user is not admin
 if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
 
