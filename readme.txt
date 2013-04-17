@@ -4,7 +4,7 @@ Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Googl
 Donate link: http://iguanaworks.net/SCABN/SCABN.html
 Requires at least: 3.2 
 Tested up to: 3.5.1
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -191,3 +191,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 2.0.0 =
   Tagging 1.9.13 as 2.0.0 and stable.
+
+= 2.0.1 =
+  Google Analytics ID tag lengthed to handle new longer id's from Google. 

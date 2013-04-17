@@ -100,7 +100,7 @@ class scabn_Admin {
    	scabn_Admin::custom_add_settings_field('gc_merchantkey', 'Google Merchant Key (optional, but required for encrypted carts): ', 'google', 'google_options','input_text_option');
    
 		add_settings_section('google_analytics', 'Google Analytics Settings (Optional):', array($this,'section_text'), 'google_ac');
-		scabn_Admin::custom_add_settings_field('analytics_id', 'Google Analytics ID (UA-XXXXX-X): ', 'google_ac', 'google_analytics','input_text_option');   
+		scabn_Admin::custom_add_settings_field('analytics_id', 'Google Analytics ID (XX-XXXXXX-X): ', 'google_ac', 'google_analytics','input_text_option');
    }
 	
 
@@ -111,7 +111,7 @@ class scabn_Admin {
 		$input['paypal_cancel_url'] = esc_url($input['paypal_cancel_url'],array('http','https'));
 		if ( $input['gc_merchantid'] != "" ) 	$input['gc_merchantid']=substr($input['gc_merchantid'],0,32);
 		if ( $input['gc_merchantkey'] != "" ) 	$input['gc_merchantkey']=substr($input['gc_merchantkey'],0,32);
-		if ( $input['analytics_id'] != "" ) 	$input['analytics_id']=substr($input['analytics_id'],0,12);
+		if ( $input['analytics_id'] != "" ) 	$input['analytics_id']=substr($input['analytics_id'],0,15);
 		if ( $input['currency'] != "" ) 	$input['currency']=substr($input['currency'],0,4);
 		if ( $input['template'] != "" ) 	$input['template']=substr($input['template'],0,16);
 		if ( $input['paypal_pdt_token'] != "" ) 	$input['paypal_pdt_token']=substr($input['paypal_pdt_token'],0,100);
