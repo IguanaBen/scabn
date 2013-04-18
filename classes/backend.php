@@ -28,7 +28,6 @@ class scabn_Backend {
 		add_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10,1);
 
 		
-		add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
 
 
 		$scabn_options = get_option('scabn_options');
@@ -181,6 +180,8 @@ class scabn_Backend {
 		require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
 		require_once SCABN_PLUGIN_DIR. '/classes/google.php';
 		
+		add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
+
 		//main checkout page when shopping (not receipt for transaction)
 										
 		//display cart
