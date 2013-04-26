@@ -64,23 +64,30 @@ class scabn_Display {
 
 		$amount = $keyarray['payment_gross'];
 
-		$output .= "<p><h3>Checkout Complete -- Thank you for your purchase!</h3></p>";
-		$output .= "<h4>Payment Details</h4><ul>\n";
-		$output .= "<li>Name: $firstname $lastname</li>\n";
-		$output .= "<li>Total Amount: $amount</li>\n";
+		$output .= "<p><h3>";
+		$output .= __("Checkout Complete -- Thank you for your purchase!",'SCABN');
+		$output .= "</h3></p>";
+		$output .= "<h4>";
+		$output .=__("Checkout Complete -- Thank you for your purchase!Payment Details",'SCABN');
+		$output .="</h4><ul>\n";
+		$output .= "<li>";
+		$output .= __("Name:",'SCABN').trim($firstname)." ".trim($lastname);
+		$output .= "</li>\n";
+		$output .= "<li>";
+		$output .=__("Total Amount:",'SCABN').trim($amount)."</li>\n"; 
 		$output .= "</ul>";
-		$output .= "You will receive a confirmation e-mail when payment for the order clears and a second email when your order ships. "; 
-		$output .= "You may log into your paypal account at <a href=\"https://www.paypal.com/us\">paypal</a> to view details of this transaction.";
+		$output .= __("You will receive a confirmation e-mail when payment for the order clears and a second email when your order ships.",'SCABN');  
+		$output .= __("You may log into your paypal account at <a href=\"https://www.paypal.com/us\">paypal</a> to view details of this transaction.",'SCABN'); 
 		return $output;
 }
 
 
 
 	function enter_cart_uuid(){
-		$output="<BR>Please enter the custom cart id here:
+		$output="<BR>".__("Please enter the custom cart id here",'SCABN').":
 			<form name=\"input\" action=\"custom-cart\" method=\"GET\">
 			Custom Cart ID: <input type=\"text\" name=\"ccuuid\" /><p>
-			<input type=\"submit\" value=\"Submit\" /></p>
+			<input type=\"submit\" value=\"__(Submit','SCABN')\" /></p>
 			</form>";
 		return $output;
 	}
@@ -89,13 +96,13 @@ class scabn_Display {
 		$output="";
 		if ($items) {
 			$output .="<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>
-		<thead>
-		<tr class=\"thead\">
-			<th scope=\"col\">Qty</th>
-			<th scope=\"col\">Items</th>
-			<th scope=\"col\" align=\"right\">Unit Price</th>
-		</tr>
-		</thead>";	
+		<thead> <tr class=\"thead\"><th scope=\"col\">";
+		$output .=__("Qty",'SCABN');
+		$output .="</th>			<th scope=\"col\">";
+		$output .=__("Items",'SCABN');
+		$output .="</th><th scope=\"col\" align=\"right\">";
+		$output .=__("Unit Price",'SCABN');
+		$output .="</th></tr></thead>";	
 			$options = get_option('scabn_options');		
 			$currency = apply_filters('scabn_display_currency_symbol',$options['currency']);						
 			foreach($items as $item) {
@@ -128,7 +135,7 @@ class scabn_Display {
 			$output .= scabn_paypal::make_button($items);	
 			$output .= scabn_google::make_button(getShippingOptions($items),$items);
 		} else {
-			$output .= '<h4>Could not find your custom cart, or the cart has expired</h4>';
+			$output .= '<h4>'.__("Could not find your custom cart, or the cart has expired",'SCABN').'</h4>';
 			$output .= apply_filters('scabn_displayCartUUID','');
 		}
 		return $output;
@@ -194,11 +201,13 @@ class scabn_Display {
 			$output .= "<br/>\n";
 
 		} else {
-			$output .= "Unit Price: ".$currency.number_format($item['price'],2)." each<br/>";
+			$output .= 	__("Unit Price: ",'SCABN').trim($currency.number_format($item['price'],2)).__(" each",'SCABN')."<br/>";
+			
 		}
 
 		if(array_key_exists('qty_field',$item)) {
-			$output .= "Qty: <input type='text' class='item_qty' value='1' size='2' name='item_qty'/>\n";
+			$output .= __("Qty:",'SCABN');
+			$output .= "<input type='text' class='item_qty' value='1' size='2' name='item_qty'/>\n";
 		} else {
 			$output .= "<input type='hidden' class='item_qty' value='1' size='2' name='item_qty'/>\n";
 		}
@@ -209,7 +218,7 @@ class scabn_Display {
 		if (array_key_exists('b_title',$item)) {
 			$b_title=$item['b_title'];
 		} else {
-			$b_title='Add to Cart';
+			$b_title=__('Add to Cart','SCABN');
 		}
 		$output .= "<input type='submit' id='".$item_id."' ".$add_class." name='add' value='".$b_title."'/>\n";
 		$output .= "</form>\n";
@@ -271,15 +280,15 @@ class scabn_Display {
 			$output .= "<form action='' method='post'>";
 			$output .= "<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>";	
 			$output .= "	<thead><tr class='thead'>";
-			$output .= "   	<th scope='col'>Qty</th>";
-			$output .= "     <th scope='col'>Items</th>";
-			$output .= "     <th scope='col' align='right'>Unit Price</th>";
+			$output .= "   	<th scope='col'>".__("Qty",'SCABN')."</th>";
+			$output .= "     <th scope='col'>".__("Items",'SCABN')."</th>";
+			$output .= "     <th scope='col' align='right'>".__("Unit Price",'SCABN')."</th>";
 			$output .= "	</tr></thead>";	
 			$i=0;
 			foreach($cart->get_contents() as $item) {
 				$output .= "<tr class = 'ck_content'><td>";
-            $output .= "<input type='hidden' name='item_".$i."' value='".$item['id']."' />";
-            $output .= "<input type='text' name='qty_".$i."' size='2' value='".$item['qty']."' class = 'qty_".$item['id']."' title='".$item['id']."' /></td>";
+                $output .= "<input type='hidden' name='item_".$i."' value='".$item['id']."' />";
+                 $output .= "<input type='text' name='qty_".$i."' size='2' value='".$item['qty']."' class = 'qty_".$item['id']."' title='".$item['id']."' /></td>";
 				$output .= "<td><a href='". $item['url']."'><strong>".$item['name']."</strong><br />";                				
 				if (count($item['options']) > 0){
 					$output .= apply_filters('scabn_display_item_options',$item['options']);
@@ -291,15 +300,15 @@ class scabn_Display {
 				$remove_query['remove'] = $item['id'];
 				$remove_url = add_query_arg($remove_query);
 				
-				$output .= "<a href='".$remove_url."' class ='remove_item' name = '".$item['id']."'>Remove</a></td></tr>";
+				$output .= "<a href='".$remove_url."' class ='remove_item' name = '".$item['id']."'>".__("Remove",'SCABN')."</a></td></tr>";
 				$i ++;
 			}
 
 			$output .= "<tr class='ck_content'>";
-			$output .= "<td><input type='submit' name='update' value='Update' class ='update_cart' /></td>";				
+			$output .= "<td><input type='submit' name='update' value="."'".__("Update",'SCABN')."'". "class ='update_cart' /></td>";				
 
 			if ($carttype == 'widget' ){
-				$output .= "<td align='right' colspan='1'><strong>Sub-total</strong></td>";
+				$output .= "<td align='right' colspan='1'><strong>".__("Sub-total",'SCABN')."</strong></td>";
 				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";	
 			} else {
 				$output .= "<td align='right' colspan='1'>Sub-total</td>";
@@ -311,26 +320,26 @@ class scabn_Display {
 			
 			if ($carttype != 'widget') {
 				$output .= "<tr class='ck_content shipping'>";				
-				$output .= "<td align='right' colspan='2'>Shipping</td>";
+				$output .= "<td align='right' colspan='2'>".__("Shipping",'SCABN')."</td>";
 				$output .= "<td align='right'>TBD</td></tr>";
 			}
      		if (empty($cart_url)) {
 				 $output .= "<span class='val_error'><strong>Configuration Error:</strong> Include the Checkout/Process Page Url in the SCABN Plugin Settings</span>";
 			} elseif ($carttype == 'widget') {	 
          	$output .= "<tr><td class='ck_content go_to_checkout' colspan='3'>";
-				$output .= "<div style='text-align: right'><span class='go_to_checkout'><a href='".$cart_url."'><strong>Go to Checkout</strong></a> </span></div>"; 
+				$output .= "<div style='text-align: right'><span class='go_to_checkout'><a href='".$cart_url."'><strong>".__("Go to Checkout",'SCABN')."</strong></a> </span></div>"; 
 			}
 									
 			if ($carttype != 'widget') {
 				$output .= "<tr class='ck_content total'>";
-				$output .= "<td align='right' colspan='2'><strong>Total</strong></td>";
+				$output .= "<td align='right' colspan='2'><strong>".__("Total",'SCABN')."</strong></td>";
 				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";
 				$output .= "</tr>";
 			}
 			$output .= "</td></tr></table></form>";	
         
 		} else {  	   
-			$output .= "<span class='no_items'>No items in your cart</span>";
+			$output .= "<span class='no_items'>".__("No items in your cart","SCABN")."</span>";
         
   		} 	
 		$output .= "</div>";				

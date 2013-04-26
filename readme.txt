@@ -194,3 +194,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 2.0.1 =
   Google Analytics ID tag lengthed to handle new longer id's from Google. 
+
+= 2.1.0 =
+  New support for location / multiple language translation (thanks to soulpixel for doing all the work)

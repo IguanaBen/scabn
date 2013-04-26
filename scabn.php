@@ -3,7 +3,7 @@
 Plugin Name: Simple Cart & Buy Now
 Plugin URI: http://wordpress.org/extend/plugins/simple-cart-buy-now/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 2.0.1
+Version: 2.1.0
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
@@ -59,6 +59,19 @@ require_once SCABN_PLUGIN_DIR. '/classes/cart.php';
 require_once SCABN_PLUGIN_DIR. '/classes/backend.php';
 require_once SCABN_PLUGIN_DIR. '/classes/display.php';
 require_once SCABN_PLUGIN_DIR. '/classes/widget.php';
+
+
+//localization
+
+function ap_action_init()  
+{  
+
+    load_textdomain( 'SCABN','/simple-cart-buy-now/SCABN-'.get_locale().'.mo' );
+	load_plugin_textdomain('SCABN', false, dirname(plugin_basename(__FILE__)) . '/languages');
+
+}  
+// Add actions  
+add_action('init', 'ap_action_init'); 
 
 //No need to burden SCABN with admin settings when user is not admin
 if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
