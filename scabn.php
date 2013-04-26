@@ -3,7 +3,7 @@
 Plugin Name: Simple Cart & Buy Now
 Plugin URI: http://wordpress.org/extend/plugins/simple-cart-buy-now/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 2.1.0
+Version: 2.1.1
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */

@@ -12,19 +12,22 @@ names, and options and a url for the product description.
 
 
 class wfCart {
-	
+
 	var $items = array();
-   var $itemprices = array();
+	var $itemprices = array();
 	var $itemqtys = array();
 	var $itemweight = array();
-   var $itemname = array();
-	
+	var $itemname = array();
+
 	var $itemoptions = array();
 	var $itemurl = array();
-   
+	var $randomid = 0;
 	var $total = 0;
-   
-				
+
+	function random() {
+		return $this->randomid;
+		}
+
 	function get_contents()
 	{ // gets cart contents
 		$items = array();
@@ -46,7 +49,6 @@ class wfCart {
 
 
 	function add_item($itemid,$qty=1,$price = FALSE, $name = FALSE, $options, $url = FALSE, $weight=0)	{ 
-
 		if( array_key_exists($itemid,$this->itemqtys) && $this->itemqtys[$itemid] > 0)  {
 				//Item already in cart, just increment quantity.
 		 		$this->itemqtys[$itemid] = $qty + $this->itemqtys[$itemid];
@@ -75,6 +77,7 @@ class wfCart {
 
 	function edit_item($itemid,$qty)
 	{ // changes an item's quantity
+
 		if($qty < 1) {
 			$this->del_item($itemid);
 		} else {
@@ -103,6 +106,7 @@ class wfCart {
 
    function empty_cart()
 	{ // empties / resets the cart
+		$this->randomid=rand();
 		$this->items = array();
 		$this->itemprices = array();
 		$this->itemqtys = array();
@@ -116,6 +120,7 @@ class wfCart {
 
 	function _update_total()
 	{ // internal function to update the total in the cart
+		$this->randomid=rand();
 		$this->total = 0;
       	if(sizeof($this->items > 0)) {
          	foreach($this->items as $item) {

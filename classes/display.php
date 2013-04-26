@@ -149,6 +149,8 @@ class scabn_Display {
 		//items to the cart.
 
 		global $post;
+                $cart =& $_SESSION['wfcart']; // load the cart from the session
+
 		if (array_key_exists('name',$item)) {
 			$item_id=sanitize_title($item['name']);
 			$name=$item['name'];
@@ -172,6 +174,7 @@ class scabn_Display {
 		$output .= wp_nonce_field( 'add_to_cart', 'scabn-add', false, false );
 		$output .= "<input type='hidden' value='add_item' name='action'/>\n";
 		$output .= "<input type='hidden' class='item_url' value='".get_permalink()."' name='item_url'/>\n";
+		$output .= "<input type='hidden' value='".$cart->random()."' name='randomid'/>\n";
 		$output .= "<input type='hidden' value='".$item_id."' name='item_id'/>\n";
 		$output .= "<input type='hidden' class='item_name' value='".$name."' name='item_name'/>\n";
 		if (array_key_exists('price',$item)) $output .= "<input type='hidden' class='item_price' value='".$item['price']."' name='item_price'/>\n";
@@ -278,6 +281,7 @@ class scabn_Display {
 
 		if(count($cart->items) != 0) {
 			$output .= "<form action='' method='post'>";
+			$output .= "<input type='hidden' value='".$cart->random()."' name='randomid'/>\n";
 			$output .= "<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>";	
 			$output .= "	<thead><tr class='thead'>";
 			$output .= "   	<th scope='col'>".__("Qty",'SCABN')."</th>";
@@ -298,6 +302,7 @@ class scabn_Display {
 
 				$remove_query = array();
 				$remove_query['remove'] = $item['id'];
+				$remove_query['randomid'] = $cart->random();
 				$remove_url = add_query_arg($remove_query);
 				
 				$output .= "<a href='".$remove_url."' class ='remove_item' name = '".$item['id']."'>".__("Remove",'SCABN')."</a></td></tr>";

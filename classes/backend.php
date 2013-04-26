@@ -74,68 +74,70 @@ class scabn_Backend {
 		//Probably a good place to sanitize the data.
 	
 		$cart =& $_SESSION['wfcart']; // get the cart
+		if ( isset($_REQUEST['randomid']) &&  $_REQUEST['randomid'] == $cart->random() ) 
+			{
+			//Only update cart, etc, if randomid matches post requiest id. Other it is reload event and we ignore.
 
-		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_item'  ){
-			require_once ABSPATH . 'wp-includes/pluggable.php'; // It looks like pluggable.php is loaded too late, so I'll do it
-			if ( ! wp_verify_nonce($_REQUEST['scabn-add'],'add_to_cart') ) {
-				wp_die('Security Check Failed!');
-			}
-
-			if ( isset($_REQUEST['item_options']) && (  $_REQUEST['item_options'] != '')  ) {
-				//item options set -- check if it is a list of options with ':' as separator
-		        	$temp=explode(':',$_REQUEST['item_options']);
-		        	//if it is, it should be formatted as 'optionname:price' 
-				if ( count($temp) == 2) {
-					$price=floatval($temp[1]);
-					$itemoptionvalue=sanitize_text_field($temp[0]);
-
-				} else {
-					$price=floatval($_REQUEST['item_price']);
-					$itemoptionvalue=sanitize_text_field($_REQUEST['item_options']);
+			if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_item'  ){
+				require_once ABSPATH . 'wp-includes/pluggable.php'; // It looks like pluggable.php is loaded too late, so I'll do it
+				if ( ! wp_verify_nonce($_REQUEST['scabn-add'],'add_to_cart') ) {
+					wp_die('Security Check Failed!');
 				}
 
-				$item_options = array (sanitize_title($_REQUEST['item_options_name']) => $itemoptionvalue);
-				$item_id = sanitize_title($_REQUEST['item_id']."-".$itemoptionvalue);
+				if ( isset($_REQUEST['item_options']) && (  $_REQUEST['item_options'] != '')  ) {
+					//item options set -- check if it is a list of options with ':' as separator
+			        	$temp=explode(':',$_REQUEST['item_options']);
+		        		//if it is, it should be formatted as 'optionname:price' 
+					if ( count($temp) == 2) {
+						$price=floatval($temp[1]);
+						$itemoptionvalue=sanitize_text_field($temp[0]);	
+					} else {
+						$price=floatval($_REQUEST['item_price']);
+						$itemoptionvalue=sanitize_text_field($_REQUEST['item_options']);
+					}
 
-			} else {
-				$item_options = array ();
-				$price = floatval($_REQUEST['item_price']);
-				$item_id = sanitize_title($_REQUEST['item_id']);
+					$item_options = array (sanitize_title($_REQUEST['item_options_name']) => $itemoptionvalue);
+					$item_id = sanitize_title($_REQUEST['item_id']."-".$itemoptionvalue);
+
+				} else {
+					$item_options = array ();
+					$price = floatval($_REQUEST['item_price']);
+					$item_id = sanitize_title($_REQUEST['item_id']);
+				}
+
+				$temparray=array();
+				foreach (array("item_qty","item_name","item_url","item_weight") as $label) {
+					if (array_key_exists($label,$_REQUEST)) {
+						$temparray[$label]=$_REQUEST[$label];
+					} else {
+						$temparray[$label]="";
+					}
+				}
+				$cart->add_item($item_id,intval($temparray['item_qty']),$price,sanitize_text_field($temparray['item_name']),$item_options,esc_url($temparray['item_url']),floatval($temparray['item_weight']));
 			}
 
-			$temparray=array();
-			foreach (array("item_qty","item_name","item_url","item_weight") as $label) {
-				if (array_key_exists($label,$_REQUEST)) {
-					$temparray[$label]=$_REQUEST[$label];
-				} else {
-					$temparray[$label]="";
+			if (isset ($_REQUEST['remove']) && $_REQUEST['remove'] ){
+			   $cart->del_item(sanitize_title($_REQUEST['remove']));
+			}
+
+			if (isset($_REQUEST['empty']) && $_REQUEST['empty']  ){
+			   $cart->empty_cart();
+			}
+
+			if (isset($_REQUEST['update']) && $_REQUEST['update']  ){
+				for ($i=0; $i<sizeof($cart->items); $i++){
+					if (ctype_digit($_POST['qty_'.$i])){
+						$cart->edit_item(sanitize_title($_POST['item_'.$i]),intval($_POST['qty_'.$i]));
+				   	}
 				}
 			}
-			$cart->add_item($item_id,intval($temparray['item_qty']),$price,sanitize_text_field($temparray['item_name']),$item_options,esc_url($temparray['item_url']),floatval($temparray['item_weight']));
-		}
-
-		if (isset ($_REQUEST['remove']) && $_REQUEST['remove'] ){
-		   $cart->del_item(sanitize_title($_REQUEST['remove']));
-		}
-
-		if (isset($_REQUEST['empty']) && $_REQUEST['empty']  ){
-		   $cart->empty_cart();
-		}
-
-		if (isset($_REQUEST['update']) && $_REQUEST['update']  ){
-			for ($i=0; $i<sizeof($cart->items); $i++){
-				if (ctype_digit($_POST['qty_'.$i])){
-					$cart->edit_item(sanitize_title($_POST['item_'.$i]),intval($_POST['qty_'.$i]));
-			   	}
+	
+			if (isset($_REQUEST['update_item']) && $_REQUEST['update_item']  ){
+			   if (ctype_digit($_REQUEST['qty'])){
+			   	$cart->edit_item(sanitize_title($_REQUEST['id']),intval($_REQUEST['qty']));
+			   }
 			}
-		}
-	
-		if (isset($_REQUEST['update_item']) && $_REQUEST['update_item']  ){
-		   if (ctype_digit($_REQUEST['qty'])){
-		   	$cart->edit_item(sanitize_title($_REQUEST['id']),intval($_REQUEST['qty']));
-		   }
-		}
-	
+		} 
 	
 	}
 

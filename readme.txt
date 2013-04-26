@@ -197,3 +197,6 @@ you can define different shipping options for different locations and weight OR 
 
 = 2.1.0 =
   New support for location / multiple language translation (thanks to soulpixel for doing all the work)
+
+= 2.1.1 =
+  Adds random number to cart that changes on update to prevent reload events from duplicating previous add/edit of cart 
