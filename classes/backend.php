@@ -301,6 +301,7 @@ class scabn_Backend {
 						"PLN" => array ('122;&#322', "Polish Zloty PLN"),								
 						"GBP" => array (163, "Pound Sterling GBP"),
 						"SGD" => array (36, "Singapore Dollar SGD"),
+						"ZAR" => array (82, "South African Rand ZAR"),
 						"SEK" => array (107, "Swedish Krona SEK"),
 						"CHF" => array (67, "Swiss Franc CHF"),
 						"USD" => array (36, "U.S. Dollar USD")
