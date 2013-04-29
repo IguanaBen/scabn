@@ -90,9 +90,9 @@ class scabn_Admin {
 
 		add_settings_section('paypal_encrypt', 'Paypal Encryption Settings:', array($this,'section_text'), 'paypal_en');
 		scabn_Admin::custom_add_settings_field('openssl_command', 'Full system path for openssl command (typical: /usr/bin/openssl): ', 'paypal_en', 'paypal_encrypt','input_text_option');   
-		scabn_Admin::custom_add_settings_field('paypal_my_cert_file', 'Full system path for Paypal Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
-		scabn_Admin::custom_add_settings_field('paypal_key_file', 'Full system path for Paypal Key File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
-		scabn_Admin::custom_add_settings_field('paypal_paypal_cert_file', 'Full system path for Paypal\'s Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_my_cert_file', 'Full system path for your Public Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_key_file', 'Full system path for Private Key File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
+		scabn_Admin::custom_add_settings_field('paypal_paypal_cert_file', 'Full system path for Paypal\'s Public Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_cert_id', 'Certificate ID (see paypal\'s website): ', 'paypal_en', 'paypal_encrypt','input_text_option');
    
 		add_settings_section('google_options', 'Google Wallet Settings:', array($this,'section_text'), 'google');
