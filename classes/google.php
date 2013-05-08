@@ -14,21 +14,23 @@ class scabn_google {
 		$gc = "\n<checkout-flow-support>
 	    <merchant-checkout-flow-support>
 	      <shipping-methods>";
-		
+
 		foreach($shipoptions as $soption) {
 			$gc .= "\n\t<flat-rate-shipping name=\"". $soption['name'] . "\">";
 			$gc .= "\n\t<price currency=\"".$options['currency']."\">".$soption['price']. "</price>";
 			$gc .= "\n\t<shipping-restrictions>";
 			$gc .= "\n\t\t<allowed-areas>";
-			
-			if (array_key_exists('regions', $soption )) {					
-				$gc .= "\n\t\t\t<postal-area>";			
-				foreach($soption['regions'] as $region) {				
+
+			if (array_key_exists('regions', $soption )) {
+				$gc .= "\n\t\t\t<postal-area>";
+				foreach($soption['regions'] as $region) {
 					$gc .= "\n\t\t\t\t<country-code>".$region."</country-code>";
-				} 
+				}
 				$gc .= "\n\t\t\t</postal-area>";
-			}				
-						
+			} else {
+				$gc .= "\n\t\t\t<world-area/>";
+			}
+			
 			$gc .= "\n\t\t</allowed-areas>";
 			
 			$gc .= "\n\t\t<excluded-areas>";			
@@ -81,7 +83,6 @@ class scabn_google {
 		$gc .= apply_filters('scabn_google_shipping_XML',$shipoptions);				
 		//End Google Cart
 		$gc .= "\n</checkout-shopping-cart>"; 
-						
 		$b64=base64_encode($gc);
 		$gout="";
 	 	if ( $options['analytics_id'] != '' ) {
