@@ -1,4 +1,4 @@
-<?
+<?php
 
 
 /* This class handles SCABN's paypal interactions -- generating
