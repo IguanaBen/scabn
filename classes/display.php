@@ -133,7 +133,7 @@ class scabn_Display {
 	
 			$output .= apply_filters('scabn_displayCustomCartContents',$items);
 			$output .= scabn_paypal::make_button($items);	
-			$output .= scabn_google::make_button(getShippingOptions($items),$items);
+			//$output .= scabn_google::make_button(getShippingOptions($items),$items);
 		} else {
 			$output .= '<h4>'.__("Could not find your custom cart, or the cart has expired",'SCABN').'</h4>';
 			$output .= apply_filters('scabn_displayCartUUID','');

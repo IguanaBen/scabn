@@ -180,7 +180,7 @@ class scabn_Backend {
 		//  Delay loading Paypal & Google classes as we only need them
 		//	 on final checkout page and custom cart page.	
 		require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
-		require_once SCABN_PLUGIN_DIR. '/classes/google.php';
+		//require_once SCABN_PLUGIN_DIR. '/classes/google.php';
 		
 		add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
 
@@ -202,7 +202,7 @@ class scabn_Backend {
 			//print_r($holditems);		
 			$output .= apply_filters('scabn_shoppingCartInfo',$holditems);
 			$output .= scabn_paypal::make_button($holditems);
-			$output .= scabn_google::make_button(apply_filters('scabn_getShippingOptions',$holditems),$holditems);			
+			//$output .= scabn_google::make_button(apply_filters('scabn_getShippingOptions',$holditems),$holditems);			
 	
 		}
 				
