@@ -165,10 +165,10 @@ class scabn_Backend {
 				$cart = $_SESSION['wfcart'];
 				$cart->empty_cart();
 				require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
-				return scabn_paypal::receipt($tx_token);
+				echo scabn_paypal::receipt($tx_token);
 			} else {
 				//Normal checkout page.
-				return scabn_Backend::checkout_page();
+				echo scabn_Backend::checkout_page();
 			}
 	
 		}
@@ -182,7 +182,7 @@ class scabn_Backend {
 		require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
 		//require_once SCABN_PLUGIN_DIR. '/classes/google.php';
 		
-		add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
+		//add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
 
 		//main checkout page when shopping (not receipt for transaction)
 										
