@@ -3,18 +3,18 @@ Contributors: bluey80
 Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Google Wallet, encrypted carts, checkout, shopping cart widget, ajax, Google analytics, analytics, custom carts, custom shopping carts
 Donate link: http://iguanaworks.net/SCABN/SCABN.html
 Requires at least: 3.2 
-Tested up to: 3.8.1
-Stable tag: 2.1.2
+Tested up to: 3.8.2
+Stable tag: 2.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Simple shopping cart system provides buy now buttons to purchase items via Paypal or Google Wallet. Also links to Google Analytics to tracks sales. 
+Simple shopping cart system provides buy now buttons to purchase items via Paypal. Also links to Google Analytics to tracks sales. 
 
 == Description ==
 
 Add "Add to Cart" buttons to your pages / posts with sidebar widget showing items currently in customer's shopping cart. When customer clicks on 'Go to Checkout' 
-then can purchase items via Paypal or Google Wallet. Simple, secure shopping cart system stores no user information (email, address, credit card, etc) but uses
-encrypted buy now buttons to pass customer over to Paypal / Google for providing purchasing information. 
+then can purchase items via Paypal. Simple, secure shopping cart system stores no user information (email, address, credit card, etc) but uses
+encrypted buy now buttons to pass customer over to Paypal for providing purchasing information. 
 
 Features:
 
@@ -22,7 +22,7 @@ Features:
 *   Secure, encrypted Buy Now buttons for Paypal and Google Wallet
 *   You can include options to your products, with different prices if necessary
 *   Easy to customize, including custom functions to get pricing (e.g. volume discounts), shipping options, etc
-*   Optionally adds Google Analyics tracking code and links Paypal & Google Wallet Purchases with Google Analytics Ecommerce
+*   Optionally adds Google Analyics tracking code and links Paypal purchases with Google Analytics Ecommerce
 
 
 == Installation ==
@@ -54,20 +54,8 @@ Also, some of SCABN's settings will get lost in the upgrade and have to be reent
 
 = How do I select shipping options? = 
 
-Unfortunately, Paypal and Google Wallet handle this differently. The shipping cost will depend on the shipping address (international, domestic, etc) and we don't ask for a customer's address -- Paypal or Google Wallet does. 
-With Google Wallet, we provide different shipping options for different locations. Such as:
-
-1. Domestic Ground ($5)
-2. Domestic Express ($10)
-3. International Ground ($10)
-4. International Express ($20)
-
-Then Google Wallet lets the customer pick from any of the shipping options valid for their address. This means you can write your own function to determine shipping options via location, quantity, items, item weight, etc. Take a look at the getShippingOptions function in templates/default.php and copy it 
-to templates/SOMETHING.php and edit as desired. Then in SCABN settings, select SOMETHING as your template. 
-
-As for Paypal, it doesn't support this. Instead log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and 
+Paypal doesn't support dynamic shipping optios, so log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and
 you can define different shipping options for different locations and weight OR price of the order.
-
 
 == Screenshots ==
 
@@ -204,3 +192,6 @@ you can define different shipping options for different locations and weight OR 
 = 2.1.2 =
   Removed Google Wallet / Google Checkout stuff as Google stopped this service. Echo full page commands instead of return them to
   try to fix issues with some themes.
+
+= 2.1.3 =
+  Removed hard-coding of Paypal locale

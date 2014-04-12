@@ -3,7 +3,7 @@
 Plugin Name: Simple Cart & Buy Now
 Plugin URI: http://wordpress.org/extend/plugins/simple-cart-buy-now/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 2.1.2
+Version: 2.1.3
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
@@ -22,13 +22,13 @@ principal goals:
 2) Security: encrypted 'buynow' buttons and pricing information not obtained
    from data provided by the user's browser.
 
-Paypal BuyNow & Google Wallet both supported with encrypted BuyNow buttons.
+Paypal BuyNow supported with encrypted BuyNow button.
 
-Also has hooks support for giving customers custom shopping carts via url or uuid and 
+Also has hooks support for giving customers custom shopping carts via url or uuid and
 tracking visitors and customers with Google Analytics.
 
 Template system for customize look of the shopping cart
-and to use optional db backend or other phph functions to get 
+and to use optional db backend or other phph functions to get
 pricing, shipping, weight information, bulk discounts, etc
 
 */
@@ -63,15 +63,15 @@ require_once SCABN_PLUGIN_DIR. '/classes/widget.php';
 
 //localization
 
-function ap_action_init()  
-{  
+function ap_action_init()
+{
 
     load_textdomain( 'SCABN','/simple-cart-buy-now/SCABN-'.get_locale().'.mo' );
 	load_plugin_textdomain('SCABN', false, dirname(plugin_basename(__FILE__)) . '/languages');
 
-}  
-// Add actions  
-add_action('init', 'ap_action_init'); 
+}
+// Add actions
+add_action('init', 'ap_action_init');
 
 //No need to burden SCABN with admin settings when user is not admin
 if ( is_admin() ) 	require_once SCABN_PLUGIN_DIR. '/classes/admin.php';
