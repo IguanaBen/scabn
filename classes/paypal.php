@@ -9,7 +9,7 @@
 
 class scabn_paypal {
 
-	function make_button($items) {
+	static function make_button($items) {
 		$options=get_option('scabn_options');
 		$currency = $options['currency'];
 		$cart_url = $options['cart_url'];
@@ -23,10 +23,13 @@ class scabn_paypal {
 		$MY_KEY_FILE = $options['paypal_key_file'];
 		$PAYPAL_CERT_FILE=$options['paypal_paypal_cert_file'];
 
+		
+		$ppo="<style>form { display: inline; padding:15px}</style>";		
+		
 		if ($paypal_url == "Live" ) {
-			$ppo="<form method=\"post\" action=\"https://www.paypal.com/cgi-bin/webscr\">\n";
+			$ppo.="<form method=\"post\" action=\"https://www.paypal.com/cgi-bin/webscr\">\n";
 		} else {
-		 	$ppo="<form method=\"post\" action=\"https://www.sandbox.paypal.com/cgi-bin/webscr\"> \n";
+		 	$ppo.="<form method=\"post\" action=\"https://www.sandbox.paypal.com/cgi-bin/webscr\"> \n";
 		}
 
 
@@ -36,7 +39,7 @@ class scabn_paypal {
 		$ppoptions[]=array("business",$paypal_email);
 		$ppoptions[]=array("cmd","_cart");
 		$ppoptions[]=array("currency_code",$currency);
-		$ppoptions[]=array("lc","US");
+		//$ppoptions[]=array("lc","US");
 		$ppoptions[]=array("bn","PP-BuyNowBF");
 		$ppoptions[]=array("upload","1");
 		if ( $paypal_pdt_token != "" ) $ppoptions[]=array("return",$cart_url);
@@ -81,12 +84,16 @@ class scabn_paypal {
 				$ppo .= "<input type=\"hidden\" name=\"" . $value[0] . "\" value=\"" . $value[1] . "\">\n";
 			}
 		}
-		$ppo .= "<input type=\"image\" border=\"0\" name=\"submit\" src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\" alt=\"Make payments with PayPal - it's fast, free and secure!\"></form>";
+		$ppo .= "<input style=\"vertical-align:middle\" type=\"image\" name=\"submit\" src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\" alt=\"Make payments with PayPal - it's fast, free and secure!\"></form>";
+		//$ppo .= "<form><input type=\"submit\"\></form>";		
+		//$ppo .= "<form><input type=\"image\" src=\"http://www.seblod.com/v2/components/com_kunena/template/seblod/images/emoticons/wassat.png\"></form>";
+		//$ppo .= "<form><input type=\"submit\"\></form>";
+		//$ppo .= "<br/><br/><br/><br/><br/><br/>";
 		return $ppo;
 		}
 	}
 
-
+		//style=\"display:inline;\"
 
 
 	function receipt($tx_token) {

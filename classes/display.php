@@ -265,38 +265,37 @@ class scabn_Display {
 
 
 	function display_cart($carttype){
-				
-		//$carttype is 'widget' or 'checkout'					
+
+		//$carttype is 'widget' or 'checkout'
 		$cart = $_SESSION['wfcart'];
 		$options = get_option('scabn_options');
 		$cart_url = $options['cart_url'];
 		$currency = apply_filters('scabn_display_currency_symbol',Null);
 
 		if ($carttype == 'widget'){
-			$output = "<div id='scabn_widget'>"; 						
-		} else {			
-			$output = "<div id='wpchkt_checkout'>";			
+			$output = "<div id='scabn_widget'>";
+		} else {
+			$output = "<div id='wpchkt_checkout'>";
 		}
-
 
 		if(count($cart->items) != 0) {
 			$output .= "<form action='' method='post'>";
 			$output .= "<input type='hidden' value='".$cart->random()."' name='randomid'/>\n";
-			$output .= "<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>";	
+			$output .= "<table border='0' cellpadding='5' cellspacing='1' class='entryTable' align='center' width='96%'>";
 			$output .= "	<thead><tr class='thead'>";
 			$output .= "   	<th scope='col'>".__("Qty",'SCABN')."</th>";
 			$output .= "     <th scope='col'>".__("Items",'SCABN')."</th>";
 			$output .= "     <th scope='col' align='right'>".__("Unit Price",'SCABN')."</th>";
-			$output .= "	</tr></thead>";	
+			$output .= "	</tr></thead>";
 			$i=0;
 			foreach($cart->get_contents() as $item) {
 				$output .= "<tr class = 'ck_content'><td>";
                 $output .= "<input type='hidden' name='item_".$i."' value='".$item['id']."' />";
                  $output .= "<input type='text' name='qty_".$i."' size='2' value='".$item['qty']."' class = 'qty_".$item['id']."' title='".$item['id']."' /></td>";
-				$output .= "<td><a href='". $item['url']."'><strong>".$item['name']."</strong><br />";                				
+				$output .= "<td><a href='". $item['url']."'><strong>".$item['name']."</strong><br />";
 				if (count($item['options']) > 0){
 					$output .= apply_filters('scabn_display_item_options',$item['options']);
-				} 
+				}
 				$output .= "</a></td>";
 				$output .= "<td align='right'>".$currency." ".number_format($item['price'],2)."<br />";
 
@@ -304,66 +303,50 @@ class scabn_Display {
 				$remove_query['remove'] = $item['id'];
 				$remove_query['randomid'] = $cart->random();
 				$remove_url = add_query_arg($remove_query);
-				
+
 				$output .= "<a href='".$remove_url."' class ='remove_item' name = '".$item['id']."'>".__("Remove",'SCABN')."</a></td></tr>";
 				$i ++;
 			}
 
 			$output .= "<tr class='ck_content'>";
-			$output .= "<td><input type='submit' name='update' value="."'".__("Update",'SCABN')."'". "class ='update_cart' /></td>";				
+			$output .= "<td><input type='submit' name='update' value="."'".__("Update",'SCABN')."'". "class ='update_cart' /></td>";
 
 			if ($carttype == 'widget' ){
 				$output .= "<td align='right' colspan='1'><strong>".__("Sub-total",'SCABN')."</strong></td>";
-				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";	
+				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";
 			} else {
 				$output .= "<td align='right' colspan='1'>Sub-total</td>";
-				$output .= "<td align='right'>".$currency." ".number_format($cart->total,2)."</td>";			
+				$output .= "<td align='right'>".$currency." ".number_format($cart->total,2)."</td>";
 			}
-			
+
 			$output .= "</tr>";
-			
-			
+
 			if ($carttype != 'widget') {
-				$output .= "<tr class='ck_content shipping'>";				
+				$output .= "<tr class='ck_content shipping'>";
 				$output .= "<td align='right' colspan='2'>".__("Shipping",'SCABN')."</td>";
 				$output .= "<td align='right'>TBD</td></tr>";
 			}
      		if (empty($cart_url)) {
 				 $output .= "<span class='val_error'><strong>Configuration Error:</strong> Include the Checkout/Process Page Url in the SCABN Plugin Settings</span>";
-			} elseif ($carttype == 'widget') {	 
+			} elseif ($carttype == 'widget') {
          	$output .= "<tr><td class='ck_content go_to_checkout' colspan='3'>";
 				$output .= "<div style='text-align: right'><span class='go_to_checkout'><a href='".$cart_url."'><strong>".__("Go to Checkout",'SCABN')."</strong></a> </span></div>"; 
 			}
-									
+
 			if ($carttype != 'widget') {
 				$output .= "<tr class='ck_content total'>";
 				$output .= "<td align='right' colspan='2'><strong>".__("Total",'SCABN')."</strong></td>";
 				$output .= "<td align='right'><strong>".$currency." ".number_format($cart->total,2)."</strong></td>";
 				$output .= "</tr>";
 			}
-			$output .= "</td></tr></table></form>";	
-        
-		} else {  	   
+			$output .= "</td></tr></table></form>";
+
+		} else {
 			$output .= "<span class='no_items'>".__("No items in your cart","SCABN")."</span>";
-        
-  		} 	
-		$output .= "</div>";				
+
+  		}
+		$output .= "</div>";
 		return $output;
 	}
-
-				  
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
 ?>

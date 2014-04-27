@@ -14,9 +14,8 @@ class scabn_Backend {
 	function __construct() {
 
 		if (is_admin()) $this->admin=scabn_Admin::init();
-		$this->display=scabn_Display::init();
-
-
+		$this->display=scabn_Display::init();		
+		
 
 		add_shortcode('scabn_customcart', array($this,'customcart'));
 		add_shortcode('scabn', array($this, 'scabn_Backend::shortcodes'));
@@ -27,8 +26,10 @@ class scabn_Backend {
 		add_filter('scabn_shoppingCartInfo',array($this,'shoppingCartInfo'),10,1);
 		add_filter('scabn_getShippingOptions',array($this,'getShippingOptions'),10,1);
 
-		
-
+		add_action( 'wp_ajax_cartcontents', array($this, 'cartcontents'));
+		add_action( 'wp_ajax_nopriv_cartcontents', array($this, 'cartcontents'));
+		add_action( 'wp_ajax_chargecart', array($this, 'chargecart'));
+		add_action( 'wp_ajax_nopriv_chargecart', array($this, 'chargecart'));
 
 		$scabn_options = get_option('scabn_options');
 		if ( $scabn_options['analytics_id'] != '' ) {
@@ -54,7 +55,7 @@ class scabn_Backend {
 		return $instance;
 	}
 
-	function scabn_init(){
+	static function scabn_init(){
 		session_start();      // start the session
 		$cart =& $_SESSION['wfcart']; // load the cart from the session
 		if(!is_object($cart)) $cart = new wfCart(); // if there isn't a cart, create a new (empty) one
@@ -69,7 +70,7 @@ class scabn_Backend {
 	}
 	
 
-	function request(){
+	static function request(){
 		//This function handles all the client input to change cart via GET / POST requests.
 		//Probably a good place to sanitize the data.
 	
@@ -180,8 +181,8 @@ class scabn_Backend {
 		//  Delay loading Paypal & Google classes as we only need them
 		//	 on final checkout page and custom cart page.	
 		require_once SCABN_PLUGIN_DIR. '/classes/paypal.php';
+		require_once SCABN_PLUGIN_DIR. '/classes/authorize.php';
 		//require_once SCABN_PLUGIN_DIR. '/classes/google.php';
-		
 		//add_filter('scabn_google_shipping_XML','scabn_google::google_shipping_XML',10,1);
 
 		//main checkout page when shopping (not receipt for transaction)
@@ -200,8 +201,9 @@ class scabn_Backend {
 				$holditems[]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters('scabn_getItemPricing',$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters('scabn_getItemWeight',$item['id'],$item['qty'],$item['weight']));	
 			}
 			//print_r($holditems);		
-			$output .= apply_filters('scabn_shoppingCartInfo',$holditems);
+			//$output .= apply_filters('scabn_shoppingCartInfo',$holditems);
 			$output .= scabn_paypal::make_button($holditems);
+			$output .= scabn_authorize::make_button($holditems);			
 			//$output .= scabn_google::make_button(apply_filters('scabn_getShippingOptions',$holditems),$holditems);			
 	
 		}
@@ -283,7 +285,7 @@ class scabn_Backend {
 	}
 	
 	
-	function getCurrencies() {
+	static function getCurrencies() {
 		return array(
 						"AUD" => array (36, "Australian Dollar AUD"),
 						"CAD" => array (36, "Canadian Dollar CAD"),
@@ -310,10 +312,31 @@ class scabn_Backend {
 	
 	//List of Paypal URLs with Label. Used to generate form for
 	//Paypal butnow button.	
-	function paypal_urls() {
+	static function paypal_urls() {
 		return	array('Live'=>'https://www.paypal.com/cgi-bin/webscr','Sandbox'=>'https://www.sandbox.paypal.com/cgi-bin/webscr');
 	}
 
+
+	static function chargecart(){		
+		require_once SCABN_PLUGIN_DIR. '/classes/authorize.php';		
+		scabn_authorize::charge();
+		die();				
+		}
+
+	//AJAX dump of cart contents.
+	static function cartcontents(){				
+		$data=array();	
+		$cart = $_SESSION['wfcart'];
+		
+		$data['items']=array();
+		foreach($cart->get_contents() as $item) {			
+				$data['items'][$item['id']]=array("id"=>$item['id'],"name"=>$item['name'],"qty"=>$item['qty'],"price"=>apply_filters('scabn_getItemPricing',$item['id'],$item['qty'],$item['price']),"options"=>$item['options'],"weight"=>apply_filters('scabn_getItemWeight',$item['id'],$item['qty'],$item['weight']));	
+		}
+	
+		$data['total']=$cart->total;
+		echo json_encode($data);
+		die();
+	}
 	
 }
 

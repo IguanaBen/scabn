@@ -54,7 +54,7 @@ Also, some of SCABN's settings will get lost in the upgrade and have to be reent
 
 = How do I select shipping options? = 
 
-Paypal doesn't support dynamic shipping optios, so log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and
+Paypal doesn't support dynamic shipping optios, so log in to your Paypal account and goto Profile, More Options, My Selling Tools, Shipping Calculations and 
 you can define different shipping options for different locations and weight OR price of the order.
 
 == Screenshots ==

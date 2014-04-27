@@ -95,9 +95,9 @@ class scabn_Admin {
 		scabn_Admin::custom_add_settings_field('paypal_paypal_cert_file', 'Full system path for Paypal\'s Public Certificate File: ', 'paypal_en', 'paypal_encrypt','input_text_option');
 		scabn_Admin::custom_add_settings_field('paypal_cert_id', 'Certificate ID (see paypal\'s website): ', 'paypal_en', 'paypal_encrypt','input_text_option');
    
-		add_settings_section('google_options', 'Google Wallet Settings:', array($this,'section_text'), 'google');
-   	scabn_Admin::custom_add_settings_field('gc_merchantid', 'Google Merchant ID: (blank disables Wallet)', 'google', 'google_options','input_text_option');
-   	scabn_Admin::custom_add_settings_field('gc_merchantkey', 'Google Merchant Key (optional, but required for encrypted carts): ', 'google', 'google_options','input_text_option');
+		add_settings_section('auth_options', 'Authorize.net Settings:', array($this,'section_text'), 'authorize');
+   	scabn_Admin::custom_add_settings_field('auth_login_id', 'API Login ID: (blank disables Authorize.net payments)', 'authorize', 'auth_options','input_text_option');
+   	scabn_Admin::custom_add_settings_field('auth_transaction_key', 'Auth.net Transactions Key: ', 'authorize', 'auth_options','input_text_option');
    
 		add_settings_section('google_analytics', 'Google Analytics Settings (Optional):', array($this,'section_text'), 'google_ac');
 		scabn_Admin::custom_add_settings_field('analytics_id', 'Google Analytics ID (XX-XXXXXX-X): ', 'google_ac', 'google_analytics','input_text_option');
@@ -195,7 +195,7 @@ class scabn_Admin {
 		do_settings_sections('paypal');
  		do_settings_sections('paypal_op'); 
  		do_settings_sections('paypal_en');
- 		do_settings_sections('google');
+ 		do_settings_sections('authorize');
  		do_settings_sections('google_ac');   
 		echo "<br/><input name='Submit' type='submit' value='";
 		esc_attr_e('Save Changes');
