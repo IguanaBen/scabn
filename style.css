@@ -10,6 +10,11 @@
 	margin:5px 0;
 }
 
+.modal-open {
+    overflow: hidden;
+}
+
+
 
 .addtocart {
 	padding: 2px;
@@ -34,6 +39,7 @@
 }
 
 
+
 .addtocart p#cartname {
 	font-size: 18px;
     line-height: 12px;
@@ -43,3 +49,5 @@
 	margin-top:0;
 	margin-bottom:15px;
 }
+
+
