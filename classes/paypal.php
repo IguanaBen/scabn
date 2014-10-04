@@ -9,7 +9,7 @@
 
 class scabn_paypal {
 
-	function make_button($items) {
+	static function make_button($items) {
 		$options=get_option('scabn_options');
 		$currency = $options['currency'];
 		$cart_url = $options['cart_url'];
