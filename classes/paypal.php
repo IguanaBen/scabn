@@ -66,7 +66,7 @@ class scabn_paypal {
 			$openssl_cmd = "($OPENSSL smime -sign -signer $MY_CERT_FILE -inkey $MY_KEY_FILE " .
 							"-outform der -nodetach -binary <<_EOF_\n$ppencrypt\n_EOF_\n) | " .
 							"$OPENSSL smime -encrypt -des3 -binary -outform pem $PAYPAL_CERT_FILE 2>&1";
-			exec($openssl_cmd, $output, $error);
+			exec('export RANDFILE="/tmp/www.rnd";'.$openssl_cmd, $output, $error);
 			if ($error) {
 				echo "ERROR: encryption failed: $error<BR>" . implode($output) ;
 	 		} else {
