@@ -54,7 +54,7 @@ class scabn_Backend {
 		return $instance;
 	}
 
-	function scabn_init(){
+	static function scabn_init(){
 		session_start();      // start the session
 		$cart =& $_SESSION['wfcart']; // load the cart from the session
 		if(!is_object($cart)) $cart = new wfCart(); // if there isn't a cart, create a new (empty) one
@@ -69,7 +69,7 @@ class scabn_Backend {
 	}
 	
 
-	function request(){
+	static function request(){
 		//This function handles all the client input to change cart via GET / POST requests.
 		//Probably a good place to sanitize the data.
 	
@@ -283,7 +283,7 @@ class scabn_Backend {
 	}
 	
 	
-	function getCurrencies() {
+	static function getCurrencies() {
 		return array(
 						"AUD" => array (36, "Australian Dollar AUD"),
 						"CAD" => array (36, "Canadian Dollar CAD"),
@@ -310,7 +310,7 @@ class scabn_Backend {
 	
 	//List of Paypal URLs with Label. Used to generate form for
 	//Paypal butnow button.	
-	function paypal_urls() {
+	static function paypal_urls() {
 		return	array('Live'=>'https://www.paypal.com/cgi-bin/webscr','Sandbox'=>'https://www.sandbox.paypal.com/cgi-bin/webscr');
 	}
 

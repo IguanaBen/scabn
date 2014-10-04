@@ -4,7 +4,7 @@ Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Googl
 Donate link: http://iguanaworks.net/SCABN/SCABN.html
 Requires at least: 3.2 
 Tested up to: 3.8.2
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -195,3 +195,7 @@ you can define different shipping options for different locations and weight OR 
 
 = 2.1.3 =
   Removed hard-coding of Paypal locale
+
+= 2.1.4 =
+  Made some functions static to remove warnings with php 5.5 / 5.6 strict
+  Work-around for openssl on servers where php running as user without access to $HOME
