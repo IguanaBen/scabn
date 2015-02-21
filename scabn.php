@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Simple Cart & Buy Now
+Plugin Name: Simple Cart & Buy Now Beta
 Plugin URI: http://wordpress.org/extend/plugins/simple-cart-buy-now/
 Description: Simple Cart and BuyNow for Wordpress
-Version: 2.1.4
+Version: 2.6.4
 Author: Ben Luey
 Author URI: http://iguanaworks.net
 */
@@ -51,7 +51,7 @@ pricing, shipping, weight information, bulk discounts, etc
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-if ( ! defined( 'SCABN_PLUGIN_DIR' ) ) 	define( 'SCABN_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . plugin_basename( dirname( __FILE__ ) ) );
+if ( ! defined( 'SCABN_PLUGIN_DIR' ) )  define( 'SCABN_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . plugin_basename( dirname( __FILE__ ) ) );
 if ( ! defined( 'SCABN_PLUGIN_URL' ) )  define( 'SCABN_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) );
 
 require_once SCABN_PLUGIN_DIR. '/classes/cart.php';
@@ -66,8 +66,10 @@ require_once SCABN_PLUGIN_DIR. '/classes/widget.php';
 function ap_action_init()
 {
 
-    load_textdomain( 'SCABN','/simple-cart-buy-now/SCABN-'.get_locale().'.mo' );
+   load_textdomain( 'SCABN','/simple-cart-buy-now/SCABN-'.get_locale().'.mo' );
 	load_plugin_textdomain('SCABN', false, dirname(plugin_basename(__FILE__)) . '/languages');
+	print('testing');	
+	wp_enqueue_script( 'angularJS', '//ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js', array(), '1.3.13', false );
 
 }
 // Add actions

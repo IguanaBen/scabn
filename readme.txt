@@ -1,4 +1,4 @@
-=== Simple Cart & Buy Now === 
+=== Simple Cart & Buy Now Beta === 
 Contributors: bluey80  
 Tags: shopping cart, e-commerce, buy now, buynow, Paypal, Google Checkout, Google Wallet, encrypted carts, checkout, shopping cart widget, ajax, Google analytics, analytics, custom carts, custom shopping carts
 Donate link: http://iguanaworks.net/SCABN/SCABN.html
